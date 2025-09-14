@@ -1,0 +1,17 @@
+{
+  "orientation": "any",
+  "display": "standalone",
+  "dir": "auto",
+  "name": "Mini App Base",
+  "short_name": "Mini App Base",
+  "start_url": "/",
+  "theme_color": "#131318",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
