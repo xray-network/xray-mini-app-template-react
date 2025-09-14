@@ -10,9 +10,9 @@ const Effects = ({ children }: { children: React.ReactNode }) => {
 
   const currLocation = useRef(location.pathname)
   const nprogressDoneTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const interval10 = useRef<ReturnType<typeof setInterval> | null>(null)
+  // const interval10 = useRef<ReturnType<typeof setInterval> | null>(null)
   const interval30 = useRef<ReturnType<typeof setInterval> | null>(null)
-  const interval600 = useRef<ReturnType<typeof setInterval> | null>(null)
+  // const interval600 = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const web3 = useWeb3Store((state) => state.web3)
   const initWeb3 = useWeb3Store((state) => state.initWeb3)
