@@ -12,11 +12,7 @@ export default function MenuDesktop() {
       {menuItems.map((item) => {
         const renderInternalItem = (menuItem: MenuItem, level = 0) => {
           return (
-            <NavLink
-              to={menuItem.link}
-              key={menuItem.key}
-              style={!!level ? { paddingLeft: `${level * 0.5}rem` } : {}}
-            >
+            <NavLink to={menuItem.link} key={menuItem.key} style={!!level ? { paddingLeft: `${level * 0.5}rem` } : {}}>
               {menuItem.label}
             </NavLink>
           )

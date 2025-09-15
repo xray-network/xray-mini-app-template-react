@@ -13,7 +13,6 @@ html {
 }
 
 body {
-  overflow-y: hidden !important;
   overflow-x: hidden !important;
   width: 100% !important;
   height: 100%;
@@ -56,6 +55,8 @@ strong {
 }
 
 [data-theme="dark"] {
+  scrollbar-color: var(--color-gray-900) transparent;
+
   &:root {
     color-scheme: dark;
   }
