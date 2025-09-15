@@ -15,11 +15,6 @@ export default function MenuDesktop() {
             <NavLink
               to={menuItem.link}
               key={menuItem.key}
-              className={({ isActive }) =>
-                `py-1 inline-flex rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 ${
-                  isActive ? "bg-gray-100 dark:bg-gray-800" : ""
-                }`
-              }
               style={!!level ? { paddingLeft: `${level * 0.5}rem` } : {}}
             >
               {menuItem.label}
@@ -33,7 +28,6 @@ export default function MenuDesktop() {
               key={menuItem.key}
               target="_blank"
               rel="noreferrer"
-              className={`py-4 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800`}
               style={!!level ? { paddingLeft: `${level * 16}px` } : {}}
             >
               <span>{menuItem.label}</span> <ArrowUpRightIcon className="size-4 ms-1" strokeWidth={2} />

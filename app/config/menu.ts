@@ -18,16 +18,16 @@ export const menuItems: MenuItem[] = [
     label: "Components",
     link: "/components",
     type: "internal",
-    links: [
-      { key: "2-1", label: "Buttons", link: "/components/buttons", type: "internal" },
-      { key: "2-2", label: "Cards", link: "/components/cards", type: "internal" },
-      {
-        key: "2-3",
-        label: "Modals",
-        link: "/components/modals",
-        type: "internal",
-      },
-    ],
+    // links: [
+    //   { key: "2-1", label: "Buttons", link: "/components/buttons", type: "internal" },
+    //   { key: "2-2", label: "Cards", link: "/components/cards", type: "internal" },
+    //   {
+    //     key: "2-3",
+    //     label: "Modals",
+    //     link: "/components/modals",
+    //     type: "internal",
+    //   },
+    // ],
   },
   {
     key: "1",

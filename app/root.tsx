@@ -57,7 +57,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           content="width=device-width,viewport-fit=cover,initial-scale=1,shrink-to-fit=no,maximum-scale=1,user-scalable=0"
         />
         <meta name="theme-color" content="#ffffff" />
-        <title>Mini App Base</title>
+        <title>Mini Apps Base</title>
         <Meta />
         <Links />
       </head>
