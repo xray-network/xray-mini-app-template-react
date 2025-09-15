@@ -117,7 +117,7 @@ export const lightTheme: Partial<ThemeConfig> = {
     },
     Skeleton: {
       gradientFromColor: colors.gray100,
-      gradientToColor: colors.gray300,
+      gradientToColor: colors.gray200,
     },
     Table: {
       borderColor: colors.gray100,
@@ -228,7 +228,7 @@ export const darkTheme: Partial<ThemeConfig> = {
       colorTextDisabled: colors.gray500,
     },
     Skeleton: {
-      gradientFromColor: colors.gray900,
+      gradientFromColor: colors.gray950,
       gradientToColor: colors.gray800,
     },
     Table: {

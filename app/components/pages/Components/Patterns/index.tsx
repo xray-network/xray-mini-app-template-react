@@ -1,9 +1,4 @@
-import Typography from "./Typography"
-import ButtonsTabs from "./ButtonsTabs"
-import Form from "./Form"
-import Table from "./Table"
-
-const uiRules = [
+const patterns = [
   {
     title: "Design tokens first",
     description: "Define one primary color, a clear type scale (max 3 levels), and an 8px spacing grid.",
@@ -62,43 +57,27 @@ const uiRules = [
   },
 ]
 
-export default function Components() {
+export default function PatternsComp() {
   return (
-    <div>
-      <section className="mb-10">
-        <h1 className="text-3xl font-bold mb-5">Example Components</h1>
-        <p>
-          This page showcases common UI patterns using Tailwind for typography and Ant Design for components. Use it as
-          a quick reference and playground while building your Mini App.
-        </p>
-        <p>
-          Links:{" "}
-          <a href="https://tailwindcss.com/docs" target="_blank" rel="noreferrer">
-            Tailwind Docs
-          </a>
-          ,{" "}
-          <a href="https://ant.design/components/overview/" target="_blank" rel="noreferrer">
-            Ant Design Docs
-          </a>
-        </p>
-      </section>
+    <section className="mb-10">
+      <p className="mb-5 text-gray-500">
+        Please follow these design patterns when building your Mini App. They help ensure a clean, consistent, and
+        user-friendly experience. Use Tailwind CSS for layout and typography, and Ant Design components for interactive
+        elements.
+      </p>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-10">
-        {uiRules.map((rule, index) => (
+        {patterns.map((pattern, index) => (
           <div
             key={index}
-            className="p-4 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900"
+            className="p-5 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900"
           >
             <h3 className="font-semibold mb-2">
-              {index + 1}. {rule.title}
+              {index + 1}. {pattern.title}
             </h3>
-            <p className="text-gray-600 dark:text-gray-400 text-sm">{rule.description}</p>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">{pattern.description}</p>
           </div>
         ))}
       </div>
-      <Typography />
-      <ButtonsTabs />
-      <Form />
-      <Table />
-    </div>
+    </section>
   )
 }

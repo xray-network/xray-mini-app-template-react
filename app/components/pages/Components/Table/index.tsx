@@ -53,11 +53,11 @@ const tableData: User[] = [
   { key: "3", name: "Joe Black", age: 28, address: "Sydney No. 1 Lake Park", tags: ["new"] },
 ]
 
-export default function Typography() {
+export default function TableComp() {
   return (
     <section className="mb-10">
       <div className="px-6 py-5 rounded-2xl border border-gray-200 dark:border-gray-800">
-        <h2 className="text-2xl font-semibold mb-10">Antd Table</h2>
+        <h2 className="text-2xl font-semibold mb-5">Antd Table</h2>
         <Table<User>
           columns={tableColumns}
           dataSource={tableData}

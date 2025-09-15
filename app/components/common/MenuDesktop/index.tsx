@@ -52,7 +52,7 @@ export default function MenuDesktop() {
             {item.type === "internal" ? renderInternalItem(item) : renderItemExternal(item)}
           </Dropdown>
         ) : (
-          <>{item.type === "internal" ? renderInternalItem(item) : renderItemExternal(item)}</>
+          <span key={item.key}>{item.type === "internal" ? renderInternalItem(item) : renderItemExternal(item)}</span>
         )
       })}
     </div>

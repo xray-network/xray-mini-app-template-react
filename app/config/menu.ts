@@ -8,26 +8,24 @@ export type MenuItem = {
 
 export const menuItems: MenuItem[] = [
   {
-    key: "1",
+    key: "home",
     label: "Home",
     link: "/",
     type: "internal",
   },
   {
-    key: "2",
+    key: "components",
     label: "Components",
     link: "/components",
     type: "internal",
-    // links: [
-    //   { key: "2-1", label: "Buttons", link: "/components/buttons", type: "internal" },
-    //   { key: "2-2", label: "Cards", link: "/components/cards", type: "internal" },
-    //   {
-    //     key: "2-3",
-    //     label: "Modals",
-    //     link: "/components/modals",
-    //     type: "internal",
-    //   },
-    // ],
+    links: [
+      { key: "patterns", label: "Patterns", link: "/components/patterns", type: "internal" },
+      { key: "typography", label: "Typography", link: "/components/typography", type: "internal" },
+      { key: "buttons", label: "Buttons", link: "/components/buttons", type: "internal" },
+      { key: "form", label: "Form", link: "/components/form", type: "internal" },
+      { key: "table", label: "Table", link: "/components/table", type: "internal" },
+      { key: "loading", label: "Loading", link: "/components/loading", type: "internal" },
+    ],
   },
   {
     key: "1",

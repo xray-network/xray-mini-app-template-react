@@ -3,7 +3,15 @@ import { type RouteConfig, index, layout, route } from "@react-router/dev/routes
 export default [
   layout("components/layouts/Main/index.tsx", [
     index("routes/index.tsx"),
-    route("components", "routes/components.tsx"),
+    layout("components/layouts/Components/index.tsx", [
+      route("components", "routes/components/index.tsx"),
+      route("components/patterns", "routes/components/patterns.tsx"),
+      route("components/typography", "routes/components/typography.tsx"),
+      route("components/buttons", "routes/components/buttons.tsx"),
+      route("components/form", "routes/components/form.tsx"),
+      route("components/table", "routes/components/table.tsx"),
+      route("components/loading", "routes/components/loading.tsx"),
+    ]),
     route("*", "routes/404.tsx"),
   ]),
 ] satisfies RouteConfig

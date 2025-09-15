@@ -1,11 +1,11 @@
 import { Divider } from "antd"
 
-export default function Typography() {
+export default function TypographyComp() {
   return (
     <section className="mb-10">
       <div className="px-6 py-5 rounded-2xl border border-gray-200 dark:border-gray-800">
-        <h2 className="text-2xl font-semibold mb-10">Tailwind Typography</h2>
-        <div className="space-y-3 text-gray-700 dark:text-gray-300">
+        <h2 className="text-2xl font-semibold mb-5">Tailwind Typography</h2>
+        <div className="space-y-3">
           <h1 className="text-3xl font-bold">Heading 1</h1>
           <h2 className="text-2xl font-bold">Heading 2</h2>
           <h3 className="text-xl font-bold">Heading 3</h3>

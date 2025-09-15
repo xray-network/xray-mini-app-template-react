@@ -8,13 +8,13 @@ type User = {
   tags: string[]
 }
 
-export default function ButtonsTabs() {
+export default function FormComp() {
   const [form] = Form.useForm()
 
   return (
     <section className="mb-10">
       <div className="px-6 py-5 rounded-2xl border border-gray-200 dark:border-gray-800">
-        <h2 className="text-2xl font-semibold mb-10">Antd Form</h2>
+        <h2 className="text-2xl font-semibold mb-5">Antd Form</h2>
         <div className="max-w-160 mx-auto">
           <Form
             name="example-form"
