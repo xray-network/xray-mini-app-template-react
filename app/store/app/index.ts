@@ -15,6 +15,10 @@ interface AppStoreState {
   modalSettings: boolean
   modalSettingsSet: (open: boolean) => void
 
+  // Menu
+  menuDrawerOpen: boolean
+  menuDrawerOpenSet: (open: boolean) => void
+
   // Settings
   currency: Types.App.Currencies
   currencySet: (currency: Types.App.Currencies) => void
@@ -56,6 +60,10 @@ export const useAppStore = create<AppStoreState>()(
       // Modals
       modalSettings: false,
       modalSettingsSet: (open) => set({ modalSettings: open }),
+
+      // Menu
+      menuDrawerOpen: false,
+      menuDrawerOpenSet: (open) => set({ menuDrawerOpen: open }),
 
       // Settings
       currency: "usd",

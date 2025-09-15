@@ -1,16 +1,16 @@
 {
-  "name": "mini-app-base",
+  "name": "mini-apps-base",
   "version": "0.0.0",
   "author": "XRAY/Network <hello@xray.app>",
   "description": "Cardano Web3 JavaScript SDK",
   "license": "MIT",
-  "homepage": "https://cardano-web3-js.org",
+  "homepage": "https://xray.app",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/xray-network/mini-app-base.git"
+    "url": "git+https://github.com/xray-network/mini-apps-base.git"
   },
   "bugs": {
-    "url": "https://github.com/xray-network/mini-app-base/issues"
+    "url": "https://github.com/xray-network/mini-apps-base/issues"
   },
   "keywords": [
     "Cardano",

@@ -7,7 +7,7 @@ export default function LayoutMain() {
     <>
       <Header />
       <div className="p-6 mx-auto max-w-[100rem]">
-      <Outlet />
+        <Outlet />
       </div>
       <ModalSettings />
     </>
