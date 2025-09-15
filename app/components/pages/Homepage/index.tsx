@@ -15,7 +15,7 @@ export default function Homepage() {
           </div>
         </div>
         <div className="text-center mb-10">
-          This is a minimalistic React base project for building Mini Apps for XRAY.
+          This is a minimal React starter project for building Mini Apps in XRAY
         </div>
         <div className="px-10 py-5 rounded-2xl max-w-120 mx-auto text-gray-500 bg-gray-100 dark:bg-gray-800">
           <p>Next steps:</p>
