@@ -11,7 +11,7 @@ export default function Homepage() {
       <div className="text-center mt-20 mb-5">
         <div className={style.logo}>
           <SVGXray />
-          <span>Mini Apps Base</span>
+          <span>Mini App Template</span>
         </div>
       </div>
       <div className="text-center mb-10">This is a minimal React starter project for building Mini Apps in XRAY</div>

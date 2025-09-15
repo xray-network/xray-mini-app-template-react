@@ -1,1 +1,1 @@
-# Mini App Base
+# XRAY Mini App Template React

@@ -2,6 +2,11 @@
 
 .shared-table {
   white-space: nowrap;
+
+  .ant-pagination-total-text {
+    margin-right: auto !important;
+    padding-left: 0.5rem !important;
+  }
 }
 
 .shared-table-custom {

@@ -1,68 +1,128 @@
+import { useState, useEffect } from "react"
 import { Table, Tag, Space } from "antd"
 import type { TableProps } from "antd"
+import type { KoiosTypes } from "cardano-web3-js"
+import { useWeb3Store } from "@/store/web3"
+import * as utils from "@/utils"
+import { set } from "nprogress"
 
-type User = {
-  key: string
-  name: string
-  age: number
-  address: string
-  tags: string[]
-}
+type Block = KoiosTypes.paths["/blocks"]["get"]["responses"]["200"]["content"]["application/json"][number]
 
-const tableColumns: TableProps<User>["columns"] = [
+const blocksColumns: TableProps<Block>["columns"] = [
   {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-    render: (text) => <span className="font-medium">{text}</span>,
+    title: "Block",
+    dataIndex: "block_height",
+    key: "block_height",
+    render: (record, records) => <span className="font-medium">{records.block_height}</span>,
   },
   {
-    title: "Age",
-    dataIndex: "age",
-    key: "age",
-    width: 90,
+    title: "Epoch / Slot",
+    dataIndex: "epoch_no",
+    key: "epoch_no",
+    render: (_, { epoch_no }) => <span className="font-medium">{epoch_no}</span>,
   },
   {
-    title: "Address",
-    dataIndex: "address",
-    key: "address",
-    responsive: ["sm"],
+    title: "Timestamp",
+    dataIndex: "block_time",
+    key: "block_time",
+    render: (record, records) => <span className="font-medium">{records.block_time}</span>,
   },
   {
-    title: "Tags",
-    key: "tags",
-    dataIndex: "tags",
-    render: (_, { tags }) => (
-      <Space size={[6, 6]} wrap>
-        {tags.map((tag) => (
-          <Tag
-            key={tag}
-            color={tag === "nice" ? "green" : tag === "dev" ? "blue" : tag === "warn" ? "orange" : "default"}
-          >
-            {tag.toUpperCase()}
-          </Tag>
-        ))}
-      </Space>
-    ),
+    title: "TXs Count",
+    dataIndex: "tx_count",
+    key: "tx_count",
+    render: (record, records) => <span className="font-medium">{records.tx_count}</span>,
   },
-]
-
-const tableData: User[] = [
-  { key: "1", name: "John Brown", age: 32, address: "New York No. 1 Lake Park", tags: ["nice", "dev"] },
-  { key: "2", name: "Jim Green", age: 42, address: "London No. 1 Lake Park", tags: ["pro", "warn"] },
-  { key: "3", name: "Joe Black", age: 28, address: "Sydney No. 1 Lake Park", tags: ["new"] },
+  {
+    title: "Pool",
+    dataIndex: "pool",
+    key: "pool",
+    render: (record, records) => <span className="font-medium">{records.pool}</span>,
+  },
+  {
+    title: "Total Fees",
+    dataIndex: "total_fees",
+    key: "total_fees",
+    // @ts-ignore
+    render: (record, records) => <span className="font-medium">0</span>,
+  },
+  {
+    title: "Total Output",
+    dataIndex: "total_fees",
+    key: "total_fees",
+    align: "right",
+    render: (record, records) => <span className="font-medium">0</span>,
+  },
 ]
 
 export default function TableComp() {
+  const web3 = useWeb3Store((state) => state.web3)
+
+  const [loading, setLoading] = useState(true)
+  const [blockList, setBlockList] = useState<Block[]>([])
+  const [totalResults, setTotalResults] = useState(0)
+  const [pageSize, setPageSize] = useState(25)
+  const [currentPage, setCurrentPage] = useState(1)
+
+  const getBlocks = async () => {
+    setLoading(true)
+    const blockLatest = (await web3?.explorers.koios.GET("/tip"))?.data?.[0]?.block_no
+    setTotalResults(blockLatest || 0)
+    const blocksResponse = await web3?.explorers.koios.GET("/blocks", {
+      headers: {
+        "Content-Type": "application/json",
+        Range: utils.pageSizeToContentRange(currentPage - 1, pageSize),
+      }
+    })
+    setBlockList(blocksResponse?.data || [])
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    if (web3) {
+      getBlocks()
+    }
+  }, [web3])
+
+  const changeTableParams = (pagination: any, filters: any, sorter: any) => {
+    // sorter?.columnKey && setSorterField(sorter.columnKey)
+    // sorter?.order && setSorterOrder(sorter.order)
+    // pagination?.current && setCurrentPage(pagination.current || 0)
+    // pagination?.pageSize && setPageSize(pagination.pageSize || 25)
+  }
+
   return (
     <section className="mb-10">
       <div className="px-6 py-5 rounded-2xl border border-gray-200 dark:border-gray-800">
         <h2 className="text-2xl font-semibold mb-5">Antd Table</h2>
-        <Table<User>
-          columns={tableColumns}
-          dataSource={tableData}
-          pagination={{ pageSize: 5, position: ["bottomRight", "topRight"] }}
-        />
+        <div className="shared-table">
+          <Table<Block>
+            onChange={(pagination, filters, sorter) => changeTableParams(pagination, filters, sorter)}
+            rowKey={(i) => i.block_height!}
+            dataSource={blockList}
+            columns={blocksColumns}
+            sortDirections={["descend", "ascend", "descend"]}
+            size="large"
+            pagination={{
+              position: ["bottomRight", "topRight"],
+              size: "default",
+              pageSize: pageSize,
+              showSizeChanger: true,
+              showPrevNextJumpers: false,
+              total: totalResults || 1,
+              current: currentPage,
+              pageSizeOptions: ["25", "50", "100"],
+              showTotal: () => <div>{utils.quantityWithCommas(totalResults)} Blocks</div>,
+            }}
+            loading={{
+              spinning: loading,
+              indicator: <i className="xray-spinner" />,
+            }}
+            locale={{
+              emptyText: <div className="py-4 mb-1">No Blocks Found</div>,
+            }}
+          />
+        </div>
       </div>
     </section>
   )

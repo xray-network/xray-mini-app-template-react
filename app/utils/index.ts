@@ -83,3 +83,7 @@ export const epochProgress = (epoch: number, network: Types.CW3Types.NetworkName
   const epochDuration = SLOT_EPOCH_DURATION[network] * 1000
   return Math.min(((Date.now() - epochStartTime(epoch, network)) / epochDuration) * 100, 100).toFixed(1)
 }
+
+export const pageSizeToContentRange = (currentPage: number, pageSize: number) => {
+  return `${(currentPage * pageSize).toString()}-${currentPage * pageSize + pageSize - 1}`
+}

@@ -16,8 +16,8 @@ export default function Header() {
   return (
     <div className="flex px-6 py-4 items-center text-nowrap border-b border-gray-200 dark:border-gray-800">
       <div className="me-3 md:me-7">
-        <div className="font-black text-lg leading-5">Mini Apps Base</div>
-        <div className="text-sm text-gray-500">XRAY Extenstion</div>
+        <div className="font-black text-lg leading-5">Mini App Template</div>
+        <div className="text-sm text-gray-500">React Version</div>
       </div>
       {!isMobileView ? <MenuDesktop /> : <MenuMobile />}
       <div className="ms-auto flex items-center">
