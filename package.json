@@ -50,7 +50,6 @@
     "react-jazzicon": "^1.0.4",
     "react-router": "^7.8.2",
     "vite-plugin-svgr": "^4.5.0",
-    "vite-plugin-top-level-await": "^1.6.0",
     "vite-plugin-wasm": "^3.5.0",
     "wrangler": "^4.19.1",
     "zustand": "^5.0.8"
