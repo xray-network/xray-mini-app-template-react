@@ -10,15 +10,16 @@ const Effects = ({ children }: { children: React.ReactNode }) => {
 
   const currLocation = useRef(location.pathname)
   const nprogressDoneTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
-  // const interval10 = useRef<ReturnType<typeof setInterval> | null>(null)
+  const interval10 = useRef<ReturnType<typeof setInterval> | null>(null)
   const interval30 = useRef<ReturnType<typeof setInterval> | null>(null)
-  // const interval600 = useRef<ReturnType<typeof setInterval> | null>(null)
+  const interval600 = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const web3 = useWeb3Store((state) => state.web3)
   const initWeb3 = useWeb3Store((state) => state.initWeb3)
 
   const network = useAppStore((state) => state.network)
   const initTheme = useAppStore((state) => state.initTheme)
+  const tip = useAppStore((state) => state.tip)
   const updateTip = useAppStore((state) => state.updateTip)
 
   // Handle navigation state changes for NProgress
@@ -63,6 +64,7 @@ const Effects = ({ children }: { children: React.ReactNode }) => {
     }
 
     return () => {
+      if (interval10.current) clearInterval(interval10.current)
       if (interval30.current) clearInterval(interval30.current)
     }
   }, [web3])

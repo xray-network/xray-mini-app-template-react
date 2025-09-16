@@ -23,7 +23,7 @@
   "scripts": {
     "dev": "react-router dev --host",
     "build": "react-router build",
-    "deploy": "wrangler pages deploy",
+    "deploy": "yarn build && wrangler pages deploy",
     "serve": "serve build/client/ -s",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",

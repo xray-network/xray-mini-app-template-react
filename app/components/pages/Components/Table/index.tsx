@@ -4,7 +4,6 @@ import type { TableProps } from "antd"
 import type { KoiosTypes } from "cardano-web3-js"
 import { useWeb3Store } from "@/store/web3"
 import * as utils from "@/utils"
-import { set } from "nprogress"
 
 type Block = KoiosTypes.paths["/blocks"]["get"]["responses"]["200"]["content"]["application/json"][number]
 
@@ -19,7 +18,7 @@ const blocksColumns: TableProps<Block>["columns"] = [
     title: "Epoch / Slot",
     dataIndex: "epoch_no",
     key: "epoch_no",
-    render: (_, { epoch_no }) => <span className="font-medium">{epoch_no}</span>,
+    render: (record, records) => <span className="font-medium">{records.epoch_no}</span>,
   },
   {
     title: "Timestamp",
