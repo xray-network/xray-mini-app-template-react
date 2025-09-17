@@ -40,6 +40,7 @@
     "@react-router/serve": "^7.5.3",
     "antd": "^5.27.3",
     "cardano-web3-js": "^2.3.4",
+    "date-fns": "^4.1.0",
     "isbot": "^5.1.27",
     "lodash": "^4.17.21",
     "nprogress": "^0.2.0",

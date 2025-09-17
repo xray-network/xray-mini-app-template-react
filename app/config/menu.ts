@@ -24,6 +24,7 @@ export const menuItems: MenuItem[] = [
       { key: "buttons", label: "Buttons", link: "/components/buttons", type: "internal" },
       { key: "form", label: "Form", link: "/components/form", type: "internal" },
       { key: "table", label: "Table", link: "/components/table", type: "internal" },
+      { key: "breakdown", label: "Breakdown", link: "/components/breakdown", type: "internal" },
       { key: "loading", label: "Loading", link: "/components/loading", type: "internal" },
     ],
   },

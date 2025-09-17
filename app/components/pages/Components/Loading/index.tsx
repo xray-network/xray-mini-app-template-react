@@ -7,7 +7,13 @@ export default function LoadingComp() {
         <h2 className="text-2xl font-semibold mb-5">Loading</h2>
         <div>
           <div className="mb-10 flex items-center">
-            <span className="shared-spinner !me-3" /> Inline spinner
+            <div className="inline-flex items-center me-10">
+              <span className="shared-spinner !me-3" /> Inline spinner
+            </div>
+            <div className="inline-flex items-center">
+              <Skeleton active paragraph={{ rows: 1, width: "100%" }} title={false} className="me-5 !w-20" /> Inline
+              skeleton
+            </div>
           </div>
           <div className="mb-10">
             <Spin spinning={true} indicator={<span className="shared-spinner shared-spinner-centered" />}>

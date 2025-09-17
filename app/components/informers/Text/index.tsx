@@ -5,7 +5,7 @@ import style from "./style.module.css"
 import { InformationCircleIcon, DocumentDuplicateIcon } from "@heroicons/react/24/outline"
 import Copy from "@/components/common/Copy"
 
-const ExplorerLink = ({
+const InformerText = ({
   text,
   title,
   help,
@@ -42,4 +42,4 @@ const ExplorerLink = ({
   )
 }
 
-export default ExplorerLink
+export default InformerText

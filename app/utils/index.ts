@@ -7,19 +7,40 @@ export const truncate = (string: string, start = 6, end = 6) => {
 
 export const randomString = () => (Math.random() + 1).toString(36).substring(2)
 
-export const quantityWithCommas = (value: number | string | bigint | undefined): string => {
-  const str = (value ?? 0).toString()
-  if (str.length <= 3) return str
-  return str.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+export const quantityWithCommas = (value: number | string | bigint | undefined | null): string => {
+  if (value === undefined || value === null) return "0"
+  let str = typeof value === "bigint" ? value.toString() : String(value).trim()
+  if (str === "" || str === "NaN") return "0"
+  const isNegative = str.startsWith("-")
+  if (isNegative) str = str.slice(1)
+  const [intPart, decimalPart] = str.split(".")
+  const intWithCommas = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+  const result = decimalPart ? `${intWithCommas}.${decimalPart}` : intWithCommas
+  return isNegative ? `-${result}` : result
 }
 
-export const quantityWithLetter = (value: number | string | bigint | undefined): string => {
-  const num = Number(value ?? 0)
-  if (!Number.isFinite(num)) return "0"
-  return Intl.NumberFormat("en", {
-    notation: "compact",
-    maximumFractionDigits: 2,
-  }).format(num)
+export const quantityWithLetter = (value: number | string | bigint | undefined, decimals = 2): string => {
+  if (value === undefined || value === null) return "0"
+  let str = typeof value === "bigint" ? value.toString() : String(value).trim()
+  if (str === "" || str === "NaN") return "0"
+  const isNegative = str.startsWith("-")
+  if (isNegative) str = str.slice(1)
+  const [intPart, decimalPart = ""] = str.split(".")
+  const len = intPart.length
+  const suffixes = ["", "K", "M", "B", "T"]
+  const suffixIndex = Math.floor((len - 1) / 3)
+  if (suffixIndex === 0 || suffixIndex >= suffixes.length) {
+    return (isNegative ? "-" : "") + str
+  }
+  const remainder = len - suffixIndex * 3
+  const main = intPart.slice(0, remainder)
+  const rest = intPart.slice(remainder, remainder + decimals)
+  let result = main
+  if (rest) {
+    result += "." + rest.padEnd(decimals, "0")
+    result = result.replace(/\.?0+$/, "") // trim trailing zeros
+  }
+  return (isNegative ? "-" : "") + result + suffixes[suffixIndex]
 }
 
 export const quantityFormat = (quantity: number | string | bigint | undefined, decimals = 6, skipZero = false) => {
@@ -86,4 +107,9 @@ export const epochProgress = (epoch: number, network: Types.CW3Types.NetworkName
 
 export const pageSizeToContentRange = (currentPage: number, pageSize: number) => {
   return `${(currentPage * pageSize).toString()}-${currentPage * pageSize + pageSize - 1}`
+}
+
+export const timestampToDateTime = (timestamp: number) => {
+  const date = new Date(timestamp * 1000)
+  return date.toLocaleString()
 }

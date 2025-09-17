@@ -39,7 +39,7 @@ const explorerUrlMap: Record<
   },
 }
 
-const Explorer = ({
+const InformerExplorer = ({
   value,
   type,
   title,
@@ -90,4 +90,4 @@ const Explorer = ({
   )
 }
 
-export default Explorer
+export default InformerExplorer
