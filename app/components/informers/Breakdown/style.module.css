@@ -1,0 +1,21 @@
+@import "@/styles/tailwind.css";
+
+.compact .item {
+  @apply !mb-0 last:mb-0;
+}
+
+.item {
+  @apply mb-2 last:mb-0 flex items-center flex-nowrap;
+}
+
+.title {
+  @apply text-sm text-gray-500;
+}
+
+.dots {
+  @apply flex-grow mx-2 border-b border-dashed border-gray-300 dark:border-gray-700 h-3;
+}
+
+.quantity {
+  @apply flex flex-nowrap ml-auto;
+}

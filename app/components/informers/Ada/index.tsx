@@ -69,12 +69,12 @@ const InformerAda = ({
           > */}
         {hideable && hideBalances ? (
           <span>
-            <span className="font-extrabold">****** </span>
+            <span className="font-bold">****** </span>
             <strong className={style.postfix}>ADA</strong>
           </span>
         ) : (
           <>
-            <span className="font-extrabold">
+            <span className="font-bold">
               {prefix || ""}
               {!shortened ? a : short}
             </span>

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react"
 import classNames from "classnames"
 import { Tooltip } from "antd"
+import { InformationCircleIcon } from "@heroicons/react/24/outline"
+import style from "./style.module.css"
 
 const InformerBreakdown = ({
   items,
-  wide,
+  compact,
 }: {
   items: {
     title?: React.ReactElement | string
@@ -12,24 +14,24 @@ const InformerBreakdown = ({
     help?: string
     hideDots?: boolean
   }[]
-  wide?: boolean
+  compact?: boolean
 }) => {
   return (
-    <div className={classNames({ "xray-breakdown-wide": wide })}>
+    <div className={classNames({ [style.compact]: compact })}>
       {items.map((item, index) => (
-        <div key={index} className="xray-breakdown-item">
+        <div key={index} className={style.item}>
           {item.title && (
-            <div className="xray-breakdown-title">
+            <div className={style.title}>
               {item.title}
               {item.help && (
                 <Tooltip title={item.help}>
-                  <i className="xi xi-info ms-2 text-muted" />
+                  <InformationCircleIcon className="size-4" strokeWidth={2} />
                 </Tooltip>
               )}
             </div>
           )}
-          {!item.hideDots && <div className="xray-breakdown-dots" />}
-          <div className="xray-breakdown-quantity">{item.children}</div>
+          {!item.hideDots && <div className={style.dots} />}
+          <div className={style.quantity}>{item.children}</div>
         </div>
       ))}
     </div>
