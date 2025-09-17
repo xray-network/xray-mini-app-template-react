@@ -35,23 +35,25 @@ export default function TablePage() {
   const loadBlocks = async () => {
     setLoading(true)
 
+    const blockLatestResponse = await web3?.explorers.koios.GET("/blocks?limit=1" as "/blocks")
+    const blockLatest = blockLatestResponse?.data?.[0].block_height || 0
+    setTotalResults(blockLatest)
+
     const paramsString =
       `?limit=${pageSize}` +
-      `&offset=${pageSize * (currentPage - 1)}` +
+      // `&offset=${pageSize * (currentPage - 1)}` + // Keyset pagination is preferred (next line), use only for small datasets
+      `&block_height=lte.${blockLatest - pageSize * (currentPage - 1)}` +
       `${searchString}` +
       // `&order=${sorterField}.${sorterOrder === "ascend" ? "asc" : "desc"}` + // Too expensive query
-      `${filterLastBlocks}` +
+      // `${filterLastBlocks}` +
       // `${filterCurrentEpoch}` + // Too expensive query
       ``
-
-    const blockLatest = await web3?.explorers.koios.GET("/tip")
-    setTotalResults(blockLatest?.data?.[0]?.block_no || 0)
 
     const blockListResponse = await web3?.explorers.koios.GET(`/blocks${paramsString}` as "/blocks", {
       headers: {
         "Content-Type": "application/json",
         // Prefer: "count=estimated", // Too expensive query (returns total count in "Content-Range" response header)
-        Range: utils.pageSizeToContentRange(currentPage - 1, pageSize),
+        Range: `items=${utils.pageSizeToContentRange(currentPage - 1, pageSize)}`,
       },
     })
     setBlockList(blockListResponse?.data || [])
