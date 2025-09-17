@@ -55,7 +55,7 @@ export default function HomePage() {
           </li>
           <li>Copy the local URL (usually http://localhost:5173/)</li>
           <li>
-            Paste the URL into the <strong>Mini App Coder</strong>
+            Paste the URL into the <strong>Mini App Builder</strong>
           </li>
           <li>🎉 Enjoy your first Mini App!</li>
         </ol>
@@ -70,7 +70,7 @@ export default function HomePage() {
             </a>
           </li>
           <li>
-            Run the sample app in <strong>Mini App Coder</strong>
+            Run the sample app in <strong>Mini App Builder</strong>
           </li>
           <li>Start building your own Mini App</li>
           <li>
