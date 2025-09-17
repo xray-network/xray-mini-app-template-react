@@ -1,11 +1,11 @@
 import { HappyProvider } from "@ant-design/happy-work-theme"
-import Homepage from "@/components/pages/Homepage"
+import Home from "@/components/pages/Home"
 
-export default function IndexPage() {
+export default function HomePage() {
   return (
     <>
       <HappyProvider /> {/* Hotfix: Provides global styles for Ant Design Happy Theme component */}
-      <Homepage />
+      <Home />
     </>
   )
 }

@@ -57,7 +57,7 @@ const patterns = [
   },
 ]
 
-export default function PatternsComp() {
+export default function PatternsPage() {
   return (
     <section className="mb-10">
       <p className="mb-5 text-gray-500">

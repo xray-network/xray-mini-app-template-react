@@ -9,7 +9,7 @@ import * as utils from "@/utils"
 import { formatDistanceToNow } from "date-fns"
 import { useAppStore } from "@/store/app"
 
-export default function BreakdownComp() {
+export default function BreakdownPage() {
   return (
     <section className="mb-10">
       <div className="px-6 py-5 rounded-2xl border border-gray-200 dark:border-gray-800">

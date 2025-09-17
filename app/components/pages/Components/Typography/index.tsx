@@ -1,6 +1,6 @@
 import { Divider } from "antd"
 
-export default function TypographyComp() {
+export default function TypographyPage() {
   return (
     <section className="mb-10">
       <div className="px-6 py-5 rounded-2xl border border-gray-200 dark:border-gray-800">

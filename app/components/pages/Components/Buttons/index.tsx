@@ -1,7 +1,7 @@
 import { Button } from "antd"
 import { ChatBubbleBottomCenterIcon } from "@heroicons/react/24/outline"
 
-export default function ButtonsComp() {
+export default function ButtonsPage() {
   return (
     <section className="mb-10">
       <div className="px-6 py-5 rounded-2xl border border-gray-200 dark:border-gray-800">

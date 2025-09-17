@@ -28,6 +28,10 @@ strong {
   font-weight: 700;
 }
 
+code {
+  font-size: 95%;
+}
+
 [data-disable-transitions="true"] {
   *,
   ::before,

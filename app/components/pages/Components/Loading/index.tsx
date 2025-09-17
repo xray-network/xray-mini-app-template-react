@@ -1,6 +1,6 @@
 import { Spin, Alert, Skeleton } from "antd"
 
-export default function LoadingComp() {
+export default function LoadingPage() {
   return (
     <section className="mb-10">
       <div className="px-6 py-5 rounded-2xl border border-gray-200 dark:border-gray-800">

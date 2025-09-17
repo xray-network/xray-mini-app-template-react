@@ -13,7 +13,7 @@ import { debounce } from "lodash"
 type Block = KoiosTypes.paths["/blocks"]["get"]["responses"]["200"]["content"]["application/json"][number]
 type BlockInfo = KoiosTypes.paths["/block_info"]["post"]["responses"]["200"]["content"]["application/json"][number]
 
-export default function TableComp() {
+export default function TablePage() {
   const searchInput = useRef<InputRef>(null)
 
   const web3 = useWeb3Store((state) => state.web3)

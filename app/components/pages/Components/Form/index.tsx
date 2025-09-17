@@ -8,7 +8,7 @@ type User = {
   tags: string[]
 }
 
-export default function FormComp() {
+export default function FormPage() {
   const [form] = Form.useForm()
 
   return (
