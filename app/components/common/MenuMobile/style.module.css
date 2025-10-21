@@ -1,7 +1,15 @@
 @import "@/styles/tailwind.css";
 
+.container {
+  @apply p-2 !bg-transparent;
+}
+
+.container :global(.ant-drawer-body) {
+  @apply !bg-white dark:!bg-gray-950 rounded-2xl border border-gray-200 dark:border-gray-900 p-3;
+}
+
 .menu {
-  @apply flex flex-col;
+  @apply flex flex-col gap-1;
 
   a {
     @apply !text-gray-500 px-4 py-2 rounded-full font-bold flex items-center flex-nowrap;
@@ -10,9 +18,8 @@
     @apply dark:hover:bg-gray-800;
   }
 
-  a[aria-current="page"] {
-    /* @apply bg-white !text-black; */
-    @apply !text-black;
-    @apply dark:hover:bg-gray-800 dark:!text-white;
+  a:global(.active) {
+    @apply !text-black bg-gray-100;
+    @apply dark:!text-white dark:bg-gray-800;
   }
 }

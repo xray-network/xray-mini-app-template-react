@@ -2,11 +2,10 @@ import { NavLink } from "react-router"
 import { Drawer } from "antd"
 import style from "./style.module.css"
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline"
-import { menuItems } from "@/config/menu"
 import type { MenuItem } from "@/config/menu"
 import { useAppStore } from "@/store/app"
 
-export default function MenuMobile() {
+export default function ({ items }: { items: MenuItem[] }) {
   const menuDrawerOpen = useAppStore((state) => state.menuDrawerOpen)
   const menuDrawerOpenSet = useAppStore((state) => state.menuDrawerOpenSet)
 
@@ -17,16 +16,21 @@ export default function MenuMobile() {
       closeIcon={null}
       width="17rem"
       placement="left"
-      className="!bg-white dark:!bg-gray-900 border-r border-gray-200 dark:border-gray-800"
+      className={style.container}
     >
       <div className={style.menu}>
-        {menuItems.map((item) => {
+        {items.map((item) => {
           const renderInternalItem = (menuItem: MenuItem, level = 0) => (
             <NavLink
               to={menuItem.link}
               key={menuItem.key}
-              style={level ? { paddingLeft: `${level + 0.5 * 1}rem` } : {}}
+              style={level ? { marginLeft: `${level}rem` } : {}}
+              className="flex items-center gap-2"
+              onClick={() => {
+                menuDrawerOpenSet(false)
+              }}
             >
+              {menuItem.icon}
               {menuItem.label}
             </NavLink>
           )
@@ -37,18 +41,24 @@ export default function MenuMobile() {
               key={menuItem.key}
               target="_blank"
               rel="noreferrer"
-              style={level ? { paddingLeft: `${level * 1}rem` } : {}}
+              style={level ? { marginLeft: `${level}rem` } : {}}
+              className="flex items-center gap-2"
+              onClick={() => {
+                menuDrawerOpenSet(false)
+              }}
             >
-              <span>{menuItem.label}</span> <ArrowUpRightIcon className="size-4 ms-1" strokeWidth={2} />
+              {menuItem.icon}
+              {menuItem.label}
+              <ArrowUpRightIcon className="size-4 ms-1" strokeWidth={2} />
             </a>
           )
 
           const renderBranch = (node: MenuItem, level = 0) => {
             return (
-              <div key={`branch-${node.key}`}>
+              <div className="flex flex-col gap-1" key={`branch-${node.key}`}>
                 {node.type === "internal" ? renderInternalItem(node, level) : renderExternalItem(node, level)}
                 {node.links && node.links.length > 0 && (
-                  <div>{node.links.map((child) => renderBranch(child, level + 1))}</div>
+                  <div className="flex flex-col gap-1">{node.links.map((child) => renderBranch(child, level + 1))}</div>
                 )}
               </div>
             )

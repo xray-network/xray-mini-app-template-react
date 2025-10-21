@@ -212,234 +212,232 @@ export default function TablePage() {
 
   return (
     <section className="mb-10">
-      <div className="px-6 py-5 rounded-2xl border border-gray-200 dark:border-gray-800">
-        <h2 className="text-2xl font-semibold mb-5">Antd Table</h2>
-        <div className="flex mb-4">
-          <div className="grow-1 max-w-120 min-w-20 me-2">
-            <Input
-              ref={searchInput}
-              prefix={<MagnifyingGlassIcon className="size-5 me-1" strokeWidth={2} />}
-              suffix={
-                <span className="w-6 h-6 rounded-lg text-gray-500 bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                  /
-                </span>
-              }
-              size="large"
-              placeholder="Search by Block Number"
-              onChange={(e) => changeSearchString(e.target.value)}
-              allowClear
-            />
-          </div>
-          <div className="ms-auto">
-            <Informers.Dropdown
-              active={filterLastBlocks !== "" || filterCurrentEpoch !== ""}
-              placement="bottomRight"
-              selector={<FunnelIcon className="size-5" strokeWidth={2} />}
-              items={[
-                {
-                  type: "title",
-                  children: "Fees",
-                },
-                {
-                  type: "item",
-                  children: (
-                    <Radio.Group onChange={(e) => setFilterLastBlocks(e.target.value)} value={filterLastBlocks}>
-                      <Space direction="vertical">
-                        <Radio value="">
-                          <span className="font-size-14">All Blocks</span>
-                        </Radio>
-                        <Radio value="&limit=10">
-                          <span className="font-size-14">Latest 10 Blocks</span>
-                        </Radio>
-                        <Radio value="&limit=30">
-                          <span className="font-size-14">Latest 30 Blocks</span>
-                        </Radio>
-                      </Space>
-                    </Radio.Group>
-                  ),
-                },
-                {
-                  type: "divider",
-                },
-                {
-                  type: "title",
-                  children: "Saturation",
-                },
-                {
-                  type: "item",
-                  children: (
-                    <Radio.Group onChange={(e) => setFilterCurrentEpoch(e.target.value)} value={filterCurrentEpoch}>
-                      <Space direction="vertical">
-                        <Radio value="">
-                          <span className="font-size-14">All Epoch</span>
-                        </Radio>
-                        {tip?.epochNo && (
-                          <Radio value={`&epoch_no=eq.${tip?.epochNo}`}>
-                            <span className="font-size-14">Current Epoch ({tip?.epochNo})</span>
-                          </Radio>
-                        )}
-                      </Space>
-                    </Radio.Group>
-                  ),
-                },
-                {
-                  type: "divider",
-                },
-                {
-                  type: "item",
-                  children: (
-                    <Button
-                      type="primary"
-                      className="w-full"
-                      disabled={filterLastBlocks === "" && filterCurrentEpoch === ""}
-                      onClick={() => {
-                        setFilterLastBlocks("")
-                        setFilterCurrentEpoch("")
-                      }}
-                    >
-                      <XMarkIcon className="size-5 -me-1" strokeWidth={2} />
-                      <span>Reset</span>
-                    </Button>
-                  ),
-                },
-              ]}
-            />
-          </div>
-          <div className="ms-2">
-            <Informers.Dropdown
-              placement="bottomRight"
-              active={sorterOrder !== "descend" || sorterField !== "block_height"}
-              selector={
-                <div className="flex items-center">
-                  {sorterOrder === "ascend" && <ArrowUpIcon className="size-5" strokeWidth={2} />}
-                  {sorterOrder === "descend" && <ArrowDownIcon className="size-5" strokeWidth={2} />}
-                  <span className="font-size-14 lh-1 text-nowrap">
-                    {(blocksColumns as any[]).find((item) => item.key === sorterField)?.title}
-                  </span>
-                </div>
-              }
-              items={[
-                {
-                  type: "title",
-                  children: "Sort Order",
-                },
-                {
-                  type: "item",
-                  children: (
-                    <Radio.Group onChange={(e) => setSorterOrder(e.target.value)} value={sorterOrder}>
-                      <Space direction="vertical">
-                        <Radio value="descend">
-                          <div className="flex">
-                            <ArrowDownIcon className="size-5" strokeWidth={2} />
-                            <span className="font-size-14">High to low</span>
-                          </div>
-                        </Radio>
-                        <Radio value="ascend">
-                          <div className="flex">
-                            <ArrowUpIcon className="size-5" strokeWidth={2} />
-                            <span className="font-size-14">Low to high</span>
-                          </div>
-                        </Radio>
-                      </Space>
-                    </Radio.Group>
-                  ),
-                },
-                {
-                  type: "divider",
-                },
-                {
-                  type: "title",
-                  children: "Sort By",
-                },
-                {
-                  type: "item",
-                  children: (
-                    <Radio.Group onChange={(e) => setSorterField(e.target.value)} value={sorterField}>
-                      <Space direction="vertical">
-                        {(blocksColumns as any[])
-                          .filter((item) => item.key)
-                          .map((item) => {
-                            return (
-                              <Radio key={item.key} value={item.key}>
-                                <span className="font-size-14">{item.title}</span>
-                              </Radio>
-                            )
-                          })}
-                      </Space>
-                    </Radio.Group>
-                  ),
-                },
-                {
-                  type: "divider",
-                },
-                {
-                  type: "item",
-                  children: (
-                    <Button
-                      type="primary"
-                      className="w-full"
-                      disabled={sorterOrder === "descend" && sorterField === "block_height"}
-                      onClick={() => {
-                        setSorterOrder("descend")
-                        setSorterField("block_height")
-                      }}
-                    >
-                      <XMarkIcon className="size-5 -me-1" strokeWidth={2} />
-                      <span>Reset</span>
-                    </Button>
-                  ),
-                },
-              ]}
-            />
-          </div>
-          <div className="ms-2">
-            <Informers.Switcher
-              onChange={(key) => setCurrency(key)}
-              value={currency}
-              items={[
-                {
-                  key: "ada",
-                  icon: "₳",
-                  tooltip: "In ADA",
-                },
-                {
-                  key: "currency",
-                  icon: "$",
-                  tooltip: "In USD",
-                },
-              ]}
-            />
-          </div>
-        </div>
-        <div className="shared-table">
-          <Table<Block>
-            onChange={(pagination, filters, sorter) => changeTableParams(pagination, filters, sorter)}
-            rowKey={(i) => i.block_height!}
-            dataSource={blockList}
-            columns={blocksColumns}
-            sortDirections={["descend", "ascend", "descend"]}
-            size="small"
-            pagination={{
-              // simple: true,
-              position: ["bottomRight", "topRight"],
-              size: "default",
-              pageSize: pageSize,
-              showSizeChanger: true,
-              showPrevNextJumpers: false,
-              total: totalResults || 1,
-              current: currentPage,
-              pageSizeOptions: ["25", "50", "100"],
-              showTotal: () => <div>{utils.quantityWithCommas(totalResults)} Blocks</div>,
-            }}
-            loading={{
-              spinning: loading,
-              indicator: <span className="shared-spinner" />,
-            }}
-            locale={{
-              emptyText: <div className="py-4 mb-1">No Blocks Found</div>,
-            }}
+      <h2 className="text-5xl font-bold mb-14">Table</h2>
+      <div className="flex mb-4">
+        <div className="grow-1 max-w-120 min-w-20 me-2">
+          <Input
+            ref={searchInput}
+            prefix={<MagnifyingGlassIcon className="size-5 me-1" strokeWidth={2} />}
+            suffix={
+              <span className="w-6 h-6 rounded-lg text-gray-500 bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                /
+              </span>
+            }
+            size="large"
+            placeholder="Search by Block Number"
+            onChange={(e) => changeSearchString(e.target.value)}
+            allowClear
           />
         </div>
+        <div className="ms-auto">
+          <Informers.Dropdown
+            active={filterLastBlocks !== "" || filterCurrentEpoch !== ""}
+            placement="bottomRight"
+            selector={<FunnelIcon className="size-5" strokeWidth={2} />}
+            items={[
+              {
+                type: "title",
+                children: "Fees",
+              },
+              {
+                type: "item",
+                children: (
+                  <Radio.Group onChange={(e) => setFilterLastBlocks(e.target.value)} value={filterLastBlocks}>
+                    <Space direction="vertical">
+                      <Radio value="">
+                        <span className="font-size-14">All Blocks</span>
+                      </Radio>
+                      <Radio value="&limit=10">
+                        <span className="font-size-14">Latest 10 Blocks</span>
+                      </Radio>
+                      <Radio value="&limit=30">
+                        <span className="font-size-14">Latest 30 Blocks</span>
+                      </Radio>
+                    </Space>
+                  </Radio.Group>
+                ),
+              },
+              {
+                type: "divider",
+              },
+              {
+                type: "title",
+                children: "Saturation",
+              },
+              {
+                type: "item",
+                children: (
+                  <Radio.Group onChange={(e) => setFilterCurrentEpoch(e.target.value)} value={filterCurrentEpoch}>
+                    <Space direction="vertical">
+                      <Radio value="">
+                        <span className="font-size-14">All Epoch</span>
+                      </Radio>
+                      {tip?.epochNo && (
+                        <Radio value={`&epoch_no=eq.${tip?.epochNo}`}>
+                          <span className="font-size-14">Current Epoch ({tip?.epochNo})</span>
+                        </Radio>
+                      )}
+                    </Space>
+                  </Radio.Group>
+                ),
+              },
+              {
+                type: "divider",
+              },
+              {
+                type: "item",
+                children: (
+                  <Button
+                    type="primary"
+                    className="w-full"
+                    disabled={filterLastBlocks === "" && filterCurrentEpoch === ""}
+                    onClick={() => {
+                      setFilterLastBlocks("")
+                      setFilterCurrentEpoch("")
+                    }}
+                  >
+                    <XMarkIcon className="size-5 -me-1" strokeWidth={2} />
+                    <span>Reset</span>
+                  </Button>
+                ),
+              },
+            ]}
+          />
+        </div>
+        <div className="ms-2">
+          <Informers.Dropdown
+            placement="bottomRight"
+            active={sorterOrder !== "descend" || sorterField !== "block_height"}
+            selector={
+              <div className="flex items-center">
+                {sorterOrder === "ascend" && <ArrowUpIcon className="size-5" strokeWidth={2} />}
+                {sorterOrder === "descend" && <ArrowDownIcon className="size-5" strokeWidth={2} />}
+                <span className="font-size-14 lh-1 text-nowrap">
+                  {(blocksColumns as any[]).find((item) => item.key === sorterField)?.title}
+                </span>
+              </div>
+            }
+            items={[
+              {
+                type: "title",
+                children: "Sort Order",
+              },
+              {
+                type: "item",
+                children: (
+                  <Radio.Group onChange={(e) => setSorterOrder(e.target.value)} value={sorterOrder}>
+                    <Space direction="vertical">
+                      <Radio value="descend">
+                        <div className="flex">
+                          <ArrowDownIcon className="size-5" strokeWidth={2} />
+                          <span className="font-size-14">High to low</span>
+                        </div>
+                      </Radio>
+                      <Radio value="ascend">
+                        <div className="flex">
+                          <ArrowUpIcon className="size-5" strokeWidth={2} />
+                          <span className="font-size-14">Low to high</span>
+                        </div>
+                      </Radio>
+                    </Space>
+                  </Radio.Group>
+                ),
+              },
+              {
+                type: "divider",
+              },
+              {
+                type: "title",
+                children: "Sort By",
+              },
+              {
+                type: "item",
+                children: (
+                  <Radio.Group onChange={(e) => setSorterField(e.target.value)} value={sorterField}>
+                    <Space direction="vertical">
+                      {(blocksColumns as any[])
+                        .filter((item) => item.key)
+                        .map((item) => {
+                          return (
+                            <Radio key={item.key} value={item.key}>
+                              <span className="font-size-14">{item.title}</span>
+                            </Radio>
+                          )
+                        })}
+                    </Space>
+                  </Radio.Group>
+                ),
+              },
+              {
+                type: "divider",
+              },
+              {
+                type: "item",
+                children: (
+                  <Button
+                    type="primary"
+                    className="w-full"
+                    disabled={sorterOrder === "descend" && sorterField === "block_height"}
+                    onClick={() => {
+                      setSorterOrder("descend")
+                      setSorterField("block_height")
+                    }}
+                  >
+                    <XMarkIcon className="size-5 -me-1" strokeWidth={2} />
+                    <span>Reset</span>
+                  </Button>
+                ),
+              },
+            ]}
+          />
+        </div>
+        <div className="ms-2">
+          <Informers.Switcher
+            onChange={(key) => setCurrency(key)}
+            value={currency}
+            items={[
+              {
+                key: "ada",
+                icon: "₳",
+                tooltip: "In ADA",
+              },
+              {
+                key: "currency",
+                icon: "$",
+                tooltip: "In USD",
+              },
+            ]}
+          />
+        </div>
+      </div>
+      <div className="shared-table">
+        <Table<Block>
+          onChange={(pagination, filters, sorter) => changeTableParams(pagination, filters, sorter)}
+          rowKey={(i) => i.block_height!}
+          dataSource={blockList}
+          columns={blocksColumns}
+          sortDirections={["descend", "ascend", "descend"]}
+          size="small"
+          pagination={{
+            // simple: true,
+            position: ["bottomRight", "topRight"],
+            size: "default",
+            pageSize: pageSize,
+            showSizeChanger: true,
+            showPrevNextJumpers: false,
+            total: totalResults || 1,
+            current: currentPage,
+            pageSizeOptions: ["25", "50", "100"],
+            showTotal: () => <div>{utils.quantityWithCommas(totalResults)} Blocks</div>,
+          }}
+          loading={{
+            spinning: loading,
+            indicator: <span className="shared-spinner" />,
+          }}
+          locale={{
+            emptyText: <div className="py-4 mb-1">No Blocks Found</div>,
+          }}
+        />
       </div>
     </section>
   )

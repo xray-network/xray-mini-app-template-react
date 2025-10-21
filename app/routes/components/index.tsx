@@ -5,7 +5,7 @@ export default function ComponentsIndex() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    navigate("/components/patterns")
+    navigate("/components/typography")
   }, [])
 
   return null
