@@ -41,10 +41,6 @@ export const links: Route.LinksFunction = () => [
     rel: "stylesheet",
     href: "https://cdn.xray.app/fonts/satoshi.css",
   },
-  {
-    rel: "stylesheet",
-    href: "https://cdn.xray.app/fonts/archivo.css",
-  },
 ]
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -72,22 +68,32 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export function HydrateFallback() {
   return (
-    <div style={{ width: "100%vw", height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <div
+      style={{
+        width: "100%vw",
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "#000",
+      }}
+    >
       <svg
-        width="64px"
-        height="64px"
-        viewBox="0 0 512 512"
+        width="59px"
+        height="37px"
+        viewBox="0 0 59 37"
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
+        style={{
+          marginBottom: "3%",
+        }}
       >
-        <g stroke="none" fill="none">
-          <rect fill="#1940ED" fillRule="evenodd" x="1" y="0" width="512" height="512" rx="89.9723053"></rect>
+        <g stroke="none" strokeWidth="1" fill="#ffffff" fillRule="evenodd">
           <path
-            d="M246.807332,223.281525 L320.267551,151 L419.48986,151 L288.128705,278.483871 L271.294072,284.888563 L195.793292,359 L93.7652106,359 L225.636505,233.651026 L246.807332,223.281525 Z M93,151 L196.303432,151 L268.233229,222.671554 L290.169267,233.956012 L420,359 L315.676287,359 L239.665367,283.058651 L217.474259,271.469208 L93,151 Z"
-            fill="#FFFFFF"
+            d="M27.2644887,12.845956 L40.286334,0 L57.8748681,0 L34.5892767,22.6565806 L31.6051038,23.7948299 L18.2215405,36.966 L0.135644222,36.966 L23.5116652,14.6888358 L27.2644887,12.845956 Z M0,0 L18.31197,0 L31.0625269,12.7375513 L34.9509946,14.7430381 L57.9652976,36.966 L39.4724687,36.966 L25.9984759,23.4696158 L22.0647935,21.4099267 L0,0 Z"
             fillRule="nonzero"
-          ></path>
+          />
         </g>
       </svg>
     </div>
