@@ -51,8 +51,8 @@ export const menuItems: MenuItem[] = [
     ],
   },
   {
-    key: "dev-guide",
-    label: "Dev Guide",
+    key: "docs",
+    label: "Docs",
     link: "https://xray.app/wiki/dev/mini-apps/",
     type: "external",
   },
