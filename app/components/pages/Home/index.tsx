@@ -10,7 +10,7 @@ export default function HomePage() {
       <div className="text-center mt-20">
         <img src="/connected.png" alt="Connected" className="mx-auto mb-5 w-80 max-w-[80%]" />
         <h1 className="text-5xl font-black mb-10">Connected!</h1>
-        <a href="https://xray.cool" target="_blank" rel="noreferrer">
+        <a href="https://xray.app/wiki/dev/mini-apps/" target="_blank" rel="noreferrer">
           <Button type="primary" shape="round" size="large" className="!px-10">
             <span>Docs</span>
             <ArrowUpRightIcon className="size-5" strokeWidth={2} />
