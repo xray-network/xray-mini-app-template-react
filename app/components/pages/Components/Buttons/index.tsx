@@ -13,7 +13,7 @@ export default function ButtonsPage() {
               <span>Dashboard</span>
             </Button>
             <Button size="large" type="primary" shape="round">
-              <div className="h-8 w-8 -ms-3 rounded-full bg-blue-500" />
+              <div className="h-8 w-8 -ms-3 rounded-full bg-blue-400 dark:bg-blue-500" />
               <span>Wallet</span>
               <ChevronDownIcon className="size-5 text-gray-400" strokeWidth={2} />
             </Button>
@@ -26,7 +26,7 @@ export default function ButtonsPage() {
               <span>Dashboard</span>
             </Button>
             <Button size="large" shape="round">
-              <div className="h-8 w-8 -ms-3 rounded-full bg-gray-700" />
+              <div className="h-8 w-8 -ms-3 rounded-full bg-gray-200 dark:bg-gray-700" />
               <span>Wallet</span>
               <ChevronDownIcon className="size-5 text-gray-400 dark:text-gray-600" strokeWidth={2} />
             </Button>
