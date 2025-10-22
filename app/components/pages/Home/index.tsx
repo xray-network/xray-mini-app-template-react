@@ -18,7 +18,7 @@ export default function HomePage() {
         </a>
       </div>
       <div className="text-center mt-10 text-sm text-gray-500">
-        <p>SDK Version: —</p>
+        <p>Mini App SDK Version: —</p>
         <p>Network: {network || ""}</p>
       </div>
     </div>
