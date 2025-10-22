@@ -31,7 +31,7 @@ export default function Header() {
           <Button
             size="large"
             shape="round"
-            type="default"
+            type="text"
             onClick={() => {
               modalSettingsSet(true)
               setShowSettingsTooltip(false)
@@ -44,7 +44,7 @@ export default function Header() {
           className="ms-2 lg:!hidden"
           size="large"
           shape="round"
-          type="default"
+          type="text"
           onClick={() => {
             menuDrawerOpenSet(true)
           }}

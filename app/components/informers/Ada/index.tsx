@@ -7,7 +7,7 @@ import { InformationCircleIcon } from "@heroicons/react/24/outline"
 import { useAppStore } from "@/store/app"
 
 const InformerAda = ({
-  quantity,
+  value,
   title,
   help,
   hideDecimals,
@@ -19,7 +19,7 @@ const InformerAda = ({
   sameSize,
   prefix,
 }: {
-  quantity: string | bigint
+  value: string | bigint
   title?: string
   help?: string | React.ReactNode
   hideDecimals?: boolean
@@ -35,7 +35,7 @@ const InformerAda = ({
   // const appCurrency = useAppSelector((state) => state.settings.currency)
   // const exchangeRates = useAppSelector((state) => state.network.exchangeRates)
 
-  const { a, b, final } = quantityFormat(quantity, 6, skipZero)
+  const { a, b, final } = quantityFormat(value, 6, skipZero)
   const short =
     Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 2 }).format(
       Number(final.replaceAll(",", ""))

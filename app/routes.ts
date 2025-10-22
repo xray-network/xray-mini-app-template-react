@@ -9,7 +9,6 @@ export default [
       route("components/buttons", "routes/components/buttons.tsx"),
       route("components/form", "routes/components/form.tsx"),
       route("components/table", "routes/components/table.tsx"),
-      route("components/breakdown", "routes/components/breakdown.tsx"),
       route("components/informers", "routes/components/informers.tsx"),
       route("components/loading", "routes/components/loading.tsx"),
       route("components/modals", "routes/components/modals.tsx"),
