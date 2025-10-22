@@ -5,5 +5,5 @@
 }
 
 .shared-box-inner {
-  @apply p-5 rounded-2xl bg-white dark:bg-black;
+  @apply p-4 rounded-2xl bg-white dark:bg-black;
 }
