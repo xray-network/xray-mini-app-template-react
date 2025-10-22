@@ -4,7 +4,7 @@ import { message } from "@/utils/escapeAntd"
 import { CopyToClipboard } from "react-copy-to-clipboard"
 import { DocumentDuplicateIcon } from "@heroicons/react/24/outline"
 
-const ExplorerLink = ({
+const Copy = ({
   children,
   copy,
   tooltipMessage = "Copy to Clipboard",
@@ -22,4 +22,4 @@ const ExplorerLink = ({
   )
 }
 
-export default ExplorerLink
+export default Copy
