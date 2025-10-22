@@ -42,7 +42,7 @@ export default function InformersPage() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
         <div>
-          <div className="mb-8">Default</div>
+          <div className="mb-8">Breakdown Default</div>
           <Informers.Breakdown
             items={[
               {
@@ -78,7 +78,7 @@ export default function InformersPage() {
           />
         </div>
         <div>
-          <div className="mb-8">Compact</div>
+          <div className="mb-8">Breakdown Compact</div>
           <Informers.Breakdown
             compact
             items={[
@@ -113,6 +113,86 @@ export default function InformersPage() {
               },
             ]}
           />
+        </div>
+        <div>
+          <div className="mb-8">Breakdown Card</div>
+          <div className="shared-box">
+            <div className="shared-box-inner !bg-gray-100 dark:!bg-gray-950">
+              <Informers.Breakdown
+                items={[
+                  {
+                    title: "Tx Hash",
+                    children: (
+                      <Informers.Text
+                        value="1d12...0dd4"
+                        copy="1d12394aebbf78eeb3f37f3164bae7865737f9934e2d63d9f8250dc9e64e0dd4"
+                      />
+                    ),
+                  },
+                  {
+                    title: "Tx Index",
+                    children: <Informers.Text value="0" copy="0" />,
+                  },
+                  {
+                    title: "TTL",
+                    children: <Informers.Text value="Sep 17, 2025 12:10:54 PM" />,
+                  },
+                  {
+                    title: "Size (Bytes)",
+                    children: <Informers.Text value="1,242 bytes" />,
+                  },
+                  {
+                    title: "Total Output",
+                    children: <Informers.Ada value={"24125.252622"} />,
+                  },
+                  {
+                    title: "Fee",
+                    children: <Informers.Ada value={"12452.511123"} />,
+                  },
+                ]}
+              />
+            </div>
+          </div>
+        </div>
+        <div>
+          <div className="mb-8">Breakdown Card</div>
+          <div className="shared-box">
+            <div className="shared-box-inner">
+              <Informers.Breakdown
+                items={[
+                  {
+                    title: "Tx Hash",
+                    children: (
+                      <Informers.Text
+                        value="1d12...0dd4"
+                        copy="1d12394aebbf78eeb3f37f3164bae7865737f9934e2d63d9f8250dc9e64e0dd4"
+                      />
+                    ),
+                  },
+                  {
+                    title: "Tx Index",
+                    children: <Informers.Text value="0" copy="0" />,
+                  },
+                  {
+                    title: "TTL",
+                    children: <Informers.Text value="Sep 17, 2025 12:10:54 PM" />,
+                  },
+                  {
+                    title: "Size (Bytes)",
+                    children: <Informers.Text value="1,242 bytes" />,
+                  },
+                  {
+                    title: "Total Output",
+                    children: <Informers.Ada value={"24125.252622"} />,
+                  },
+                  {
+                    title: "Fee",
+                    children: <Informers.Ada value={"12452.511123"} />,
+                  },
+                ]}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </section>
