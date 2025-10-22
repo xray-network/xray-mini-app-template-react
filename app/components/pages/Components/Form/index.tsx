@@ -60,10 +60,10 @@ export default function FormPage() {
             <Form.Item>
               <Space>
                 <Button type="primary" htmlType="submit">
-                  Submit
+                  <span>Submit</span>
                 </Button>
                 <Button htmlType="button" onClick={() => form.resetFields()}>
-                  Reset
+                  <span>Reset</span>
                 </Button>
               </Space>
             </Form.Item>

@@ -11,7 +11,7 @@ export default function ModalsPage() {
       <h2 className="text-5xl font-bold mb-14">Modals</h2>
       <Button type="primary" shape="round" size="large" onClick={() => setIsModalOpen(true)}>
         <BookOpenIcon className="size-5" strokeWidth={2} />
-        <strong>Open Modal</strong>
+        <span>Open Modal</span>
       </Button>
       <Modal
         title="Modal Title"

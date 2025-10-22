@@ -10,28 +10,28 @@ export default function ButtonsPage() {
           <div className="mb-8">Rounded Buttons</div>
           <div className="flex flex-wrap items-center gap-3 mb-3">
             <Button size="large" type="primary" shape="round">
-              <strong>Dashboard</strong>
+              <span>Dashboard</span>
             </Button>
             <Button size="large" type="primary" shape="round">
               <div className="h-8 w-8 -ms-3 rounded-full bg-blue-500" />
-              <strong>Wallet</strong>
+              <span>Wallet</span>
               <ChevronDownIcon className="size-5 text-gray-400" strokeWidth={2} />
             </Button>
             <Button size="large" type="primary" shape="round" disabled>
-              <strong>Disabled</strong>
+              <span>Disabled</span>
             </Button>
           </div>
           <div className="flex flex-wrap items-center gap-3 mb-3">
             <Button size="large" shape="round">
-              <strong>Dashboard</strong>
+              <span>Dashboard</span>
             </Button>
             <Button size="large" shape="round">
               <div className="h-8 w-8 -ms-3 rounded-full bg-gray-700" />
-              <strong>Wallet</strong>
+              <span>Wallet</span>
               <ChevronDownIcon className="size-5 text-gray-400 dark:text-gray-600" strokeWidth={2} />
             </Button>
             <Button size="large" shape="round" disabled>
-              <strong>Disabled</strong>
+              <span>Disabled</span>
             </Button>
           </div>
           <div className="flex flex-wrap items-center gap-3 mb-3">
@@ -40,38 +40,38 @@ export default function ButtonsPage() {
             </Button>
             <Button size="large" type="primary" shape="round">
               <PlusIcon className="size-5" strokeWidth={2} />
-              <strong>Add Icon</strong>
+              <span>Add Icon</span>
             </Button>
           </div>
           <div className="flex flex-wrap items-center gap-3 mb-3">
             <Button size="large" type="primary" shape="round" className="w-full">
               <PaperAirplaneIcon className="size-5" strokeWidth={2} />
-              <strong>Send</strong>
+              <span>Send</span>
             </Button>
           </div>
           <div className="flex flex-wrap items-center gap-3 mb-3">
             <Button size="large" type="primary" shape="round">
-              <strong>Dashboard</strong>
+              <span>Dashboard</span>
               <ChevronDownIcon className="size-5 text-gray-400" strokeWidth={2} />
             </Button>
             <Button size="large" shape="round">
-              <strong>Dashboard</strong>
+              <span>Dashboard</span>
               <ChevronDownIcon className="size-5 text-gray-400 dark:text-gray-600" strokeWidth={2} />
             </Button>
           </div>
           <div className="mt-14 mb-8">Small Size</div>
           <div className="flex flex-wrap items-center gap-3 mb-3">
             <Button size="small" type="primary" shape="round" className="!px-5">
-              <strong>OPEN</strong>
+              <span>OPEN</span>
             </Button>
             <Button size="small" shape="round" className="!px-5">
-              <strong>OPEN</strong>
+              <span>OPEN</span>
             </Button>
             <Button size="small" type="primary" shape="round" disabled className="!px-5">
-              <strong>DISABLED</strong>
+              <span>DISABLED</span>
             </Button>
             <Button size="small" shape="round" disabled className="!px-5">
-              <strong>DISABLED</strong>
+              <span>DISABLED</span>
             </Button>
           </div>
         </div>
@@ -79,14 +79,16 @@ export default function ButtonsPage() {
           <div className="mb-8">Form Buttons</div>
           <div className="flex flex-wrap items-center gap-3 mb-3">
             <Button size="large" type="primary">
-              Send
+              <span>Send</span>
             </Button>
-            <Button size="large">Reset</Button>
+            <Button size="large">
+              <span>Reset</span>
+            </Button>
           </div>
           <div className="flex flex-wrap items-center gap-3 mb-3">
             <Button size="large" type="primary" className="w-full">
               <PaperAirplaneIcon className="size-5" strokeWidth={2} />
-              <strong>Send</strong>
+              <span>Send</span>
             </Button>
           </div>
           <div className="mt-14 mb-8">Colorful Buttons</div>
@@ -97,7 +99,7 @@ export default function ButtonsPage() {
               shape="round"
               className="!bg-green-500 !border-green-500 hover:!bg-green-600 hover:!border-green-600"
             >
-              <strong>Green Button</strong>
+              <span>Green Button</span>
             </Button>
             <Button
               size="large"
@@ -105,7 +107,7 @@ export default function ButtonsPage() {
               shape="round"
               className="!bg-yellow-500 !border-yellow-500 hover:!bg-yellow-600 hover:!border-yellow-600"
             >
-              <strong>Yellow Button</strong>
+              <span>Yellow Button</span>
             </Button>
             <Button
               size="large"
@@ -113,7 +115,7 @@ export default function ButtonsPage() {
               shape="round"
               className="!bg-red-500 !border-red-500 hover:!bg-red-600 hover:!border-red-600"
             >
-              <strong>Red Button</strong>
+              <span>Red Button</span>
             </Button>
           </div>
         </div>
