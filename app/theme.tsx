@@ -99,9 +99,9 @@ export const lightTheme: Partial<ThemeConfig> = {
       borderColorDisabled: colors.gray100,
       colorBgContainerDisabled: colors.gray100,
       defaultBg: colors.gray100,
-      defaultHoverBg: colors.gray100,
+      defaultHoverBg: colors.gray200,
       defaultBorderColor: colors.gray100,
-      defaultHoverBorderColor: colors.gray100,
+      defaultHoverBorderColor: colors.gray200,
       defaultHoverColor: colors.blue500,
     },
     Modal: {
@@ -169,9 +169,9 @@ export const darkTheme: Partial<ThemeConfig> = {
       borderColorDisabled: colors.gray900,
       colorBgContainerDisabled: colors.gray900,
       defaultBg: colors.gray800,
-      defaultHoverBg: colors.gray800,
+      defaultHoverBg: colors.gray700,
       defaultBorderColor: colors.gray800,
-      defaultHoverBorderColor: colors.gray800,
+      defaultHoverBorderColor: colors.gray700,
       defaultHoverColor: colors.blue300dark,
     },
     Tabs: {
