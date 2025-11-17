@@ -102,11 +102,12 @@ export function HydrateFallback() {
 
 export default function App() {
   return (
-    <Effects>
+    <>
+      <Effects />
       <Theme>
         <Outlet />
       </Theme>
-    </Effects>
+    </>
   )
 }
 

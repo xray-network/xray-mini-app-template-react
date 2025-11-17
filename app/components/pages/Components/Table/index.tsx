@@ -165,7 +165,7 @@ export default function TablePage() {
       dataIndex: "total_fees",
       key: "total_fees",
       align: "right",
-      width: "10%",
+      width: "100px",
       render: (record, records) => {
         const info = blockInfo.find((block) => block.hash === records.hash)
         const { a, b } = utils.quantityFormat(info?.total_fees || 0, 6, true)
@@ -189,7 +189,7 @@ export default function TablePage() {
       dataIndex: "total_output",
       key: "total_output",
       align: "right",
-      width: "16%",
+      width: "130px",
       render: (record, records) => {
         const info = blockInfo.find((block) => block.hash === records.hash)
         const { a, b } = utils.quantityFormat(info?.total_output || 0, 6, true)

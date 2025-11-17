@@ -8,16 +8,31 @@ const Copy = ({
   children,
   copy,
   tooltipMessage = "Copy to Clipboard",
-  tooltipSuccess = "Copied",
+  tooltipSuccess = "Copied!..",
 }: {
   children: React.ReactNode
   copy: string
   tooltipMessage?: string
   tooltipSuccess?: string
 }) => {
+  const [copied, setCopied] = useState(false)
+  const tooltip = !copied ? tooltipMessage : tooltipSuccess
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  const process = () => {
+    // message.success(tooltipSuccess)
+    setCopied(true)
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
+    timeoutRef.current = setTimeout(() => setCopied(false), 2000)
+  }
+
   return (
-    <CopyToClipboard text={copy} onCopy={() => message.success(tooltipSuccess)}>
-      <Tooltip title={tooltipMessage}>{children}</Tooltip>
+    <CopyToClipboard text={copy} onCopy={() => process()}>
+      <Tooltip title={tooltip} onOpenChange={() => setCopied(false)}>
+        {children}
+      </Tooltip>
     </CopyToClipboard>
   )
 }

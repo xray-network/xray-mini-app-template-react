@@ -4439,6 +4439,18 @@ ws@8.18.0:
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.18.0.tgz#0d7505a6eafe2b0e712d232b42279f53bc289bbc"
   integrity sha512-8VbfWfHLbbwu3+N6OKsOMpBdT4kXPDDB9cJk2bJ6mh9ucxdlnNvH1e+roYkKmN9Nxw2yjz7VzeO9oOz2zJ04Pw==
 
+xray-mini-app-sdk-react@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/xray-mini-app-sdk-react/-/xray-mini-app-sdk-react-0.1.0.tgz#7e8a9eb4af8726adf08a6394f162b2d431b6d756"
+  integrity sha512-9DKWodUO8Wm1NO5cctNoYtp0fmw+UBaZhKtdo85MhWxkaRM+i9iVDaonLoxK3bPM7A72K62TYhRZaLWyetP+ZQ==
+  dependencies:
+    xray-mini-app-sdk "0.1.0"
+
+xray-mini-app-sdk@0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/xray-mini-app-sdk/-/xray-mini-app-sdk-0.1.0.tgz#2d6b1088f2a02ebb7af271579f34d8050f6b8e1e"
+  integrity sha512-4dmBn5M7biih0Xqz9Z8vKmugm//qGoUe6IRvuxUmqLoH2f0aAO2XWF4wyWVW3zcNhOAGFducIrASgZaKBxR0MQ==
+
 yallist@^3.0.2:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/yallist/-/yallist-3.1.1.tgz#dbb7daf9bfd8bac9ab45ebf602b8cbad0d5d08fd"

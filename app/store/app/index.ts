@@ -37,7 +37,7 @@ interface AppStoreState {
 }
 
 const getSystemTheme = (): Types.App.Theme => {
-  if (typeof window === "undefined") return "light" // fallback for SSR
+  if (typeof window === "undefined") return "dark" // fallback for SSR
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
 }
 

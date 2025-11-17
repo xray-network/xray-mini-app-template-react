@@ -2,7 +2,7 @@
   "name": "xray-mini-app-template-react",
   "version": "0.0.0",
   "author": "XRAY/Network <hello@xray.app>",
-  "description": "Cardano Web3 JavaScript SDK",
+  "description": "XRAY Mini App Template React Version",
   "license": "MIT",
   "homepage": "https://xray.app",
   "repository": {
@@ -53,6 +53,7 @@
     "vite-plugin-svgr": "^4.5.0",
     "vite-plugin-wasm": "^3.5.0",
     "wrangler": "^4.45.0",
+    "xray-mini-app-sdk-react": "^0.1.0",
     "zustand": "^5.0.8"
   },
   "devDependencies": {

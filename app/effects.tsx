@@ -4,7 +4,7 @@ import { useWeb3Store } from "@/store/web3"
 import { useNavigation, useLocation } from "react-router"
 import NProgress from "nprogress"
 
-const Effects = ({ children }: { children: React.ReactNode }) => {
+const Effects = () => {
   const navigation = useNavigation()
   const location = useLocation()
 
@@ -19,7 +19,6 @@ const Effects = ({ children }: { children: React.ReactNode }) => {
 
   const network = useAppStore((state) => state.network)
   const initTheme = useAppStore((state) => state.initTheme)
-  const tip = useAppStore((state) => state.tip)
   const updateTip = useAppStore((state) => state.updateTip)
 
   // Handle navigation state changes for NProgress
@@ -69,7 +68,7 @@ const Effects = ({ children }: { children: React.ReactNode }) => {
     }
   }, [web3])
 
-  return children
+  return null
 }
 
 export default Effects
