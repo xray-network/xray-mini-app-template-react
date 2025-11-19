@@ -53,7 +53,7 @@
     "vite-plugin-svgr": "^4.5.0",
     "vite-plugin-wasm": "^3.5.0",
     "wrangler": "^4.45.0",
-    "xray-mini-app-sdk-react": "^0.1.0",
+    "xray-mini-app-sdk-react": "^0.1.4",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
