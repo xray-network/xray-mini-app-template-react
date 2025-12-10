@@ -1,49 +1,63 @@
 import { useCallback, useEffect, useState } from "react"
+import { SignalIcon, SignalSlashIcon } from "@heroicons/react/24/outline"
+import { useMiniAppClientMessaging, type HostMessage } from "xray-mini-app-sdk-react"
 import { useAppStore } from "@/store/app"
-import { Button, theme } from "antd"
-import { ArrowUpRightIcon, SignalIcon, SignalSlashIcon } from "@heroicons/react/24/outline"
-import {
-  useMiniAppClientMessaging,
-  type HostMessage,
-  type Network,
-  type Theme,
-} from "xray-mini-app-sdk-react"
+import { Button } from "antd"
 
 export default function HomePage() {
-  const changeTheme = useAppStore((state) => state.changeTheme)
-  const networkSet = useAppStore((state) => state.networkSet)
-  const [hostNetwork, setHostNetwork] = useState<Network | null>(null)
-  const [hostTheme, setHostTheme] = useState<Theme | null>(null)
-
-  const handleIframeMessage = useCallback((message: HostMessage) => {
-    switch (message.type) {
-      case "networkChanged": {
-        setHostNetwork(message.payload.network)
-        networkSet(message.payload.network)
-        break
-      }
-      case "themeChanged": {
-        setHostTheme(message.payload.theme)
-        changeTheme(message.payload.theme)
-        break
-      }
-      default:
-        break
-    }
-  }, [])
-
-  const { sendMessage, isConnected } = useMiniAppClientMessaging(handleIframeMessage)
+  const network = useAppStore((state) => state.network)
+  const theme = useAppStore((state) => state.theme)
+  const connectedToSDK = useAppStore((state) => state.connectedToSDK)
+  const { sendMessage } = useMiniAppClientMessaging(() => {})
 
   return (
     <div className="text-center">
       <div className="text-center mt-20">
-        {isConnected && <SignalIcon className="size-20 mx-auto mb-5 text-green-500" strokeWidth={1.5} />}
-        {!isConnected && <SignalSlashIcon className="size-20 mx-auto mb-5 text-red-500" strokeWidth={1.5} />}
-        <h1 className="text-3xl font-black mb-10">{isConnected ? "Connected" : "Disconnected"}</h1>
+        {connectedToSDK && (
+          <div className="mb-10">
+            <SignalIcon className="size-20 mx-auto mb-5 text-green-500" strokeWidth={1.5} />
+            <h1 className="text-3xl font-black mb-5">Connected</h1>
+            <p className="text-gray-500">
+              This Mini App is connected to the XRAY/App and operates in accordance with the protocols.
+            </p>
+          </div>
+        )}
+        {!connectedToSDK && (
+          <div className="mb-10">
+            <SignalSlashIcon className="size-20 mx-auto mb-5 text-red-500" strokeWidth={1.5} />
+            <h1 className="text-3xl font-black mb-5">Disconnected</h1>
+            <p className="text-gray-500">
+              This Mini App is not connected to the XRAY/App. Some features may be unavailable.
+            </p>
+          </div>
+        )}
       </div>
-      <div className="text-center mt-10 text-sm text-gray-500">
-        <p>Host Network: {hostNetwork || "—"}</p>
-        <p>Host Theme: {hostTheme || "—"}</p>
+      <div className="text-center mt-10 text-sm text-gray-500 mb-10">
+        <p>Host Network: {(connectedToSDK && network) || "—"}</p>
+        <p>Host Theme: {(connectedToSDK && theme) || "—"}</p>
+      </div>
+      <div className="max-w-100 mx-auto flex flex-wrap gap-2">
+        <Button disabled={!connectedToSDK} onClick={() => sendMessage("xray.client.getTip")}>
+          Get Tip
+        </Button>
+        <Button disabled={!connectedToSDK} onClick={() => sendMessage("xray.client.getAccountState")}>
+          Get Accoount State
+        </Button>
+        <Button disabled={!connectedToSDK} onClick={() => sendMessage("xray.client.getNetwork")}>
+          Get Network
+        </Button>
+        <Button disabled={!connectedToSDK} onClick={() => sendMessage("xray.client.getTheme")}>
+          Get Theme
+        </Button>
+        <Button disabled={!connectedToSDK} onClick={() => sendMessage("xray.client.getCurrency")}>
+          Get Currency
+        </Button>
+        <Button disabled={!connectedToSDK} onClick={() => sendMessage("xray.client.getHideBalances")}>
+          Get Hide Balances
+        </Button>
+        <Button disabled={!connectedToSDK} onClick={() => sendMessage("xray.client.getExplorer")}>
+          Get Explorer
+        </Button>
       </div>
     </div>
   )

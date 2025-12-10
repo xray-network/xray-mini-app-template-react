@@ -5,6 +5,10 @@ import * as config from "@/config"
 import * as Types from "@/types"
 
 interface AppStoreState {
+  // XRAY Connection
+  connectedToSDK: boolean
+  connectedToSDKSet: (connected: boolean) => void
+
   // Theme
   themePrefer: Types.App.ThemePrefer
   theme: Types.App.Theme
@@ -29,11 +33,15 @@ interface AppStoreState {
 
   // Tip
   tip: Types.CW3Types.Tip | null
-  updateTip: () => Promise<void>
+  updateTip: (tip: Types.CW3Types.Tip | null) => Promise<void>
 
   // Network
   network: Types.CW3Types.NetworkName | null
   networkSet: (network: Types.CW3Types.NetworkName) => void
+
+  // Account State
+  accountState: Types.SDK.HostAccountStatePayload["accountState"] | null
+  accountStateSet: (accountState: Types.SDK.HostAccountStatePayload["accountState"] | null) => void
 }
 
 const getSystemTheme = (): Types.App.Theme => {
@@ -44,6 +52,10 @@ const getSystemTheme = (): Types.App.Theme => {
 export const useAppStore = create<AppStoreState>()(
   persist(
     (set, get) => ({
+      // XRAY Connection
+      connectedToSDK: false,
+      connectedToSDKSet: (connected) => set({ connectedToSDK: connected }),
+
       // Theme
       theme: "light",
       themePrefer: "system",
@@ -75,8 +87,7 @@ export const useAppStore = create<AppStoreState>()(
 
       // Tip
       tip: null,
-      updateTip: async () => {
-        const tip = (await useWeb3Store.getState().web3?.getTip()) || null
+      updateTip: async (tip) => {
         set({ tip })
       },
 
@@ -85,6 +96,10 @@ export const useAppStore = create<AppStoreState>()(
       networkSet: (network) => {
         set({ network })
       },
+
+      // Account State
+      accountState: null,
+      accountStateSet: (accountState) => set({ accountState }),
     }),
     // Persist configuration
     {
@@ -92,10 +107,10 @@ export const useAppStore = create<AppStoreState>()(
       version: 1,
       partialize: (state) => ({
         themePrefer: state.themePrefer,
+        network: state.network,
         currency: state.currency,
         hideBalances: state.hideBalances,
         explorer: state.explorer,
-        network: state.network,
       }),
     }
   )
