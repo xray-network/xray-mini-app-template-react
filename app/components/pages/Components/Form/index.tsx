@@ -44,7 +44,7 @@ export default function FormPage() {
             </Form.Item>
             <Form.Item name="newsletter" label="Preferences">
               <Space direction="vertical">
-                <Checkbox value="news">Subscribe to newsletter</Checkbox>
+                <Checkbox checked>Subscribe to newsletter</Checkbox>
                 <Radio.Group defaultValue="daily">
                   <Radio value="daily">Daily updates</Radio>
                   <Radio value="weekly">Weekly updates</Radio>

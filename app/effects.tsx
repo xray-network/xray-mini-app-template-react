@@ -1,13 +1,15 @@
 import { useEffect, useRef, useCallback } from "react"
 import { useAppStore } from "@/store/app"
 import { useWeb3Store } from "@/store/web3"
-import { useNavigation, useLocation } from "react-router"
+import { useNavigate, useNavigation, useLocation } from "react-router"
 import NProgress from "nprogress"
 import { useMiniAppClientMessaging, type HostMessage, type Network, type Theme } from "xray-mini-app-sdk-react"
 
 const Effects = () => {
+  const navigate = useNavigate()
   const navigation = useNavigation()
   const location = useLocation()
+  const route = location.pathname + location.search + location.hash
 
   const currLocation = useRef(location.pathname)
   const nprogressDoneTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -26,40 +28,49 @@ const Effects = () => {
   const hideBalancesSet = useAppStore((state) => state.hideBalancesSet)
   const explorerSet = useAppStore((state) => state.explorerSet)
 
-  const handleXRAYMessage = useCallback((message: HostMessage) => {
-    switch (message.type) {
-      case "xray.host.tip": {
-        updateTip(message.payload.tip)
-        break
+  const handleXRAYMessage = useCallback(
+    (message: HostMessage) => {
+      switch (message.type) {
+        case "xray.host.routeChanged": {
+          if (route !== message.payload.route) {
+            navigate(message.payload.route)
+          }
+          break
+        }
+        case "xray.host.tip": {
+          updateTip(message.payload.tip)
+          break
+        }
+        case "xray.host.accountState": {
+          accountStateSet(message.payload.accountState)
+          break
+        }
+        case "xray.host.network": {
+          networkSet(message.payload.network)
+          break
+        }
+        case "xray.host.theme": {
+          changeTheme(message.payload.theme)
+          break
+        }
+        case "xray.host.currency": {
+          currencySet(message.payload.currency)
+          break
+        }
+        case "xray.host.hideBalances": {
+          hideBalancesSet(message.payload.hideBalances)
+          break
+        }
+        case "xray.host.explorer": {
+          explorerSet(message.payload.explorer)
+          break
+        }
+        default:
+          break
       }
-      case "xray.host.accountState": {
-        accountStateSet(message.payload.accountState)
-        break
-      }
-      case "xray.host.network": {
-        networkSet(message.payload.network)
-        break
-      }
-      case "xray.host.theme": {
-        changeTheme(message.payload.theme)
-        break
-      }
-      case "xray.host.currency": {
-        currencySet(message.payload.currency)
-        break
-      }
-      case "xray.host.hideBalances": {
-        hideBalancesSet(message.payload.hideBalances)
-        break
-      }
-      case "xray.host.explorer": {
-        explorerSet(message.payload.explorer)
-        break
-      }
-      default:
-        break
-    }
-  }, [])
+    },
+    [route]
+  )
 
   const { sendMessage: sendMessageToXRAY, isConnected } = useMiniAppClientMessaging(handleXRAYMessage)
 
@@ -75,6 +86,10 @@ const Effects = () => {
       sendMessageToXRAY("xray.client.getExplorer")
     }
   }, [isConnected])
+
+  useEffect(() => {
+    sendMessageToXRAY("xray.client.routeChanged", { route })
+  }, [route])
 
   // Handle navigation state changes for NProgress
   useEffect(() => {
