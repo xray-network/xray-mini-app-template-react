@@ -10,16 +10,16 @@
 
 .menu {
   @apply flex flex-col gap-1;
+}
 
-  a {
-    @apply !text-gray-500 px-4 py-2 rounded-full font-bold flex items-center flex-nowrap;
-    @apply hover:bg-gray-100;
-    @apply dark:!text-gray-400;
-    @apply dark:hover:bg-gray-800;
-  }
+.link {
+  @apply flex flex-nowrap items-center gap-2 !text-gray-500 px-4 py-2 rounded-full font-bold;
+  @apply hover:bg-gray-100;
+  @apply dark:!text-gray-400;
+  @apply dark:hover:bg-gray-800;
+}
 
-  a:global(.active) {
-    @apply !text-blue-500 bg-gray-100;
-    @apply dark:!text-blue-400 dark:bg-gray-800;
-  }
+.link:global(.active) {
+  @apply !text-blue-500 bg-gray-100;
+  @apply dark:!text-blue-400 dark:bg-gray-800;
 }

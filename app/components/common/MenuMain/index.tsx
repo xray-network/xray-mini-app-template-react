@@ -9,26 +9,74 @@ const buildDropdownItems = (nodes: MenuItem[]): MenuProps["items"] =>
   nodes.map((node) => {
     const hasChildren = !!(node.links && node.links.length)
     const childLinks = node.links ?? []
-    return {
-      key: node.key,
-      label:
-        node.type === "internal" ? (
+
+    const label = (() => {
+      if (node.type === "internal") {
+        return (
           <NavLink to={node.link} className={style.link}>
             {node.icon}
             {node.label}
           </NavLink>
-        ) : (
+        )
+      }
+
+      if (node.type === "external") {
+        return (
           <a href={node.link} target="_blank" rel="noreferrer" className={style.link}>
             {node.icon}
             {node.label}
             <ArrowUpRightIcon className="size-4" strokeWidth={2} />
           </a>
-        ),
+        )
+      }
+
+      return (
+        <div className={style.link}>
+          {node.icon}
+          {node.label}
+        </div>
+      )
+    })()
+
+    return {
+      key: node.key,
+      label,
       children: hasChildren ? buildDropdownItems(childLinks) : undefined,
     }
   })
 
 const renderMenu = (items: MenuItem[], depth = 0) => {
+  const renderDropdownTrigger = (item: MenuItem) => {
+    if (item.type === "internal") {
+      return (
+        <NavLink to={item.link} className={style.button}>
+          {item.icon}
+          {item.label}
+          <ChevronDownIcon className={style.downIcon} strokeWidth={2.5} />
+        </NavLink>
+      )
+    }
+
+    if (item.type === "external") {
+      return (
+        <a href={item.link} target="_blank" rel="noreferrer" className={style.button}>
+          {item.icon}
+          {item.label}
+          <ArrowUpRightIcon className="size-4" strokeWidth={2} />
+          <ChevronDownIcon className={style.downIcon} strokeWidth={2.5} />
+        </a>
+      )
+    }
+
+    return (
+      <div className={style.button} role="button" tabIndex={0}>
+        {item.icon}
+        {item.label}
+        <ChevronDownIcon className={style.downIcon} strokeWidth={2.5} />
+      </div>
+    )
+  }
+
   return (
     <>
       {items.map((item) => {
@@ -47,20 +95,7 @@ const renderMenu = (items: MenuItem[], depth = 0) => {
               placement="bottomLeft"
               arrow
             >
-              {item.type === "internal" ? (
-                <NavLink to={item.link} className={style.button}>
-                  {item.icon}
-                  {item.label}
-                  <ChevronDownIcon className={style.downIcon} strokeWidth={2.5} />
-                </NavLink>
-              ) : (
-                <a href={item.link} target="_blank" rel="noreferrer" className={style.button}>
-                  {item.icon}
-                  {item.label}
-                  <ArrowUpRightIcon className="size-4" strokeWidth={2} />
-                  <ChevronDownIcon className={style.downIcon} strokeWidth={2.5} />
-                </a>
-              )}
+              {renderDropdownTrigger(item)}
             </Dropdown>
           )
         }
@@ -74,12 +109,21 @@ const renderMenu = (items: MenuItem[], depth = 0) => {
           )
         }
 
+        if (item.type === "external") {
+          return (
+            <a key={item.key} href={item.link} target="_blank" rel="noreferrer" className={style.button}>
+              {item.icon}
+              {item.label}
+              <ArrowUpRightIcon className="size-4" strokeWidth={2} />
+            </a>
+          )
+        }
+
         return (
-          <a key={item.key} href={item.link} target="_blank" rel="noreferrer" className={style.button}>
+          <div key={item.key} className={style.button}>
             {item.icon}
             {item.label}
-            <ArrowUpRightIcon className="size-4" strokeWidth={2} />
-          </a>
+          </div>
         )
       })}
     </>

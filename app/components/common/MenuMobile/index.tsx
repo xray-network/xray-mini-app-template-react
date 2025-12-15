@@ -25,7 +25,7 @@ export default function ({ items }: { items: MenuItem[] }) {
               to={menuItem.link}
               key={menuItem.key}
               style={level ? { marginLeft: `${level}rem` } : {}}
-              className="flex items-center gap-2"
+              className={style.link}
               onClick={() => {
                 menuDrawerOpenSet(false)
               }}
@@ -42,7 +42,7 @@ export default function ({ items }: { items: MenuItem[] }) {
               target="_blank"
               rel="noreferrer"
               style={level ? { marginLeft: `${level}rem` } : {}}
-              className="flex items-center gap-2"
+              className={style.link}
               onClick={() => {
                 menuDrawerOpenSet(false)
               }}
@@ -53,10 +53,25 @@ export default function ({ items }: { items: MenuItem[] }) {
             </a>
           )
 
+          const renderParentItem = (menuItem: MenuItem, level = 0) => (
+            <div
+              key={menuItem.key}
+              style={level ? { marginLeft: `${level}rem` } : {}}
+              className={style.link}
+            >
+              {menuItem.icon}
+              {menuItem.label}
+            </div>
+          )
+
           const renderBranch = (node: MenuItem, level = 0) => {
             return (
               <div className="flex flex-col gap-1" key={`branch-${node.key}`}>
-                {node.type === "internal" ? renderInternalItem(node, level) : renderExternalItem(node, level)}
+                {node.type === "internal"
+                  ? renderInternalItem(node, level)
+                  : node.type === "external"
+                    ? renderExternalItem(node, level)
+                    : renderParentItem(node, level)}
                 {node.links && node.links.length > 0 && (
                   <div className="flex flex-col gap-1">{node.links.map((child) => renderBranch(child, level + 1))}</div>
                 )}

@@ -6,19 +6,20 @@ import { HomeIcon, WindowIcon } from "@heroicons/react/24/outline"
  * Represents a single item in the navigation menu.
  * @property {string} key - Unique identifier for the menu item.
  * @property {string} label - Display text for the menu item.
- * @property {string} link - URL or path the menu item points to.
- * @property {"internal" | "external"} type - Type of link (internal or external).
+ * @property {string} [link] - URL or path the menu item points to. Optional for parent items.
+ * @property {"internal" | "external" | "parent"} type - Type of link (internal, external or non-link parent).
  * @property {MenuItem[]} [links] - Optional array of sub-menu items.
  */
 
-export type MenuItem = {
-  key: string
-  icon?: React.ReactNode
-  label: string | null
-  link: string
-  type: "internal" | "external"
-  links?: MenuItem[]
-}
+export type MenuItem =
+  | {
+      key: string
+      icon?: React.ReactNode
+      label: string | null
+      link: string
+      type: "internal" | "external" | "parent"
+      links?: MenuItem[]
+    }
 
 /**
  * Menu Configuration
@@ -38,8 +39,8 @@ export const menuItems: MenuItem[] = [
   {
     key: "components",
     label: "Components",
-    link: "/components",
-    type: "internal",
+    link: "",
+    type: "parent",
     links: [
       { key: "typography", label: "Typography", link: "/components/typography", type: "internal" },
       { key: "buttons", label: "Buttons", link: "/components/buttons", type: "internal" },

@@ -4,7 +4,6 @@ export default [
   layout("components/layouts/Main/index.tsx", [
     index("routes/index.tsx"),
     layout("components/layouts/Components/index.tsx", [
-      route("components", "routes/components/index.tsx"),
       route("components/typography", "routes/components/typography.tsx"),
       route("components/buttons", "routes/components/buttons.tsx"),
       route("components/form", "routes/components/form.tsx"),
