@@ -4,7 +4,7 @@ import { NavLink } from "react-router"
 import { Cog6ToothIcon, Bars3Icon } from "@heroicons/react/24/outline"
 import { useAppStore } from "@/store/app"
 import { useIsMobileView } from "@/utils/hooks"
-import Menu from "@/components/common/MenuButtons"
+import Menu from "@/components/common/MenuMain"
 import MenuMobile from "@/components/common/MenuMobile"
 import { menuItems } from "@/config/menu"
 

@@ -1,6 +1,7 @@
 import { Button, Tabs } from "antd"
 import { HomeIcon, PlusIcon, PaperAirplaneIcon, ChevronDownIcon } from "@heroicons/react/24/outline"
 
+import { Link } from "react-router"
 export default function ButtonsPage() {
   return (
     <section className="mb-10">

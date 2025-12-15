@@ -1,6 +1,6 @@
 import { Outlet } from "react-router"
 import { menuItems } from "@/config/menu"
-import Menu from "@/components/common/MenuButtons"
+import MenuMain from "@/components/common/MenuMain"
 
 export default function Components() {
   const items = menuItems.find((item) => item.key === "components")?.links || []
@@ -8,7 +8,7 @@ export default function Components() {
   return (
     <div>
       <section className="mb-14">
-        <Menu items={items} />
+        <MenuMain items={items} />
       </section>
       <Outlet />
     </div>

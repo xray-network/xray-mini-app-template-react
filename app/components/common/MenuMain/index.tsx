@@ -86,6 +86,6 @@ const renderMenu = (items: MenuItem[], depth = 0) => {
   )
 }
 
-export default function MenuButtons({ items }: { items: MenuItem[] }) {
+export default function MenuMain({ items }: { items: MenuItem[] }) {
   return <div className="flex flex-wrap gap-1">{renderMenu(items)}</div>
 }
