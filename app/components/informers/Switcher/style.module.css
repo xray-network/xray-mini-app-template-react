@@ -5,7 +5,7 @@
 }
 
 .switcherItem {
-  @apply rounded-lg cursor-pointer transition-colors duration-300 ease-in-out text-gray-400 dark:text-gray-600 min-w-[2rem] px-1.5 h-full flex items-center justify-center mr-0.5;
+  @apply rounded-lg cursor-pointer transition-colors duration-300 ease-in-out text-gray-400 dark:text-gray-600 min-w-8 px-1.5 h-full flex items-center justify-center mr-0.5;
   @apply hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white;
 }
 

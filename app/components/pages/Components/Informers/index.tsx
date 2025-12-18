@@ -117,7 +117,7 @@ export default function InformersPage() {
         <div>
           <div className="mb-8">Breakdown Card</div>
           <div className="shared-box">
-            <div className="shared-box-inner !bg-gray-100 dark:!bg-gray-950">
+            <div className="shared-box-inner bg-gray-100! dark:bg-gray-950!">
               <Informers.Breakdown
                 items={[
                   {

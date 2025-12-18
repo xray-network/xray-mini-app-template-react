@@ -7,10 +7,10 @@ export default function LoadingPage() {
       <div>
         <div className="mb-10 flex items-center">
           <div className="inline-flex items-center me-10">
-            <span className="shared-spinner !me-3" /> Inline spinner
+            <span className="shared-spinner me-3!" /> Inline spinner
           </div>
           <div className="inline-flex items-center">
-            <Skeleton active paragraph={{ rows: 1, width: "100%" }} title={false} className="me-5 !w-20" /> Inline
+            <Skeleton active paragraph={{ rows: 1, width: "100%" }} title={false} className="me-5 w-20!" /> Inline
             skeleton
           </div>
         </div>

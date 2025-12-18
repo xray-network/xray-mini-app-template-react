@@ -41,7 +41,7 @@ export default function Header() {
           </Button>
         </Tooltip>
         <Button
-          className="ms-2 lg:!hidden"
+          className="ms-2 lg:hidden!"
           size="large"
           shape="round"
           type="text"

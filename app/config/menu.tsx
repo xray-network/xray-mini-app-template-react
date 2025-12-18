@@ -11,15 +11,14 @@ import { HomeIcon, WindowIcon } from "@heroicons/react/24/outline"
  * @property {MenuItem[]} [links] - Optional array of sub-menu items.
  */
 
-export type MenuItem =
-  | {
-      key: string
-      icon?: React.ReactNode
-      label: string | null
-      link: string
-      type: "internal" | "external" | "parent"
-      links?: MenuItem[]
-    }
+export type MenuItem = {
+  key: string
+  icon?: React.ReactNode
+  label: string | null
+  link: string
+  type: "internal" | "external" | "parent"
+  links?: MenuItem[]
+}
 
 /**
  * Menu Configuration

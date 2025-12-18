@@ -62,16 +62,16 @@ export default function ButtonsPage() {
           </div>
           <div className="mt-14 mb-8">Small Size</div>
           <div className="flex flex-wrap items-center gap-3 mb-3">
-            <Button size="small" type="primary" shape="round" className="!px-5">
+            <Button size="small" type="primary" shape="round" className="px-5!">
               <span>OPEN</span>
             </Button>
-            <Button size="small" shape="round" className="!px-5">
+            <Button size="small" shape="round" className="px-5!">
               <span>OPEN</span>
             </Button>
-            <Button size="small" type="primary" shape="round" disabled className="!px-5">
+            <Button size="small" type="primary" shape="round" disabled className="px-5!">
               <span>DISABLED</span>
             </Button>
-            <Button size="small" shape="round" disabled className="!px-5">
+            <Button size="small" shape="round" disabled className="px-5!">
               <span>DISABLED</span>
             </Button>
           </div>
@@ -98,7 +98,7 @@ export default function ButtonsPage() {
               size="large"
               type="primary"
               shape="round"
-              className="!bg-green-500 !border-green-500 hover:!bg-green-600 hover:!border-green-600"
+              className="bg-green-500! border-green-500! hover:bg-green-600! hover:border-green-600!"
             >
               <span>Green Button</span>
             </Button>
@@ -106,7 +106,7 @@ export default function ButtonsPage() {
               size="large"
               type="primary"
               shape="round"
-              className="!bg-yellow-500 !border-yellow-500 hover:!bg-yellow-600 hover:!border-yellow-600"
+              className="bg-yellow-500! border-yellow-500! hover:bg-yellow-600! hover:border-yellow-600!"
             >
               <span>Yellow Button</span>
             </Button>
@@ -114,7 +114,7 @@ export default function ButtonsPage() {
               size="large"
               type="primary"
               shape="round"
-              className="!bg-red-500 !border-red-500 hover:!bg-red-600 hover:!border-red-600"
+              className="bg-red-500! border-red-500! hover:bg-red-600! hover:border-red-600!"
             >
               <span>Red Button</span>
             </Button>

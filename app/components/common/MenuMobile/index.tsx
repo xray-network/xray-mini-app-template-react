@@ -54,11 +54,7 @@ export default function ({ items }: { items: MenuItem[] }) {
           )
 
           const renderParentItem = (menuItem: MenuItem, level = 0) => (
-            <div
-              key={menuItem.key}
-              style={level ? { marginLeft: `${level}rem` } : {}}
-              className={style.link}
-            >
+            <div key={menuItem.key} style={level ? { marginLeft: `${level}rem` } : {}} className={style.link}>
               {menuItem.icon}
               {menuItem.label}
             </div>

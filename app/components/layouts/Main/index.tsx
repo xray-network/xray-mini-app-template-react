@@ -6,7 +6,7 @@ export default function LayoutMain() {
   return (
     <>
       <Header />
-      <div className="p-6 mx-auto max-w-[64rem]">
+      <div className="p-6 mx-auto max-w-5xl">
         <Outlet />
       </div>
       <ModalSettings />

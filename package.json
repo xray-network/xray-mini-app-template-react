@@ -57,14 +57,14 @@
   },
   "devDependencies": {
     "@react-router/dev": "^7.8.2",
-    "@tailwindcss/vite": "^4.1.12",
+    "@tailwindcss/vite": "^4.1.17",
     "@types/lodash": "^4.17.18",
     "@types/node": "^20",
     "@types/nprogress": "^0.2.3",
     "@types/react": "^19.1.2",
     "@types/react-copy-to-clipboard": "^5.0.7",
     "@types/react-dom": "^19.1.2",
-    "tailwindcss": "^4.1.12",
+    "tailwindcss": "^4.1.17",
     "typescript": "^5.8.3",
     "vite": "^7.1.4",
     "vite-tsconfig-paths": "^5.1.4"

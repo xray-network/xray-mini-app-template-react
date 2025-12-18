@@ -172,7 +172,7 @@ export default function TablePage() {
         return (
           <span>
             {!info && (
-              <Skeleton active paragraph={{ rows: 1, width: "100%" }} title={false} className="!inline-flex !w-20" />
+              <Skeleton active paragraph={{ rows: 1, width: "100%" }} title={false} className="inline-flex! w-20!" />
             )}
             {info && (
               <span>
@@ -196,7 +196,7 @@ export default function TablePage() {
         return (
           <span>
             {!info && (
-              <Skeleton active paragraph={{ rows: 1, width: "100%" }} title={false} className="!inline-flex !w-20" />
+              <Skeleton active paragraph={{ rows: 1, width: "100%" }} title={false} className="inline-flex! w-20!" />
             )}
             {info && (
               <span>
@@ -214,7 +214,7 @@ export default function TablePage() {
     <section className="mb-10">
       <h2 className="text-5xl font-bold mb-14">Table</h2>
       <div className="flex mb-4">
-        <div className="grow-1 max-w-120 min-w-20 me-2">
+        <div className="grow max-w-120 min-w-20 me-2">
           <Input
             ref={searchInput}
             prefix={<MagnifyingGlassIcon className="size-5 me-1" strokeWidth={2} />}
