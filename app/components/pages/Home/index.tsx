@@ -8,7 +8,12 @@ export default function HomePage() {
   const network = useAppStore((state) => state.network)
   const theme = useAppStore((state) => state.theme)
   const connectedToSDK = useAppStore((state) => state.connectedToSDK)
-  const { sendMessage } = useMiniAppClientMessaging(() => {})
+
+  const [log, setLog] = useState<HostMessage[]>([])
+
+  const { sendMessage } = useMiniAppClientMessaging((message) => {
+    setLog((prevLog) => [message, ...prevLog])
+  })
 
   return (
     <div className="text-center">
@@ -36,7 +41,7 @@ export default function HomePage() {
         <p>Host Network: {(connectedToSDK && network) || "—"}</p>
         <p>Host Theme: {(connectedToSDK && theme) || "—"}</p>
       </div>
-      <div className="max-w-100 mx-auto flex flex-wrap gap-2">
+      <div className="max-w-100 mx-auto flex flex-wrap gap-2 mb-20">
         <Button disabled={!connectedToSDK} onClick={() => sendMessage("xray.client.getTip")}>
           Get Tip
         </Button>
@@ -58,6 +63,19 @@ export default function HomePage() {
         <Button disabled={!connectedToSDK} onClick={() => sendMessage("xray.client.getExplorer")}>
           Get Explorer
         </Button>
+      </div>
+      <div className="max-w-160 mx-auto flex flex-wrap gap-2">
+        {log.map((message, index) => {
+          const payload = JSON.stringify(message, (_, v) => (typeof v === "bigint" ? v.toString() : v), 2)
+          return (
+            <div
+              key={index}
+              className="text-left w-full max-h-33 overflow-scroll p-4 border border-gray-200 dark:border-gray-900 rounded-lg mb-2"
+            >
+              <pre className="text-xs">{payload}</pre>
+            </div>
+          )
+        })}
       </div>
     </div>
   )
