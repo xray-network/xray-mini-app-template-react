@@ -32,7 +32,7 @@ export default function HomePage() {
             <SignalSlashIcon className="size-20 mx-auto mb-5 text-red-500" strokeWidth={1.5} />
             <h1 className="text-3xl font-black mb-5">Disconnected</h1>
             <p className="text-gray-500">
-              This Mini App is not connected to the XRAY/App. Some features may be unavailable.
+              This Mini App is not connected to the XRAY/App. Open it in the XRAY/App to enable full functionality.
             </p>
           </div>
         )}
