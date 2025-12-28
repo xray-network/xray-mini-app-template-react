@@ -45,7 +45,7 @@ export default function HomePage() {
           </div>
         </Copy>
         <span className="absolute top-2 left-4 text-gray-500 font-mono text-sm">git clone</span>
-        <pre>hhttps://github.com/xray-network/xray-mini-app-template-react.git</pre>
+        <pre>https://github.com/xray-network/xray-mini-app-template-react.git</pre>
       </div>
       <div className="text-center mt-10 text-sm text-gray-500 mb-10">
         <p>Host Network: {(connectedToSDK && network) || "—"}</p>
