@@ -38,14 +38,14 @@ export default function HomePage() {
           </div>
         )}
       </div>
-      <div className="text-left max-w-170 mx-auto bg-gray-100 dark:bg-gray-900 p-4 pt-8 rounded-lg relative">
+      <div className="text-left max-w-170 mx-auto bg-gray-100 dark:bg-gray-950 p-4 pt-8 rounded-lg relative">
         <Copy copy="https://github.com/xray-network/xray-mini-app-template-react.git">
           <div className="absolute top-2 right-2 cursor-pointer text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300">
             <DocumentDuplicateIcon className="size-5" strokeWidth={2} />
           </div>
         </Copy>
         <span className="absolute top-2 left-4 text-gray-500 font-mono text-sm">git clone</span>
-        <pre>https://github.com/xray-network/xray-mini-app-template-react.git</pre>
+        <pre className="overflow-y-auto max-w-full">https://github.com/xray-network/xray-mini-app-template-react.git</pre>
       </div>
       <div className="text-center mt-10 text-sm text-gray-500 mb-10">
         <p>Host Network: {(connectedToSDK && network) || "—"}</p>
