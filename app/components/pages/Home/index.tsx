@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
-import { SignalIcon, SignalSlashIcon } from "@heroicons/react/24/outline"
+import { SignalIcon, SignalSlashIcon, DocumentDuplicateIcon } from "@heroicons/react/24/outline"
 import { useMiniAppClientMessaging, type HostMessage } from "xray-mini-app-sdk-react"
+import Copy from "@/components/common/Copy"
 import { useAppStore } from "@/store/app"
 import { Button } from "antd"
 
@@ -37,11 +38,21 @@ export default function HomePage() {
           </div>
         )}
       </div>
+      <div className="text-left max-w-170 mx-auto bg-gray-100 dark:bg-gray-900 p-4 pt-8 rounded-lg relative">
+        <Copy copy="https://github.com/xray-network/xray-mini-app-template-react.git">
+          <div className="absolute top-2 right-2 cursor-pointer text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300">
+            <DocumentDuplicateIcon className="size-5" strokeWidth={2} />
+          </div>
+        </Copy>
+        <span className="absolute top-2 left-4 text-gray-500 font-mono text-sm">git clone</span>
+        <pre>hhttps://github.com/xray-network/xray-mini-app-template-react.git</pre>
+      </div>
       <div className="text-center mt-10 text-sm text-gray-500 mb-10">
         <p>Host Network: {(connectedToSDK && network) || "—"}</p>
         <p>Host Theme: {(connectedToSDK && theme) || "—"}</p>
       </div>
-      <div className="max-w-100 mx-auto flex flex-wrap gap-2 mb-20">
+      <div className="shared-line my-20" />
+      <div className="max-w-100 mx-auto flex flex-wrap gap-2 mb-10">
         <Button disabled={!connectedToSDK} onClick={() => sendMessage("xray.client.getTip")}>
           Get Tip
         </Button>
@@ -72,7 +83,7 @@ export default function HomePage() {
               key={index}
               className="text-left w-full max-h-33 overflow-scroll p-4 border border-gray-200 dark:border-gray-900 rounded-lg mb-2"
             >
-              <pre className="text-xs">{payload}</pre>
+              <pre className="text-xs text-gray-600 dark:text-gray-400">{payload}</pre>
             </div>
           )
         })}
