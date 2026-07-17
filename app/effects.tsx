@@ -1,102 +1,89 @@
-import { useEffect, useRef, useCallback } from "react"
-import { useAppStore } from "@/store/app"
-import { useWeb3Store } from "@/store/web3"
+import { useEffect, useRef } from "react"
 import { useNavigate, useNavigation, useLocation } from "react-router"
 import NProgress from "nprogress"
-import { useMiniAppClientMessaging, type HostMessage, type Network, type Theme } from "xray-mini-app-sdk-react"
+import { miniAppClient } from "@xray-network/mini-app-sdk/client"
+import {
+  useHostMessage,
+  useMiniApp,
+  useTheme as useHostTheme,
+  useNetwork as useHostNetwork,
+  useCurrency as useHostCurrency,
+  useHideBalances as useHostHideBalances,
+  useExplorer as useHostExplorer,
+} from "@xray-network/mini-app-sdk/react"
+import { useAppStore } from "@/store/app"
+import { useWeb3Store } from "@/store/web3"
 
-const Effects = () => {
-  const navigate = useNavigate()
-  const navigation = useNavigation()
-  const location = useLocation()
-  const route = location.pathname + location.search + location.hash
+/**
+ * Mirror live host settings into the local store. The SDK hooks fetch each
+ * value once after the handshake and stay live via host pushes, so the local
+ * (persisted) settings follow the host while connected and remain the last
+ * known values when the app runs standalone.
+ */
+const HostSettingsSync = () => {
+  const hostTheme = useHostTheme()
+  const hostNetwork = useHostNetwork()
+  const hostCurrency = useHostCurrency()
+  const hostHideBalances = useHostHideBalances()
+  const hostExplorer = useHostExplorer()
 
-  const currLocation = useRef(location.pathname)
-  const nprogressDoneTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  const initWeb3 = useWeb3Store((state) => state.initWeb3)
-  const network = useAppStore((state) => state.network)
-
-  const connectedToSDKSet = useAppStore((state) => state.connectedToSDKSet)
-  const initTheme = useAppStore((state) => state.initTheme)
-
-  const updateTip = useAppStore((state) => state.updateTip)
-  const accountStateSet = useAppStore((state) => state.accountStateSet)
-  const networkSet = useAppStore((state) => state.networkSet)
   const changeTheme = useAppStore((state) => state.changeTheme)
+  const networkSet = useAppStore((state) => state.networkSet)
   const currencySet = useAppStore((state) => state.currencySet)
   const hideBalancesSet = useAppStore((state) => state.hideBalancesSet)
   const explorerSet = useAppStore((state) => state.explorerSet)
 
-  const handleXRAYMessage = useCallback(
-    (message: HostMessage) => {
-      switch (message.type) {
-        case "xray.host.routeChanged": {
-          if (route !== message.payload.route) {
-            navigate(message.payload.route)
-          }
-          break
-        }
-        case "xray.host.tip": {
-          updateTip(message.payload.tip)
-          break
-        }
-        case "xray.host.accountState": {
-          accountStateSet(message.payload.accountState)
-          break
-        }
-        case "xray.host.network": {
-          networkSet(message.payload.network)
-          break
-        }
-        case "xray.host.theme": {
-          changeTheme(message.payload.theme)
-          break
-        }
-        case "xray.host.currency": {
-          currencySet(message.payload.currency)
-          break
-        }
-        case "xray.host.hideBalances": {
-          hideBalancesSet(message.payload.hideBalances)
-          break
-        }
-        case "xray.host.explorer": {
-          explorerSet(message.payload.explorer)
-          break
-        }
-        default:
-          break
-      }
-    },
-    [route]
-  )
+  useEffect(() => {
+    if (hostTheme !== null) changeTheme(hostTheme)
+  }, [hostTheme])
+  useEffect(() => {
+    if (hostNetwork !== null) networkSet(hostNetwork)
+  }, [hostNetwork])
+  useEffect(() => {
+    if (hostCurrency !== null) currencySet(hostCurrency)
+  }, [hostCurrency])
+  useEffect(() => {
+    if (hostHideBalances !== null) hideBalancesSet(hostHideBalances)
+  }, [hostHideBalances])
+  useEffect(() => {
+    if (hostExplorer !== null) explorerSet(hostExplorer)
+  }, [hostExplorer])
 
-  const { sendMessage: sendMessageToXRAY, isConnected } = useMiniAppClientMessaging(handleXRAYMessage)
+  return null
+}
+
+/**
+ * Bidirectional route sync with the host: notify the host when the router
+ * navigates, follow the host when it pushes a route (guarding echo loops).
+ */
+const RouteSync = () => {
+  const { connected } = useMiniApp()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const route = location.pathname + location.search + location.hash
 
   useEffect(() => {
-    if (isConnected) {
-      connectedToSDKSet(true)
-      sendMessageToXRAY("xray.client.getTip")
-      sendMessageToXRAY("xray.client.getAccountState")
-      sendMessageToXRAY("xray.client.getNetwork")
-      sendMessageToXRAY("xray.client.getTheme")
-      sendMessageToXRAY("xray.client.getCurrency")
-      sendMessageToXRAY("xray.client.getHideBalances")
-      sendMessageToXRAY("xray.client.getExplorer")
+    if (connected) {
+      void miniAppClient.routeChanged(route)
     }
-  }, [isConnected])
+  }, [connected, route])
+
+  useHostMessage("xray.host.routeChanged", (newRoute) => {
+    if (newRoute !== route) navigate(newRoute)
+  })
+
+  return null
+}
+
+/** Top loading bar on route transitions */
+const ProgressBar = () => {
+  const navigation = useNavigation()
+  const location = useLocation()
+  const currLocation = useRef(location.pathname)
+  const nprogressDoneTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
-    sendMessageToXRAY("xray.client.routeChanged", { route })
-  }, [route])
-
-  // Handle navigation state changes for NProgress
-  useEffect(() => {
-    const clearTimeouts = () => {
-      if (nprogressDoneTimeout.current) clearTimeout(nprogressDoneTimeout.current)
-    }
-    clearTimeouts()
+    if (nprogressDoneTimeout.current) clearTimeout(nprogressDoneTimeout.current)
     const isNewRoute = location.pathname !== currLocation.current
     const isLoading = navigation.state === "loading"
     if (isNewRoute || isLoading) {
@@ -110,19 +97,35 @@ const Effects = () => {
     }
   }, [location.pathname, navigation.state])
 
-  // Initialize theme on first render
+  return null
+}
+
+/** Apply the persisted theme preference on first render, init CardanoWeb3js per network */
+const AppInit = () => {
+  const initTheme = useAppStore((state) => state.initTheme)
+  const network = useAppStore((state) => state.network)
+  const initWeb3 = useWeb3Store((state) => state.initWeb3)
+
   useEffect(() => {
     initTheme()
   }, [])
 
-  // Initialize CardanoWeb3js
   useEffect(() => {
-    if (network) {
-      initWeb3(network)
-    }
+    initWeb3(network)
   }, [network])
 
   return null
+}
+
+const Effects = () => {
+  return (
+    <>
+      <AppInit />
+      <HostSettingsSync />
+      <RouteSync />
+      <ProgressBar />
+    </>
+  )
 }
 
 export default Effects

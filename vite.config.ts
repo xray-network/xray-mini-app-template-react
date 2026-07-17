@@ -13,4 +13,9 @@ export default defineConfig({
       "@": path.resolve(__dirname, "app"),
     },
   },
+  ssr: {
+    // The SDK's ESM dist uses extensionless relative imports, so it must be
+    // bundled rather than left external to Node's ESM resolver
+    noExternal: ["@xray-network/mini-app-sdk"],
+  },
 })

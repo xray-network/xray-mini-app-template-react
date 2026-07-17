@@ -1,25 +1,37 @@
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { SignalIcon, SignalSlashIcon, DocumentDuplicateIcon } from "@heroicons/react/24/outline"
-import { useMiniAppClientMessaging, type HostMessage } from "xray-mini-app-sdk-react"
+import { miniAppClient, miniAppCip30Client } from "@xray-network/mini-app-sdk/client"
+import { useMiniApp, useNetwork, useTheme } from "@xray-network/mini-app-sdk/react"
+import type { HostMessage } from "@xray-network/mini-app-sdk"
 import Copy from "@/components/common/Copy"
-import { useAppStore } from "@/store/app"
 import { Button } from "antd"
 
 export default function HomePage() {
-  const network = useAppStore((state) => state.network)
-  const theme = useAppStore((state) => state.theme)
-  const connectedToSDK = useAppStore((state) => state.connectedToSDK)
-
+  const { connected, connecting } = useMiniApp()
+  const network = useNetwork()
+  const theme = useTheme()
   const [log, setLog] = useState<HostMessage[]>([])
 
-  const { sendMessage } = useMiniAppClientMessaging((message) => {
-    setLog((prevLog) => [message, ...prevLog])
-  })
+  useEffect(() => {
+    // Only log responses to requests made by this app (buttons below), not initiated by host
+    return miniAppClient.listenAll((message) => {
+      if (message.requestId) {
+        setLog((prevLog) => [message, ...prevLog])
+      }
+    })
+  }, [])
 
   return (
     <div className="text-center">
       <div className="text-center mt-20">
-        {connectedToSDK && (
+        {connecting && (
+          <div className="mb-10">
+            <SignalIcon className="size-20 mx-auto mb-5 text-gray-400 animate-pulse" strokeWidth={1.5} />
+            <h1 className="text-3xl font-black mb-5">Connecting…</h1>
+            <p className="text-gray-500">Waiting for the XRAY/App host to respond.</p>
+          </div>
+        )}
+        {connected === true && (
           <div className="mb-10">
             <SignalIcon className="size-20 mx-auto mb-5 text-green-500" strokeWidth={1.5} />
             <h1 className="text-3xl font-black mb-5">Connected</h1>
@@ -28,13 +40,11 @@ export default function HomePage() {
             </p>
           </div>
         )}
-        {!connectedToSDK && (
+        {connected === false && (
           <div className="mb-10">
             <SignalSlashIcon className="size-20 mx-auto mb-5 text-red-500" strokeWidth={1.5} />
             <h1 className="text-3xl font-black mb-5">Disconnected</h1>
-            <p className="text-gray-500">
-              This Mini App is not connected to the XRAY/App. Open it in the XRAY/App to enable full functionality.
-            </p>
+            <p className="text-gray-500">Open it in the XRAY/App to enable full functionality.</p>
           </div>
         )}
       </div>
@@ -45,34 +55,46 @@ export default function HomePage() {
           </div>
         </Copy>
         <span className="absolute top-2 left-4 text-gray-500 font-mono text-sm">git clone</span>
-        <pre className="overflow-y-auto max-w-full">https://github.com/xray-network/xray-mini-app-template-react.git</pre>
+        <pre className="overflow-y-auto max-w-full">
+          https://github.com/xray-network/xray-mini-app-template-react.git
+        </pre>
       </div>
       <div className="text-center mt-10 text-sm text-gray-500 mb-10">
-        <p>Host Network: {(connectedToSDK && network) || "—"}</p>
-        <p>Host Theme: {(connectedToSDK && theme) || "—"}</p>
+        <p>Host Network: {(connected && network) || "—"}</p>
+        <p>Host Theme: {(connected && theme) || "—"}</p>
       </div>
       <div className="shared-line my-20" />
       <div className="max-w-100 mx-auto flex flex-wrap gap-2 mb-10">
-        <Button disabled={!connectedToSDK} onClick={() => sendMessage("xray.client.getTip")}>
+        <Button disabled={!connected} onClick={() => miniAppClient.getTip()}>
           Get Tip
         </Button>
-        <Button disabled={!connectedToSDK} onClick={() => sendMessage("xray.client.getAccountState")}>
-          Get Accoount State
+        <Button disabled={!connected} onClick={() => miniAppClient.getAccountState()}>
+          Get Account State
         </Button>
-        <Button disabled={!connectedToSDK} onClick={() => sendMessage("xray.client.getNetwork")}>
+        <Button disabled={!connected} onClick={() => miniAppClient.getNetwork()}>
           Get Network
         </Button>
-        <Button disabled={!connectedToSDK} onClick={() => sendMessage("xray.client.getTheme")}>
+        <Button disabled={!connected} onClick={() => miniAppClient.getTheme()}>
           Get Theme
         </Button>
-        <Button disabled={!connectedToSDK} onClick={() => sendMessage("xray.client.getCurrency")}>
+        <Button disabled={!connected} onClick={() => miniAppClient.getCurrency()}>
           Get Currency
         </Button>
-        <Button disabled={!connectedToSDK} onClick={() => sendMessage("xray.client.getHideBalances")}>
+        <Button disabled={!connected} onClick={() => miniAppClient.getHideBalances()}>
           Get Hide Balances
         </Button>
-        <Button disabled={!connectedToSDK} onClick={() => sendMessage("xray.client.getExplorer")}>
+        <Button disabled={!connected} onClick={() => miniAppClient.getExplorer()}>
           Get Explorer
+        </Button>
+        <Button
+          disabled={!connected}
+          onClick={async () => {
+            const api = await miniAppCip30Client.enable()
+            const balance = await api.getBalance()
+            console.log(`CIP-30 Balance: ${balance}`)
+          }}
+        >
+          CIP-30 Get Balance
         </Button>
       </div>
       <div className="max-w-160 mx-auto flex flex-wrap gap-2">

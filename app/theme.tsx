@@ -275,7 +275,7 @@ export const px2rem = px2remTransformer({
 })
 
 const Theme = ({ children }: { children: React.ReactNode }) => {
-  const { theme } = useAppStore((state) => state)
+  const theme = useAppStore((state) => state.theme)
   const [antdTheme, setAntdTheme] = useState<Partial<ThemeConfig>>(lightTheme)
 
   useEffect(() => {

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react"
 import { Statistic } from "antd"
+import { useTip } from "@xray-network/mini-app-sdk/react"
 import * as utils from "@/utils"
 import packageInfo from "../../../../package.json"
 import classnames from "classnames"
 import { useAppStore } from "@/store/app"
 
 const Sidebar = ({ variant }: { variant: "v1" | "v2" }) => {
-  const tip = useAppStore((state) => state.tip)
+  const { tip } = useTip()
   const network = useAppStore((state) => state.network)
   const [animate, setAnimate] = useState(false)
 

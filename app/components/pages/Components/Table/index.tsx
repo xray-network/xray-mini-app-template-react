@@ -3,11 +3,11 @@ import { Table, Input, Radio, Space, Button, Skeleton } from "antd"
 import type { TableProps, InputRef } from "antd"
 import type { KoiosTypes } from "cardano-web3-js"
 import { useWeb3Store } from "@/store/web3"
+import { useTip } from "@xray-network/mini-app-sdk/react"
 import { MagnifyingGlassIcon, FunnelIcon, XMarkIcon, ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/24/outline"
 import Informers from "@/components/informers"
 import * as utils from "@/utils"
 import { formatDistanceToNow } from "date-fns"
-import { useAppStore } from "@/store/app"
 import { debounce } from "lodash"
 
 type Block = KoiosTypes.paths["/blocks"]["get"]["responses"]["200"]["content"]["application/json"][number]
@@ -17,7 +17,7 @@ export default function TablePage() {
   const searchInput = useRef<InputRef>(null)
 
   const web3 = useWeb3Store((state) => state.web3)
-  const tip = useAppStore((state) => state.tip)
+  const { tip } = useTip()
 
   const [loading, setLoading] = useState(true)
   const [blockList, setBlockList] = useState<Block[]>([])

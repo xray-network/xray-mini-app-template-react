@@ -1,4 +1,5 @@
 import { Modal, Radio, Select, Switch } from "antd"
+import { useShallow } from "zustand/react/shallow"
 import { useAppStore } from "@/store/app"
 import * as Types from "@/types"
 import NetworkStats from "@/components/common/NetworkStats"
@@ -18,7 +19,22 @@ const ModalSettings = () => {
     explorerSet,
     network,
     networkSet,
-  } = useAppStore((state) => state)
+  } = useAppStore(
+    useShallow((state) => ({
+      modalSettings: state.modalSettings,
+      modalSettingsSet: state.modalSettingsSet,
+      themePrefer: state.themePrefer,
+      changeTheme: state.changeTheme,
+      currency: state.currency,
+      currencySet: state.currencySet,
+      hideBalances: state.hideBalances,
+      hideBalancesSet: state.hideBalancesSet,
+      explorer: state.explorer,
+      explorerSet: state.explorerSet,
+      network: state.network,
+      networkSet: state.networkSet,
+    }))
+  )
 
   return (
     <Modal

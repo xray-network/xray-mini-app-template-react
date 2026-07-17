@@ -14,7 +14,6 @@ export const useWeb3Store = create<Web3StoreState>((set) => ({
   CML: null,
   utils: null,
   initWeb3: async (network: Types.CW3Types.NetworkName) => {
-    console.log("Initializing CardanoWeb3js for network:", network)
     const { CardanoWeb3, CML, utils } = await import("cardano-web3-js")
     set({
       web3: new CardanoWeb3({ network }),

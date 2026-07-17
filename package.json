@@ -33,26 +33,25 @@
     "#tailwind.css": "app/styles/tailwind.css"
   },
   "dependencies": {
+    "@ant-design/cssinjs": "^1.23.0",
     "@ant-design/happy-work-theme": "^1.0.1",
     "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "@heroicons/react": "^2.2.0",
     "@react-router/node": "^7.5.3",
     "@react-router/serve": "^7.5.3",
+    "@xray-network/mini-app-sdk": "^3.0.0",
     "antd": "^5.27.3",
     "cardano-web3-js": "^2.3.4",
+    "classnames": "^2.5.1",
     "date-fns": "^4.1.0",
     "isbot": "^5.1.27",
     "lodash": "^4.17.21",
     "nprogress": "^0.2.0",
-    "prettier": "^3.5.3",
     "react": "^19.1.0",
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^19.1.0",
     "react-jazzicon": "^1.0.4",
     "react-router": "^7.8.2",
-    "vite-plugin-svgr": "^4.5.0",
-    "vite-plugin-wasm": "^3.5.0",
-    "wrangler": "^4.45.0",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
@@ -64,9 +63,13 @@
     "@types/react": "^19.1.2",
     "@types/react-copy-to-clipboard": "^5.0.7",
     "@types/react-dom": "^19.1.2",
+    "prettier": "^3.5.3",
     "tailwindcss": "^4.1.17",
     "typescript": "^5.8.3",
     "vite": "^7.1.4",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-plugin-svgr": "^4.5.0",
+    "vite-plugin-wasm": "^3.5.0",
+    "vite-tsconfig-paths": "^5.1.4",
+    "wrangler": "^4.45.0"
   }
 }
