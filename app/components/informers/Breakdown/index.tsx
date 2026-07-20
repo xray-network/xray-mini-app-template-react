@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import classNames from "classnames"
 import { Tooltip } from "antd"
 import { InformationCircleIcon } from "@heroicons/react/24/outline"

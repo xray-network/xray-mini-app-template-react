@@ -1,47 +1,46 @@
 import { Modal, Radio, Select, Switch } from "antd"
 import { useShallow } from "zustand/react/shallow"
-import { useAppStore } from "@/store/app"
+import { usePreferencesStore } from "@/store/preferences"
+import { useUiStore } from "@/store/ui"
 import * as Types from "@/types"
 import NetworkStats from "@/components/common/NetworkStats"
 import { XMarkIcon, SunIcon, MoonIcon, Cog6ToothIcon } from "@heroicons/react/24/outline"
 
 const ModalSettings = () => {
   const {
-    modalSettings,
-    modalSettingsSet,
     themePrefer,
-    changeTheme,
+    setThemePreference,
     currency,
-    currencySet,
+    setCurrency,
     hideBalances,
-    hideBalancesSet,
+    setHideBalances,
     explorer,
-    explorerSet,
+    setExplorer,
     network,
-    networkSet,
-  } = useAppStore(
+    setNetwork,
+  } = usePreferencesStore(
     useShallow((state) => ({
-      modalSettings: state.modalSettings,
-      modalSettingsSet: state.modalSettingsSet,
       themePrefer: state.themePrefer,
-      changeTheme: state.changeTheme,
+      setThemePreference: state.setThemePreference,
       currency: state.currency,
-      currencySet: state.currencySet,
+      setCurrency: state.setCurrency,
       hideBalances: state.hideBalances,
-      hideBalancesSet: state.hideBalancesSet,
+      setHideBalances: state.setHideBalances,
       explorer: state.explorer,
-      explorerSet: state.explorerSet,
+      setExplorer: state.setExplorer,
       network: state.network,
-      networkSet: state.networkSet,
+      setNetwork: state.setNetwork,
     }))
   )
+  const settingsOpen = useUiStore((state) => state.settingsOpen)
+  const setSettingsOpen = useUiStore((state) => state.setSettingsOpen)
 
   return (
     <Modal
       closeIcon={<XMarkIcon className="size-6" strokeWidth={2.5} />}
       title="App Settings"
-      open={modalSettings}
-      onCancel={() => modalSettingsSet(false)}
+      open={settingsOpen}
+      onCancel={() => setSettingsOpen(false)}
       footer={null}
       width={550}
       destroyOnHidden
@@ -57,7 +56,7 @@ const ModalSettings = () => {
                 buttonStyle="solid"
                 size="large"
                 onChange={({ target: { value } }) => {
-                  changeTheme(value)
+                  setThemePreference(value)
                 }}
                 options={[
                   {
@@ -96,7 +95,7 @@ const ModalSettings = () => {
           <span className="flex items-center">
             <span>Default Currency</span>
             <span className="ms-auto">
-              <Select<Types.App.Currencies> value={currency} onChange={(value) => currencySet(value)} size="large">
+              <Select<Types.App.Currencies> value={currency} onChange={setCurrency} size="large">
                 <Select.Option value="usd">$ USD</Select.Option>
                 <Select.Option value="eur">€ EUR</Select.Option>
                 <Select.Option value="gbp">£ GBP</Select.Option>
@@ -113,7 +112,7 @@ const ModalSettings = () => {
               <Select<Types.App.Explorer>
                 value={explorer}
                 popupMatchSelectWidth={false}
-                onChange={(value) => explorerSet(value)}
+                onChange={setExplorer}
                 size="large"
               >
                 <Select.Option value="cardanoscan">Cardanoscan</Select.Option>
@@ -127,7 +126,7 @@ const ModalSettings = () => {
           <span className="flex items-center">
             <span>Hide Balances</span>
             <span className="ms-auto">
-              <Switch checked={hideBalances} onChange={() => hideBalancesSet(!hideBalances)} />
+              <Switch checked={hideBalances} onChange={setHideBalances} />
             </span>
           </span>
         </div>
@@ -136,7 +135,7 @@ const ModalSettings = () => {
           <span className="flex items-center">
             <span>Cardano Network</span>
             <span className="ms-auto">
-              <Select<Types.CW3Types.NetworkName> value={network} onChange={(value) => networkSet(value)} size="large">
+              <Select<Types.CW3Types.NetworkName> value={network} onChange={setNetwork} size="large">
                 <Select.Option value="mainnet">Mainnet</Select.Option>
                 <Select.Option value="preprod">Preprod</Select.Option>
                 <Select.Option value="preview">Preview</Select.Option>

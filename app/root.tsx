@@ -5,7 +5,9 @@ import "@/styles/style.css"
 import "@ant-design/v5-patch-for-react-19"
 import type { Route } from "./+types/root"
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router"
-import Effects from "@/effects"
+import { CardanoProvider } from "@/integrations/cardano-web-js/CardanoProvider"
+import HostRouteSync from "@/shared/routing/HostRouteSync"
+import NavigationProgress from "@/shared/routing/NavigationProgress"
 import Theme from "@/theme"
 import { themeCssVariables } from "@/theme/css"
 import { metaThemeColor, palette } from "@/theme/palette"
@@ -105,12 +107,13 @@ export function HydrateFallback() {
 
 export default function App() {
   return (
-    <>
-      <Effects />
-      <Theme>
+    <Theme>
+      <CardanoProvider>
+        <HostRouteSync />
+        <NavigationProgress />
         <Outlet />
-      </Theme>
-    </>
+      </CardanoProvider>
+    </Theme>
   )
 }
 

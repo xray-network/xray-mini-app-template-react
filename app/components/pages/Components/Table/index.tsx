@@ -1,86 +1,53 @@
 import { useState, useEffect, useRef } from "react"
-import { Table, Input, Radio, Space, Button, Skeleton } from "antd"
+import { Table, Input, Radio, Space, Button, Skeleton, Alert } from "antd"
 import type { TableProps, InputRef } from "antd"
-import type { KoiosTypes } from "cardano-web3-js"
-import { useWeb3Store } from "@/store/web3"
 import { useTip } from "@xray-network/mini-app-sdk/react"
 import { MagnifyingGlassIcon, FunnelIcon, XMarkIcon, ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/24/outline"
 import Informers from "@/components/informers"
 import * as utils from "@/utils"
 import { formatDistanceToNow } from "date-fns"
-import { debounce } from "lodash"
+import { useCardano } from "@/integrations/cardano-web-js/CardanoProvider"
+import { useBlocks } from "./blocks/model/useBlocks"
+import type { Block } from "./blocks/types"
 
-type Block = KoiosTypes.paths["/blocks"]["get"]["responses"]["200"]["content"]["application/json"][number]
-type BlockInfo = KoiosTypes.paths["/block_info"]["post"]["responses"]["200"]["content"]["application/json"][number]
+const sortOptions = [
+  { key: "block_height", title: "Block" },
+  { key: "epoch_no", title: "Epoch, Slot" },
+  { key: "block_time", title: "Timestamp" },
+  { key: "tx_count", title: "TXs Count" },
+  { key: "pool", title: "Pool" },
+  { key: "total_fees", title: "Total Fees" },
+  { key: "total_output", title: "Total Output" },
+]
 
 export default function TablePage() {
   const searchInput = useRef<InputRef>(null)
 
-  const web3 = useWeb3Store((state) => state.web3)
+  const cardano = useCardano()
   const { tip } = useTip()
 
-  const [loading, setLoading] = useState(true)
-  const [blockList, setBlockList] = useState<Block[]>([])
-  const [blockInfo, setBlockInfo] = useState<BlockInfo[]>([])
-  const [searchString, setSearchString] = useState("")
-  const [totalResults, setTotalResults] = useState(0)
+  const [searchTerm, setSearchTerm] = useState("")
   const [pageSize, setPageSize] = useState(25)
   const [currentPage, setCurrentPage] = useState(1)
   const [sorterField, setSorterField] = useState("block_height")
   const [sorterOrder, setSorterOrder] = useState("descend" as "descend" | "ascend")
-  const [filterLastBlocks, setFilterLastBlocks] = useState("")
-  const [filterCurrentEpoch, setFilterCurrentEpoch] = useState("")
+  const [filterLastBlocks, setFilterLastBlocks] = useState<number | null>(null)
+  const [filterCurrentEpoch, setFilterCurrentEpoch] = useState(false)
   const [currency, setCurrency] = useState("ada")
 
-  const loadBlocks = async () => {
-    setLoading(true)
-
-    const blockLatestResponse = await web3?.explorers.koios.GET("/blocks?limit=1" as "/blocks")
-    const blockLatest = blockLatestResponse?.data?.[0].block_height || 0
-    setTotalResults(blockLatest)
-
-    const paramsString =
-      `?limit=${pageSize}` +
-      // `&offset=${pageSize * (currentPage - 1)}` + // Keyset pagination is preferred (next line), use only for small datasets
-      `&block_height=lte.${blockLatest - pageSize * (currentPage - 1)}` +
-      `${searchString}` +
-      // `&order=${sorterField}.${sorterOrder === "ascend" ? "asc" : "desc"}` + // Too expensive query
-      // `${filterLastBlocks}` +
-      // `${filterCurrentEpoch}` + // Too expensive query
-      ``
-
-    const blockListResponse = await web3?.explorers.koios.GET(`/blocks${paramsString}` as "/blocks", {
-      headers: {
-        "Content-Type": "application/json",
-        // Prefer: "count=estimated", // Too expensive query (returns total count in "Content-Range" response header)
-        Range: `items=${utils.pageSizeToContentRange(currentPage - 1, pageSize)}`,
-      },
-    })
-    setBlockList(blockListResponse?.data || [])
-
-    setBlockInfo([])
-    const blockInfoRespone = await web3?.explorers.koios.POST("/block_info", {
-      body: {
-        _block_hashes: blockListResponse?.data?.map((i) => i.hash) || [],
-      },
-    })
-    setBlockInfo(blockInfoRespone?.data || [])
-
-    setLoading(false)
-  }
+  const { blocks, blockInfo, total, loading, error } = useBlocks(cardano.status === "ready" ? cardano.client : null, {
+    page: currentPage,
+    pageSize,
+    searchTerm,
+    latestLimit: filterLastBlocks,
+    currentEpoch: filterCurrentEpoch ? (tip?.epochNo ?? null) : null,
+    sortField: sorterField,
+    sortOrder: sorterOrder,
+  })
 
   useEffect(() => {
-    if (web3) {
-      loadBlocks()
-    }
-  }, [web3, searchString, pageSize, currentPage])
-  // }, [web3, searchString, pageSize, currentPage, sorterField, sorterOrder, filterLastBlocks, filterCurrentEpoch])
-
-  useEffect(() => {
-    const handleSearchFocus = (e: any) => {
-      try {
-        if (e.code === "Slash") searchInput.current?.focus()
-      } catch {}
+    const handleSearchFocus = (event: KeyboardEvent) => {
+      if (event.code === "Slash") searchInput.current?.focus()
     }
     window?.addEventListener("keyup", handleSearchFocus)
     return () => {
@@ -88,17 +55,13 @@ export default function TablePage() {
     }
   }, [])
 
-  const changeTableParams = (pagination: any, filters: any, sorter: any) => {
-    sorter?.columnKey && setSorterField(sorter.columnKey)
-    sorter?.order && setSorterOrder(sorter.order)
-    pagination?.current && setCurrentPage(pagination.current || 0)
-    pagination?.pageSize && setPageSize(pagination.pageSize || 25)
+  const changeTableParams: NonNullable<TableProps<Block>["onChange"]> = (pagination, _filters, sorter) => {
+    const activeSorter = Array.isArray(sorter) ? sorter[0] : sorter
+    if (activeSorter?.columnKey) setSorterField(String(activeSorter.columnKey))
+    if (activeSorter?.order) setSorterOrder(activeSorter.order)
+    if (pagination.current) setCurrentPage(pagination.current)
+    if (pagination.pageSize) setPageSize(pagination.pageSize)
   }
-
-  const changeSearchString = debounce((value: string) => {
-    setSearchString(value ? `&block_height=eq.${value}` : "")
-    setCurrentPage(1)
-  }, 500)
 
   const blocksColumns: TableProps<Block>["columns"] = [
     {
@@ -225,13 +188,16 @@ export default function TablePage() {
             }
             size="large"
             placeholder="Search by Block Number"
-            onChange={(e) => changeSearchString(e.target.value)}
+            onChange={(event) => {
+              setSearchTerm(event.target.value)
+              setCurrentPage(1)
+            }}
             allowClear
           />
         </div>
         <div className="ms-auto">
           <Informers.Dropdown
-            active={filterLastBlocks !== "" || filterCurrentEpoch !== ""}
+            active={filterLastBlocks !== null || filterCurrentEpoch}
             placement="bottomRight"
             selector={<FunnelIcon className="size-5" strokeWidth={2} />}
             items={[
@@ -244,13 +210,13 @@ export default function TablePage() {
                 children: (
                   <Radio.Group onChange={(e) => setFilterLastBlocks(e.target.value)} value={filterLastBlocks}>
                     <Space direction="vertical">
-                      <Radio value="">
+                      <Radio value={null}>
                         <span className="font-size-14">All Blocks</span>
                       </Radio>
-                      <Radio value="&limit=10">
+                      <Radio value={10}>
                         <span className="font-size-14">Latest 10 Blocks</span>
                       </Radio>
-                      <Radio value="&limit=30">
+                      <Radio value={30}>
                         <span className="font-size-14">Latest 30 Blocks</span>
                       </Radio>
                     </Space>
@@ -269,11 +235,11 @@ export default function TablePage() {
                 children: (
                   <Radio.Group onChange={(e) => setFilterCurrentEpoch(e.target.value)} value={filterCurrentEpoch}>
                     <Space direction="vertical">
-                      <Radio value="">
+                      <Radio value={false}>
                         <span className="font-size-14">All Epoch</span>
                       </Radio>
                       {tip?.epochNo && (
-                        <Radio value={`&epoch_no=eq.${tip?.epochNo}`}>
+                        <Radio value={true}>
                           <span className="font-size-14">Current Epoch ({tip?.epochNo})</span>
                         </Radio>
                       )}
@@ -290,10 +256,10 @@ export default function TablePage() {
                   <Button
                     type="primary"
                     className="w-full"
-                    disabled={filterLastBlocks === "" && filterCurrentEpoch === ""}
+                    disabled={filterLastBlocks === null && !filterCurrentEpoch}
                     onClick={() => {
-                      setFilterLastBlocks("")
-                      setFilterCurrentEpoch("")
+                      setFilterLastBlocks(null)
+                      setFilterCurrentEpoch(false)
                     }}
                   >
                     <XMarkIcon className="size-5 -me-1" strokeWidth={2} />
@@ -313,7 +279,7 @@ export default function TablePage() {
                 {sorterOrder === "ascend" && <ArrowUpIcon className="size-5" strokeWidth={2} />}
                 {sorterOrder === "descend" && <ArrowDownIcon className="size-5" strokeWidth={2} />}
                 <span className="font-size-14 lh-1 text-nowrap">
-                  {(blocksColumns as any[]).find((item) => item.key === sorterField)?.title}
+                  {sortOptions.find((item) => item.key === sorterField)?.title}
                 </span>
               </div>
             }
@@ -355,15 +321,13 @@ export default function TablePage() {
                 children: (
                   <Radio.Group onChange={(e) => setSorterField(e.target.value)} value={sorterField}>
                     <Space direction="vertical">
-                      {(blocksColumns as any[])
-                        .filter((item) => item.key)
-                        .map((item) => {
-                          return (
-                            <Radio key={item.key} value={item.key}>
-                              <span className="font-size-14">{item.title}</span>
-                            </Radio>
-                          )
-                        })}
+                      {sortOptions.map((item) => {
+                        return (
+                          <Radio key={item.key} value={item.key}>
+                            <span className="font-size-14">{item.title}</span>
+                          </Radio>
+                        )
+                      })}
                     </Space>
                   </Radio.Group>
                 ),
@@ -410,11 +374,20 @@ export default function TablePage() {
           />
         </div>
       </div>
+      {(error || cardano.status === "error") && (
+        <Alert
+          className="mb-4"
+          type="error"
+          showIcon
+          message="Unable to load block data"
+          description={(error ?? (cardano.status === "error" ? cardano.error : null))?.message}
+        />
+      )}
       <div className="shared-table">
         <Table<Block>
-          onChange={(pagination, filters, sorter) => changeTableParams(pagination, filters, sorter)}
+          onChange={changeTableParams}
           rowKey={(i) => i.block_height!}
-          dataSource={blockList}
+          dataSource={blocks}
           columns={blocksColumns}
           sortDirections={["descend", "ascend", "descend"]}
           size="small"
@@ -425,13 +398,13 @@ export default function TablePage() {
             pageSize: pageSize,
             showSizeChanger: true,
             showPrevNextJumpers: false,
-            total: totalResults || 1,
+            total: total || 1,
             current: currentPage,
             pageSizeOptions: ["25", "50", "100"],
-            showTotal: () => <div>{utils.quantityWithCommas(totalResults)} Blocks</div>,
+            showTotal: () => <div>{utils.quantityWithCommas(total)} Blocks</div>,
           }}
           loading={{
-            spinning: loading,
+            spinning: loading || cardano.status === "loading",
             indicator: <span className="shared-spinner" />,
           }}
           locale={{

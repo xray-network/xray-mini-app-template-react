@@ -3,16 +3,16 @@ import { Drawer } from "antd"
 import style from "./style.module.css"
 import { ArrowUpRightIcon } from "@heroicons/react/24/outline"
 import type { MenuItem } from "@/config/menu"
-import { useAppStore } from "@/store/app"
+import { useUiStore } from "@/store/ui"
 
-export default function ({ items }: { items: MenuItem[] }) {
-  const menuDrawerOpen = useAppStore((state) => state.menuDrawerOpen)
-  const menuDrawerOpenSet = useAppStore((state) => state.menuDrawerOpenSet)
+export default function MenuMobile({ items }: { items: MenuItem[] }) {
+  const menuOpen = useUiStore((state) => state.menuOpen)
+  const setMenuOpen = useUiStore((state) => state.setMenuOpen)
 
   return (
     <Drawer
-      open={menuDrawerOpen}
-      onClose={() => menuDrawerOpenSet(false)}
+      open={menuOpen}
+      onClose={() => setMenuOpen(false)}
       closeIcon={null}
       width="17rem"
       placement="left"
@@ -27,7 +27,7 @@ export default function ({ items }: { items: MenuItem[] }) {
               style={level ? { marginLeft: `${level}rem` } : {}}
               className={style.link}
               onClick={() => {
-                menuDrawerOpenSet(false)
+                setMenuOpen(false)
               }}
             >
               {menuItem.icon}
@@ -44,7 +44,7 @@ export default function ({ items }: { items: MenuItem[] }) {
               style={level ? { marginLeft: `${level}rem` } : {}}
               className={style.link}
               onClick={() => {
-                menuDrawerOpenSet(false)
+                setMenuOpen(false)
               }}
             >
               {menuItem.icon}

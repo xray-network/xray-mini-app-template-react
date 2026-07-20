@@ -1,24 +1,21 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { Statistic } from "antd"
 import { useTip } from "@xray-network/mini-app-sdk/react"
 import * as utils from "@/utils"
-import packageInfo from "../../../../package.json"
 import classnames from "classnames"
-import { useAppStore } from "@/store/app"
+import { useEffectiveNetwork } from "@/integrations/xray-mini-app-sdk/useEffectiveSettings"
 
 const Sidebar = ({ variant }: { variant: "v1" | "v2" }) => {
   const { tip } = useTip()
-  const network = useAppStore((state) => state.network)
+  const network = useEffectiveNetwork()
   const [animate, setAnimate] = useState(false)
 
   useEffect(() => {
     setAnimate(true)
-    const int = setInterval(() => {
+    const timeout = setTimeout(() => {
       setAnimate(false)
     }, 700)
-    return () => {
-      clearInterval(int)
-    }
+    return () => clearTimeout(timeout)
   }, [tip?.blockNo])
 
   return (
@@ -44,7 +41,6 @@ const Sidebar = ({ variant }: { variant: "v1" | "v2" }) => {
           />
         </span>
       </div>
-      {}
       {variant === "v1" && (
         <div className="mb-3 h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full mt-2">
           <div
@@ -55,7 +51,7 @@ const Sidebar = ({ variant }: { variant: "v1" | "v2" }) => {
       )}
       {variant === "v2" && (
         <div>
-          Network: {network ? utils.capitalizeFirstLetter(network) : "—"} · App Version: {packageInfo.version}
+          Network: {network ? utils.capitalizeFirstLetter(network) : "—"}
         </div>
       )}
     </div>

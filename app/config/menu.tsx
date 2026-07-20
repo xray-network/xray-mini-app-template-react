@@ -1,5 +1,5 @@
 import React from "react"
-import { HomeIcon, WindowIcon } from "@heroicons/react/24/outline"
+import { HomeIcon } from "@heroicons/react/24/outline"
 
 /**
  * Menu Item Type Definition
@@ -53,7 +53,7 @@ export const menuItems: MenuItem[] = [
   {
     key: "docs",
     label: "Docs",
-    link: "https://xray.app/wiki/dev/mini-apps/",
+    link: "https://docs.xraynetwork.io",
     type: "external",
   },
 ]

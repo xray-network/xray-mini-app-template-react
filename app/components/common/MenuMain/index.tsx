@@ -45,7 +45,7 @@ const buildDropdownItems = (nodes: MenuItem[]): MenuProps["items"] =>
     }
   })
 
-const renderMenu = (items: MenuItem[], depth = 0) => {
+const renderMenu = (items: MenuItem[]) => {
   const renderDropdownTrigger = (item: MenuItem) => {
     if (item.type === "internal") {
       return (

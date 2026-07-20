@@ -1,13 +1,5 @@
-import { Button, Checkbox, DatePicker, Form, Input, Radio, Select, Space, Switch } from "antd"
+import { Button, Checkbox, Form, Input, Radio, Select, Space, Switch } from "antd"
 import { SunIcon, MoonIcon, Cog6ToothIcon } from "@heroicons/react/24/outline"
-
-type User = {
-  key: string
-  name: string
-  age: number
-  address: string
-  tags: string[]
-}
 
 export default function FormPage() {
   const [form] = Form.useForm()

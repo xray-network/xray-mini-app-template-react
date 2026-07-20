@@ -2,6 +2,8 @@ import * as Types from "@/types"
 
 export const ZUSTAND_STORE_PREFIX = "zustand_prefix"
 
+export const APP_VERSION = __APP_VERSION__
+
 export const ADA_HANDLE_POLICY = "f0ff48bbb7bbe9d59a40f1ce90e9e9d0ff5002ec48f232b49ca0fb9a"
 
 export const SLOT_CONFIG_NETWORK: Record<Types.CW3Types.NetworkName, Types.CW3Types.SlotConfig> = {

@@ -2,8 +2,8 @@ import { useEffect } from "react"
 import { ConfigProvider, App } from "antd"
 import { HappyProvider } from "@ant-design/happy-work-theme"
 import { StyleProvider, px2remTransformer } from "@ant-design/cssinjs"
-import { useAppStore } from "@/store/app"
-import EscapeAntd from "@/utils/escapeAntd"
+import { useEffectiveTheme } from "@/integrations/xray-mini-app-sdk/useEffectiveSettings"
+import EscapeAntd from "./EscapeAntd"
 import { lightTheme, darkTheme } from "./antd"
 import { metaThemeColor } from "./palette"
 
@@ -13,7 +13,7 @@ export const px2rem = px2remTransformer({
 })
 
 const Theme = ({ children }: { children: React.ReactNode }) => {
-  const theme = useAppStore((state) => state.theme)
+  const theme = useEffectiveTheme()
 
   useEffect(() => {
     const html = document.documentElement
@@ -28,11 +28,13 @@ const Theme = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <ConfigProvider theme={theme === "dark" ? darkTheme : lightTheme}>
-      <App>
-        <EscapeAntd />
-      </App>
       <StyleProvider transformers={[px2rem]}>
-        <HappyProvider>{children}</HappyProvider>
+        <HappyProvider>
+          <App>
+            <EscapeAntd />
+            {children}
+          </App>
+        </HappyProvider>
       </StyleProvider>
     </ConfigProvider>
   )

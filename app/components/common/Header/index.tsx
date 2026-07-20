@@ -1,24 +1,37 @@
 import { useEffect, useState } from "react"
-import { Button, Tooltip, Dropdown, Input } from "antd"
+import { Button, Tooltip } from "antd"
 import { NavLink } from "react-router"
 import { Cog6ToothIcon, Bars3Icon } from "@heroicons/react/24/outline"
-import { useAppStore } from "@/store/app"
-import { useIsMobileView } from "@/utils/hooks"
+import { useUiStore } from "@/store/ui"
 import Menu from "@/components/common/MenuMain"
 import MenuMobile from "@/components/common/MenuMobile"
 import { menuItems } from "@/config/menu"
 
+const useIsMobileView = (breakpoint = 1023) => {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(`(max-width: ${breakpoint}px)`)
+    const update = () => setIsMobile(mediaQuery.matches)
+    update()
+    mediaQuery.addEventListener("change", update)
+    return () => mediaQuery.removeEventListener("change", update)
+  }, [breakpoint])
+
+  return isMobile
+}
+
 export default function Header() {
   const [showSettingsTooltip, setShowSettingsTooltip] = useState(false)
-  const modalSettingsSet = useAppStore((state) => state.modalSettingsSet)
-  const menuDrawerOpenSet = useAppStore((state) => state.menuDrawerOpenSet)
+  const setSettingsOpen = useUiStore((state) => state.setSettingsOpen)
+  const setMenuOpen = useUiStore((state) => state.setMenuOpen)
   const isMobileView = useIsMobileView()
 
   return (
     <div className="flex px-6 py-4 items-center text-nowrap">
       <NavLink to="/" className="pe-3 md:pe-7">
         <div className="text-black dark:text-white font-black text-lg leading-5">Mini App Template</div>
-        <div className="text-sm text-gray-500">React Version</div>
+        <div className="text-sm text-gray-500">React Version {__APP_VERSION__}</div>
       </NavLink>
       {!isMobileView ? <Menu items={menuItems} /> : <MenuMobile items={menuItems} />}
       <div className="flex items-center ms-auto ps-3 md:ps-7">
@@ -33,7 +46,7 @@ export default function Header() {
             shape="round"
             type="text"
             onClick={() => {
-              modalSettingsSet(true)
+              setSettingsOpen(true)
               setShowSettingsTooltip(false)
             }}
           >
@@ -46,7 +59,7 @@ export default function Header() {
           shape="round"
           type="text"
           onClick={() => {
-            menuDrawerOpenSet(true)
+            setMenuOpen(true)
           }}
         >
           <Bars3Icon className="size-5" strokeWidth={2} />
