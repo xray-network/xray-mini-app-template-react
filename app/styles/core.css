@@ -1,6 +1,6 @@
 html {
   font-size: 16px;
-  color: var(--color-black);
+  color: var(--xr-black);
   height: 100% !important;
 
   @media (width < 768px) {
@@ -18,7 +18,7 @@ body {
 }
 
 * {
-  scrollbar-color: var(--color-gray-200) transparent;
+  scrollbar-color: var(--xr-gray-200) transparent;
 }
 
 b,
@@ -36,7 +36,7 @@ strong {
 
 #nprogress {
   .bar {
-    background: var(--color-blue-500);
+    background: var(--xr-blue-500);
     height: 3px;
   }
 
@@ -54,16 +54,16 @@ strong {
 }
 
 [data-theme="dark"] {
-  scrollbar-color: var(--color-gray-900) transparent;
+  scrollbar-color: var(--xr-gray-900) transparent;
 
   &:root {
     color-scheme: dark;
   }
 
   * {
-    scrollbar-color: var(--color-gray-900) transparent;
+    scrollbar-color: var(--xr-gray-900) transparent;
   }
 
-  color: var(--color-white);
-  background: var(--color-black);
+  color: var(--xr-white);
+  background: var(--xr-black);
 }

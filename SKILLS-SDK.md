@@ -15,13 +15,13 @@ yarn add @xray-network/mini-app-sdk
 
 ### Subpath exports
 
-| Import path | Use for |
-| --- | --- |
-| `@xray-network/mini-app-sdk` (= `/protocol`) | Message types, zod schemas, constants — shared by both sides |
-| `@xray-network/mini-app-sdk/client` | Imperative client API for the mini app (iframe side) |
-| `@xray-network/mini-app-sdk/host` | Host/container side (parent window) |
-| `@xray-network/mini-app-sdk/testing` | `createMockHost()` / `createMockClient()` for tests without an iframe |
-| `@xray-network/mini-app-sdk/react` | React hooks + optional `<MiniAppProvider>` (client side only) |
+| Import path                                  | Use for                                                               |
+| -------------------------------------------- | --------------------------------------------------------------------- |
+| `@xray-network/mini-app-sdk` (= `/protocol`) | Message types, zod schemas, constants — shared by both sides          |
+| `@xray-network/mini-app-sdk/client`          | Imperative client API for the mini app (iframe side)                  |
+| `@xray-network/mini-app-sdk/host`            | Host/container side (parent window)                                   |
+| `@xray-network/mini-app-sdk/testing`         | `createMockHost()` / `createMockClient()` for tests without an iframe |
+| `@xray-network/mini-app-sdk/react`           | React hooks + optional `<MiniAppProvider>` (client side only)         |
 
 ## 2. Quick start (React mini app)
 
@@ -166,7 +166,7 @@ being tests:
 ```tsx
 import { MiniAppProvider, createMiniAppStore } from "@xray-network/mini-app-sdk/react"
 
-<MiniAppProvider store={createMiniAppStore()}>
+;<MiniAppProvider store={createMiniAppStore()}>
   <ComponentUnderTest />
 </MiniAppProvider>
 ```

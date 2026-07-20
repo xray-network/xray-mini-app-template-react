@@ -7,6 +7,8 @@ import type { Route } from "./+types/root"
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router"
 import Effects from "@/effects"
 import Theme from "@/theme"
+import { themeCssVariables } from "@/theme/css"
+import { metaThemeColor, palette } from "@/theme/palette"
 
 export const links: Route.LinksFunction = () => [
   { rel: "manifest", href: "/manifest.webmanifest", crossOrigin: "anonymous" },
@@ -52,8 +54,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
           name="viewport"
           content="width=device-width,viewport-fit=cover,initial-scale=1,shrink-to-fit=no,maximum-scale=1,user-scalable=0"
         />
-        <meta name="theme-color" content="#ffffff" />
+        <meta name="theme-color" content={metaThemeColor.light} />
         <title>Mini App Template</title>
+        <style dangerouslySetInnerHTML={{ __html: themeCssVariables }} />
         <Meta />
         <Links />
       </head>
@@ -70,12 +73,12 @@ export function HydrateFallback() {
   return (
     <div
       style={{
-        width: "100%vw",
+        width: "100vw",
         height: "100vh",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#000",
+        background: palette.black,
       }}
     >
       <svg
@@ -89,7 +92,7 @@ export function HydrateFallback() {
           marginBottom: "3%",
         }}
       >
-        <g stroke="none" strokeWidth="1" fill="#ffffff" fillRule="evenodd">
+        <g stroke="none" strokeWidth="1" fill={palette.white} fillRule="evenodd">
           <path
             d="M27.2644887,12.845956 L40.286334,0 L57.8748681,0 L34.5892767,22.6565806 L31.6051038,23.7948299 L18.2215405,36.966 L0.135644222,36.966 L23.5116652,14.6888358 L27.2644887,12.845956 Z M0,0 L18.31197,0 L31.0625269,12.7375513 L34.9509946,14.7430381 L57.9652976,36.966 L39.4724687,36.966 L25.9984759,23.4696158 L22.0647935,21.4099267 L0,0 Z"
             fillRule="nonzero"

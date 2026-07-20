@@ -17,7 +17,10 @@ const explorerNameMap: Partial<Record<Types.App.Explorer, string>> = {
 }
 
 const explorerUrlMap: Partial<
-  Record<Types.App.Explorer, { [key in "paymentAddress" | "stakingAddress" | "tx" | "pool"]: (value: string) => string }>
+  Record<
+    Types.App.Explorer,
+    { [key in "paymentAddress" | "stakingAddress" | "tx" | "pool"]: (value: string) => string }
+  >
 > = {
   cardanoscan: {
     paymentAddress: (value: string) => `https://cardanoscan.io/address/${value}`,
