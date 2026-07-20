@@ -148,7 +148,7 @@ const ModalSettings = () => {
           <span className="flex items-center">
             <span>App Info</span>
             <div className="ms-auto text-right font-bold">
-              <NetworkStats variant="v2" />
+              <NetworkStats />
             </div>
           </span>
         </div>

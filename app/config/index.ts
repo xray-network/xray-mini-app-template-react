@@ -1,6 +1,6 @@
 import * as Types from "@/types"
 
-export const ZUSTAND_STORE_PREFIX = "zustand_prefix"
+export const ZUSTAND_STORE_PREFIX = "xray-mini-app-template-react"
 
 export const APP_VERSION = __APP_VERSION__
 
