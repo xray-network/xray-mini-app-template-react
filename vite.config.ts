@@ -4,14 +4,10 @@ import { defineConfig } from "vite"
 import tsconfigPaths from "vite-tsconfig-paths"
 import wasm from "vite-plugin-wasm"
 import svgr from "vite-plugin-svgr"
-import packageInfo from "./package.json"
 import { fileURLToPath } from "node:url"
 
 export default defineConfig({
   plugins: [wasm(), tailwindcss(), reactRouter(), tsconfigPaths(), svgr()],
-  define: {
-    __APP_VERSION__: JSON.stringify(packageInfo.version),
-  },
   // CSS imports are not resolved by vite-tsconfig-paths, so keep the alias for stylesheets.
   resolve: {
     alias: { "@": fileURLToPath(new URL("./app", import.meta.url)) },

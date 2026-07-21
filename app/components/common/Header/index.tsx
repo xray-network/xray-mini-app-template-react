@@ -6,6 +6,7 @@ import { useUiStore } from "@/store/ui"
 import Menu from "@/components/common/MenuMain"
 import MenuMobile from "@/components/common/MenuMobile"
 import { menuItems } from "@/config/menu"
+import { version } from "../../../../package.json"
 
 const useIsMobileView = (breakpoint = 1023) => {
   const [isMobile, setIsMobile] = useState(false)
@@ -31,7 +32,7 @@ export default function Header() {
     <div className="flex px-6 py-4 items-center text-nowrap">
       <NavLink to="/" className="pe-3 md:pe-7">
         <div className="text-black dark:text-white font-black text-lg leading-5">Mini App Template</div>
-        <div className="text-sm text-gray-500">React Version {__APP_VERSION__}</div>
+        <div className="text-sm text-gray-500">React Version {version}</div>
       </NavLink>
       {!isMobileView ? <Menu items={menuItems} /> : <MenuMobile items={menuItems} />}
       <div className="flex items-center ms-auto ps-3 md:ps-7">
