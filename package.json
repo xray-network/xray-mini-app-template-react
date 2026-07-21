@@ -5,6 +5,7 @@
   "description": "XRAY Mini App Template React Version",
   "license": "MIT",
   "homepage": "https://xray.app",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/xray-network/xray-mini-app-template-react.git"
@@ -48,7 +49,7 @@
     "lodash": "^4.17.21",
     "nprogress": "^0.2.0",
     "react": "^19.1.0",
-    "react-copy-to-clipboard": "^5.1.0",
+    "react-copy-to-clipboard": "^5.1.1",
     "react-dom": "^19.1.0",
     "react-jazzicon": "^1.0.4",
     "react-router": "^7.8.2",
