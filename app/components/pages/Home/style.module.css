@@ -1,7 +1,7 @@
 @import "@/styles/tailwind.css";
 
 .logo {
-  @apply inline-flex items-center grow-0 text-2xl font-black;
+  @apply inline-flex items-center grow-0 text-2xl font-bold;
 
   svg {
     @apply w-36;

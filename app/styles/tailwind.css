@@ -10,6 +10,7 @@
  */
 @theme inline {
   --font-sans: var(--xr-font-sans);
+  --font-mono: var(--xr-font-mono);
 
   --color-white: var(--xr-white);
   --color-black: var(--xr-black);

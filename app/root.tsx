@@ -20,31 +20,6 @@ export const links: Route.LinksFunction = () => [
     type: "image/png",
     sizes: "512x512",
   },
-  {
-    rel: "preload",
-    href: "https://cdn.xray.app/fonts/satoshi/Satoshi-Medium.ttf",
-    as: "font",
-    type: "font/ttf",
-    crossOrigin: "anonymous",
-  },
-  {
-    rel: "preload",
-    href: "https://cdn.xray.app/fonts/satoshi/Satoshi-Bold.ttf",
-    as: "font",
-    type: "font/ttf",
-    crossOrigin: "anonymous",
-  },
-  {
-    rel: "preload",
-    href: "https://cdn.xray.app/fonts/satoshi/Satoshi-Black.ttf",
-    as: "font",
-    type: "font/ttf",
-    crossOrigin: "anonymous",
-  },
-  {
-    rel: "stylesheet",
-    href: "https://cdn.xray.app/fonts/satoshi.css",
-  },
 ]
 
 export function Layout({ children }: { children: React.ReactNode }) {

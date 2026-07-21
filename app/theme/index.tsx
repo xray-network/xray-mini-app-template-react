@@ -8,7 +8,7 @@ import { lightTheme, darkTheme } from "./antd"
 import { metaThemeColor } from "./palette"
 
 export const px2rem = px2remTransformer({
-  rootValue: 16,
+  rootValue: 14,
   precision: 2,
 })
 

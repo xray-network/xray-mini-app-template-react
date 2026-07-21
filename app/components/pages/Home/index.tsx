@@ -27,14 +27,14 @@ export default function HomePage() {
         {connecting && (
           <div className="mb-10">
             <SignalIcon className="size-20 mx-auto mb-5 text-gray-400 animate-pulse" strokeWidth={1.5} />
-            <h1 className="text-3xl font-black mb-5">Connecting…</h1>
+            <h1 className="text-3xl font-bold mb-5">Connecting…</h1>
             <p className="text-gray-500">Waiting for the XRAY/App host to respond.</p>
           </div>
         )}
         {connected === true && (
           <div className="mb-10">
             <SignalIcon className="size-20 mx-auto mb-5 text-green-500" strokeWidth={1.5} />
-            <h1 className="text-3xl font-black mb-5">Connected</h1>
+            <h1 className="text-3xl font-bold mb-5">Connected</h1>
             <p className="text-gray-500">
               This Mini App is connected to the XRAY/App and operates in accordance with the protocols.
             </p>
@@ -43,7 +43,7 @@ export default function HomePage() {
         {connected === false && (
           <div className="mb-10">
             <SignalSlashIcon className="size-20 mx-auto mb-5 text-red-500" strokeWidth={1.5} />
-            <h1 className="text-3xl font-black mb-5">Disconnected</h1>
+            <h1 className="text-3xl font-bold mb-5">Disconnected</h1>
             <p className="text-gray-500">Open it in the XRAY/App to enable full functionality.</p>
           </div>
         )}
@@ -55,7 +55,7 @@ export default function HomePage() {
           </div>
         </Copy>
         <span className="absolute top-2 left-4 text-gray-500 font-mono text-sm">git clone</span>
-        <pre className="overflow-y-auto max-w-full">
+        <pre className="overflow-y-auto max-w-full font-mono font-bold">
           https://github.com/xray-network/xray-mini-app-template-react.git
         </pre>
       </div>

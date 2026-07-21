@@ -11,7 +11,10 @@
 
 const offWhite = "#f6f7f2"
 
-export const fontFamily = '"satoshi", sans-serif'
+export const fontFamily =
+  '"-apple-system-body", "ui-sans-serif", "-apple-system", "system-ui", "Segoe UI", "Helvetica", "Apple Color Emoji", "Arial", "sans-serif", "Segoe UI Emoji", "Segoe UI Symbol"'
+export const fontFamilyMono =
+  '"ui-monospace", "SFMono-Regular", "SF Mono", "Menlo", "Consolas", "Liberation Mono", "monospace"'
 
 export const radius = {
   base: 10,

@@ -8,7 +8,7 @@ import { palette, paletteDark, semantic, fontFamily, radius } from "./palette"
 export const restTheme: ThemeConfig = {
   token: {
     fontFamily,
-    fontSize: 16,
+    fontSize: 14,
     colorSuccess: semantic.light.success,
     colorWarning: semantic.light.warning,
     colorError: semantic.light.error,
@@ -18,32 +18,32 @@ export const restTheme: ThemeConfig = {
     Button: {
       contentFontSizeSM: 14,
       contentFontSize: 14,
-      contentFontSizeLG: 16,
+      contentFontSizeLG: 14,
     },
     Input: {
       inputFontSizeSM: 14,
-      inputFontSize: 16,
-      inputFontSizeLG: 16,
+      inputFontSize: 14,
+      inputFontSizeLG: 14,
     },
     InputNumber: {
       inputFontSizeSM: 14,
-      inputFontSize: 16,
-      inputFontSizeLG: 16,
+      inputFontSize: 14,
+      inputFontSizeLG: 14,
     },
     Select: {
       fontSizeSM: 14,
-      fontSize: 16,
-      fontSizeLG: 16,
+      fontSize: 14,
+      fontSizeLG: 14,
     },
     Switch: {
       fontSizeSM: 14,
-      fontSize: 16,
-      fontSizeLG: 16,
+      fontSize: 14,
+      fontSizeLG: 14,
     },
     Radio: {
       fontSizeSM: 14,
-      fontSize: 16,
-      fontSizeLG: 16,
+      fontSize: 14,
+      fontSizeLG: 14,
     },
     Tabs: {
       horizontalItemGutter: 25,

@@ -1,4 +1,4 @@
-import { palette, paletteDark, semantic, fontFamily, radius } from "./palette"
+import { palette, paletteDark, semantic, fontFamily, fontFamilyMono, radius } from "./palette"
 
 /**
  * Serializes the design tokens (app/theme/palette.ts) to CSS custom
@@ -22,6 +22,7 @@ export const themeCssVariables = [
   ":root {",
   ...toVariables({ ...palette, ...semantic.light }, "--xr"),
   `  --xr-font-sans: ${fontFamily};`,
+  `  --xr-font-mono: ${fontFamilyMono};`,
   `  --xr-radius: ${radius.base}px;`,
   `  --xr-radius-lg: ${radius.lg}px;`,
   "}",
