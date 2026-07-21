@@ -1,6 +1,7 @@
 import { Dropdown } from "antd"
 import type { MenuProps } from "antd"
 import { NavLink } from "react-router"
+import classnames from "classnames"
 import { ArrowUpRightIcon, ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline"
 import type { MenuItem } from "@/config/menu"
 import style from "./style.module.css"
@@ -69,7 +70,7 @@ const renderMenu = (items: MenuItem[]) => {
     }
 
     return (
-      <div className={style.button} role="button" tabIndex={0}>
+      <div className={classnames(style.button, "cursor-default")} role="button" tabIndex={0}>
         {item.icon}
         {item.label}
         <ChevronDownIcon className={style.downIcon} strokeWidth={2.5} />

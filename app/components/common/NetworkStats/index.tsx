@@ -40,9 +40,7 @@ const NetworkStats = () => {
           />
         </span>
       </div>
-      <div>
-        Network: {network ? utils.capitalizeFirstLetter(network) : "—"}
-      </div>
+      <div>Network: {network ? utils.capitalizeFirstLetter(network) : "—"}</div>
     </div>
   )
 }

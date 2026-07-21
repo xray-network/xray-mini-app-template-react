@@ -43,7 +43,7 @@ export function useBlocks(client: CardanoWeb3 | null, query: BlocksQuery): Block
         sortField,
         sortOrder,
       },
-      controller.signal,
+      controller.signal
     )
       .then((result) => {
         if (!controller.signal.aborted) setState({ ...result, loading: false, error: null })
