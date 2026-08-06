@@ -12,20 +12,20 @@ Use this document as the implementation guide for contributors and coding agents
 - `cardano-web3-js` for Cardano access
 - Cloudflare Pages for preview and deployment
 
-Use Yarn for all package and project commands. Do not add npm or pnpm lockfiles.
+Use npm for all package and project commands. Do not add lockfiles from other package managers.
 
 ## Commands
 
 ```sh
-yarn dev
-yarn lint
-yarn typecheck
-yarn build
-yarn verify
-yarn preview
+npm run dev
+npm run lint
+npm run typecheck
+npm run build
+npm run verify
+npm run preview
 ```
 
-Run `yarn verify` after implementation work. It runs linting, TypeScript generation and checking, and the production
+Run `npm run verify` after implementation work. It runs linting, TypeScript generation and checking, and the production
 build. This project intentionally has no test suite or test dependencies.
 
 ## Architecture
@@ -138,6 +138,6 @@ Before handing off a change:
 1. Remove unused imports, dead helpers, and obsolete files introduced by the change.
 2. Confirm browser-only APIs are guarded where necessary.
 3. Confirm async effects clean up and cannot commit stale results.
-4. Run `yarn verify`.
+4. Run `npm run verify`.
 5. Run `git diff --check`.
 6. Mention any remaining build warnings or behavior that could not be verified.

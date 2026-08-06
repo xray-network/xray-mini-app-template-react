@@ -13,3 +13,4 @@ Target: xray-mini-app-template-react
 | ID | Title | Instruction | State | Result | Evidence mode | Decision proof |
 | --- | --- | --- | --- | --- | --- | --- |
 | `0001` | Install XRAY Updates | [Instruction](./implementations/0001-IMPL-INSTR.md) | `ACCEPTED` | [Result](./implementations/0001-IMPL-RESULT.md) | `LOCAL` | Human requested installation of XRAY Updates. |
+| `0002` | Migrate package manager to npm | [Instruction](./implementations/0002-IMPL-INSTR.md) | `REVIEW` | [Result](./implementations/0002-IMPL-RESULT.md) | `LOCAL` | Implementation completed and awaits human review. |

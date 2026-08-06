@@ -5,11 +5,11 @@ A React Router template for XRAY mini apps with Cardano integration, Ant Design,
 ## Development
 
 ```sh
-yarn install
-yarn dev
+npm install
+npm run dev
 ```
 
-Use `yarn verify` before committing. It runs linting, TypeScript, and the production build. Use `yarn preview`
+Use `npm run verify` before committing. It runs linting, TypeScript, and the production build. Use `npm run preview`
 to build and serve the Cloudflare Pages output locally.
 
 ## Architecture

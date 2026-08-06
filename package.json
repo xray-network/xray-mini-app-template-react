@@ -21,14 +21,15 @@
     "SDK"
   ],
   "type": "module",
+  "packageManager": "npm@10.8.2",
   "scripts": {
     "dev": "react-router dev --host --port 7220",
     "build": "react-router build",
-    "deploy": "yarn build && wrangler pages deploy",
-    "preview": "yarn build && wrangler pages dev build/client",
+    "deploy": "npm run build && wrangler pages deploy",
+    "preview": "npm run build && wrangler pages dev build/client",
     "typecheck": "react-router typegen && tsc",
     "lint": "eslint .",
-    "verify": "yarn lint && yarn typecheck && yarn build",
+    "verify": "npm run lint && npm run typecheck && npm run build",
     "format": "prettier --write \"./**/*.{ts,tsx,js,jsx,json,md,mdx,css,scss}\""
   },
   "imports": {
