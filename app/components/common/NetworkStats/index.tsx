@@ -3,7 +3,7 @@ import { Statistic } from "antd"
 import { useTip } from "@xray-network/xray-js/mini-app-bridge/react"
 import * as utils from "@/utils"
 import classnames from "classnames"
-import { useEffectiveNetwork } from "@/integrations/xray-mini-app-sdk/useEffectiveSettings"
+import { useEffectiveNetwork } from "@/integrations/xray-js/useEffectiveSettings"
 
 const NetworkStats = () => {
   const { tip } = useTip()

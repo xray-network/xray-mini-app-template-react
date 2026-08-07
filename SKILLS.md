@@ -72,7 +72,7 @@ host handshake; an additional provider is not required. Use the matching `client
 lower-level bridge API or bridge type is required; do not depend on the runtime's internal bridge package directly.
 
 Host values may be `null` while connecting or when the app runs outside the XRAY host. Use the effective-setting hooks
-in `app/integrations/xray-mini-app-sdk/useEffectiveSettings.ts` so the app falls back to standalone preferences.
+in `app/integrations/xray-js/useEffectiveSettings.ts` so the app falls back to standalone preferences.
 
 - Host-provided settings take precedence while connected.
 - Host settings are runtime values and must not be persisted locally.
