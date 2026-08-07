@@ -1,8 +1,8 @@
-import type { KoiosTypes } from "@xray-network/xray-js/cardano"
+import type { providers } from "@xray-network/xray-js/cardano"
 
-export type Block = KoiosTypes.paths["/blocks"]["get"]["responses"]["200"]["content"]["application/json"][number]
+export type Block = providers.koios.Types.paths["/blocks"]["get"]["responses"]["200"]["content"]["application/json"][number]
 export type BlockInfo =
-  KoiosTypes.paths["/block_info"]["post"]["responses"]["200"]["content"]["application/json"][number]
+  providers.koios.Types.paths["/block_info"]["post"]["responses"]["200"]["content"]["application/json"][number]
 
 export interface BlocksQuery {
   page: number
