@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { SignalIcon, SignalSlashIcon, DocumentDuplicateIcon } from "@heroicons/react/24/outline"
-import { miniAppClient, miniAppCip30Client } from "@xray-network/mini-app-sdk/client"
-import { useMiniApp, useNetwork, useTheme } from "@xray-network/mini-app-sdk/react"
-import type { HostMessage } from "@xray-network/mini-app-sdk"
+import { miniAppClient, miniAppCip30Client } from "@xray-network/xray-js/mini-app-bridge/client"
+import { useMiniApp, useNetwork, useTheme } from "@xray-network/xray-js/mini-app-bridge/react"
+import type { HostMessage } from "@xray-network/xray-js/mini-app-bridge"
 import Copy from "@/components/common/Copy"
 import { Button } from "antd"
 

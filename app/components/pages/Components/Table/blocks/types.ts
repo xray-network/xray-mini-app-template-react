@@ -1,4 +1,4 @@
-import type { KoiosTypes } from "cardano-web3-js"
+import type { KoiosTypes } from "@xray-network/xray-js/cardano"
 
 export type Block = KoiosTypes.paths["/blocks"]["get"]["responses"]["200"]["content"]["application/json"][number]
 export type BlockInfo =

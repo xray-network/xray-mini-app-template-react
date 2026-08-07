@@ -6,7 +6,7 @@ import {
   useMiniApp,
   useNetwork as useHostNetwork,
   useTheme as useHostTheme,
-} from "@xray-network/mini-app-sdk/react"
+} from "@xray-network/xray-js/mini-app-bridge/react"
 import { usePreferencesStore } from "@/store/preferences"
 import type { App } from "@/types"
 

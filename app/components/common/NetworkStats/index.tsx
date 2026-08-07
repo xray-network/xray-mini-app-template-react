@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { Statistic } from "antd"
-import { useTip } from "@xray-network/mini-app-sdk/react"
+import { useTip } from "@xray-network/xray-js/mini-app-bridge/react"
 import * as utils from "@/utils"
 import classnames from "classnames"
 import { useEffectiveNetwork } from "@/integrations/xray-mini-app-sdk/useEffectiveSettings"

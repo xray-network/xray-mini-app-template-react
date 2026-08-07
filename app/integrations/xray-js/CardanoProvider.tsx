@@ -1,19 +1,18 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react"
-import type { CardanoWeb3, CML, utils } from "cardano-web3-js"
-import type { CW3Types } from "@/types"
+import type { Cardano, addresses } from "@xray-network/xray-js/cardano"
+import type { CardanoTypes } from "@/types"
 import { useEffectiveNetwork } from "@/integrations/xray-mini-app-sdk/useEffectiveSettings"
 
 type CardanoState =
-  | { status: "loading"; network: CW3Types.NetworkName; client: null; CML: null; utils: null; error: null }
+  | { status: "loading"; network: CardanoTypes.NetworkName; client: null; addresses: null; error: null }
   | {
       status: "ready"
-      network: CW3Types.NetworkName
-      client: CardanoWeb3
-      CML: typeof CML
-      utils: typeof utils
+      network: CardanoTypes.NetworkName
+      client: Cardano
+      addresses: typeof addresses
       error: null
     }
-  | { status: "error"; network: CW3Types.NetworkName; client: null; CML: null; utils: null; error: Error }
+  | { status: "error"; network: CardanoTypes.NetworkName; client: null; addresses: null; error: Error }
 
 const CardanoContext = createContext<CardanoState | null>(null)
 
@@ -23,31 +22,23 @@ export function CardanoProvider({ children }: { children: React.ReactNode }) {
     status: "loading",
     network,
     client: null,
-    CML: null,
-    utils: null,
+    addresses: null,
     error: null,
   })
 
   useEffect(() => {
     let current = true
-    setState({ status: "loading", network, client: null, CML: null, utils: null, error: null })
+    setState({ status: "loading", network, client: null, addresses: null, error: null })
 
-    void import("cardano-web3-js")
-      .then(({ CardanoWeb3, CML, utils }) => {
+    void import("@xray-network/xray-js/cardano")
+      .then(({ createCardano, addresses }) => {
         if (!current) return
-        setState({
-          status: "ready",
-          network,
-          client: new CardanoWeb3({ network }),
-          CML,
-          utils,
-          error: null,
-        })
+        setState({ status: "ready", network, client: createCardano({ network }), addresses, error: null })
       })
       .catch((cause: unknown) => {
         if (!current) return
-        const error = cause instanceof Error ? cause : new Error("Failed to initialize Cardano Web3")
-        setState({ status: "error", network, client: null, CML: null, utils: null, error })
+        const error = cause instanceof Error ? cause : new Error("Failed to initialize XRAY Cardano")
+        setState({ status: "error", network, client: null, addresses: null, error })
       })
 
     return () => {

@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useLocation, useNavigate } from "react-router"
-import { miniAppClient } from "@xray-network/mini-app-sdk/client"
-import { useHostMessage, useMiniApp } from "@xray-network/mini-app-sdk/react"
+import { miniAppClient } from "@xray-network/xray-js/mini-app-bridge/client"
+import { useHostMessage, useMiniApp } from "@xray-network/xray-js/mini-app-bridge/react"
 
 export default function HostRouteSync() {
   const { connected } = useMiniApp()

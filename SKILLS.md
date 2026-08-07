@@ -8,8 +8,7 @@ Use this document as the implementation guide for contributors and coding agents
 - TypeScript and Vite
 - Ant Design 5 and Tailwind CSS 4
 - Zustand for application state
-- `@xray-network/mini-app-sdk` for XRAY host communication
-- `cardano-web3-js` for Cardano access
+- the locally linked `@xray-network/xray-js` runtime for XRAY host communication and Cardano access
 - Cloudflare Pages for preview and deployment
 
 Use npm for all package and project commands. Do not add lockfiles from other package managers.
@@ -66,10 +65,11 @@ Compose application-wide providers directly in `app/root.tsx`. The current order
 
 Do not introduce another `AppProviders` wrapper unless provider composition becomes independently reusable.
 
-## XRAY Mini App SDK
+## XRAY Mini App Bridge
 
-Import React hooks from `@xray-network/mini-app-sdk/react`. Hooks share the SDK store and initiate the host handshake;
-an additional provider is not required.
+Import React hooks from `@xray-network/xray-js/mini-app-bridge/react`. Hooks share the bridge store and initiate the
+host handshake; an additional provider is not required. Use the matching `client` and `protocol` subpaths when a
+lower-level bridge API or bridge type is required; do not depend on the runtime's internal bridge package directly.
 
 Host values may be `null` while connecting or when the app runs outside the XRAY host. Use the effective-setting hooks
 in `app/integrations/xray-mini-app-sdk/useEffectiveSettings.ts` so the app falls back to standalone preferences.
@@ -80,15 +80,15 @@ in `app/integrations/xray-mini-app-sdk/useEffectiveSettings.ts` so the app falls
 - Route synchronization belongs in `app/shared/routing/HostRouteSync.tsx`.
 - Treat SDK account quantities as `bigint`; do not pass them directly to `JSON.stringify`.
 
-## Cardano Web3
+## XRAY JavaScript SDK
 
-Access Cardano through `useCardano()` from `app/integrations/cardano-web-js/CardanoProvider.tsx`. Do not initialize a
-second `CardanoWeb3` client inside a page.
+Access Cardano through `useCardano()` from `app/integrations/xray-js/CardanoProvider.tsx`. Do not initialize a second
+XRAY Cardano client inside a page.
 
 Consumers must handle every provider state:
 
 - `loading`: show a loading state.
-- `ready`: use `client`, `CML`, and `utils`.
+- `ready`: use `client` and the exported `addresses` helpers.
 - `error`: show a useful error without crashing the application.
 
 The provider is recreated when the effective network changes. Async consumers must ignore stale responses after their

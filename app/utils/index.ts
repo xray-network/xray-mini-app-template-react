@@ -1,5 +1,5 @@
 import { SLOT_CONFIG_NETWORK, SLOT_EPOCH_DURATION, SLOT_STARTING_EPOCH } from "@/config"
-import type { CW3Types } from "@/types"
+import type { CardanoTypes } from "@/types"
 
 export const truncate = (value: string, start = 6, end = 6) => `${value.slice(0, start)}...${value.slice(-end)}`
 
@@ -34,17 +34,17 @@ export const capitalizeFirstLetter = (value: string): string =>
 
 export const timestampToDateTime = (timestamp: number) => new Date(timestamp * 1000).toLocaleString()
 
-export const epochStartTime = (epoch: number, network: CW3Types.NetworkName) => {
+export const epochStartTime = (epoch: number, network: CardanoTypes.NetworkName) => {
   const config = SLOT_CONFIG_NETWORK[network]
   const startingEpoch = SLOT_STARTING_EPOCH[network]
   const epochDuration = SLOT_EPOCH_DURATION[network]
   return (epoch * epochDuration + (config.zeroTime / 1000 - startingEpoch * 432000)) * 1000
 }
 
-export const epochEndTime = (epoch: number, network: CW3Types.NetworkName) =>
+export const epochEndTime = (epoch: number, network: CardanoTypes.NetworkName) =>
   epochStartTime(epoch, network) + SLOT_EPOCH_DURATION[network] * 1000
 
-export const epochProgress = (epoch: number, network: CW3Types.NetworkName) => {
+export const epochProgress = (epoch: number, network: CardanoTypes.NetworkName) => {
   const duration = SLOT_EPOCH_DURATION[network] * 1000
   if (duration <= 0) return "0.0"
   const progress = ((Date.now() - epochStartTime(epoch, network)) / duration) * 100

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import type { CardanoWeb3 } from "cardano-web3-js"
+import type { Cardano } from "@xray-network/xray-js/cardano"
 import { fetchBlocks } from "../api/blocks.api"
 import type { Block, BlockInfo, BlocksQuery } from "../types"
 
@@ -11,7 +11,7 @@ interface BlocksState {
   error: Error | null
 }
 
-export function useBlocks(client: CardanoWeb3 | null, query: BlocksQuery): BlocksState {
+export function useBlocks(client: Cardano | null, query: BlocksQuery): BlocksState {
   const { page, pageSize, searchTerm, latestLimit, currentEpoch, sortField, sortOrder } = query
   const [debouncedSearch, setDebouncedSearch] = useState(searchTerm)
   const [state, setState] = useState<BlocksState>({

@@ -135,7 +135,7 @@ const ModalSettings = () => {
           <span className="flex items-center">
             <span>Cardano Network</span>
             <span className="ms-auto">
-              <Select<Types.CW3Types.NetworkName> value={network} onChange={setNetwork} size="large">
+              <Select<Types.CardanoTypes.NetworkName> value={network} onChange={setNetwork} size="large">
                 <Select.Option value="mainnet">Mainnet</Select.Option>
                 <Select.Option value="preprod">Preprod</Select.Option>
                 <Select.Option value="preview">Preview</Select.Option>

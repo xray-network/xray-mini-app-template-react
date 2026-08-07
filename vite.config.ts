@@ -13,8 +13,7 @@ export default defineConfig({
     alias: { "@": fileURLToPath(new URL("./app", import.meta.url)) },
   },
   ssr: {
-    // The SDK's ESM dist uses extensionless relative imports, so it must be
-    // bundled rather than left external to Node's ESM resolver
-    noExternal: ["@xray-network/mini-app-sdk"],
+    // Bundle the locally linked XRAY runtime for React Router's Node renderer.
+    noExternal: [/^@xray-network\/xray-js(?:\/|$)/],
   },
 })

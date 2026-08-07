@@ -1,14 +1,14 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import { ZUSTAND_STORE_PREFIX } from "@/config"
-import type { CW3Types } from "@/types"
+import type { CardanoTypes } from "@/types"
 import type { Currencies, Explorer, ThemePrefer } from "@/types/app"
 
 interface PreferencesState {
   themePrefer: ThemePrefer
   setThemePreference: (theme: ThemePrefer) => void
-  network: CW3Types.NetworkName
-  setNetwork: (network: CW3Types.NetworkName) => void
+  network: CardanoTypes.NetworkName
+  setNetwork: (network: CardanoTypes.NetworkName) => void
   currency: Currencies
   setCurrency: (currency: Currencies) => void
   hideBalances: boolean

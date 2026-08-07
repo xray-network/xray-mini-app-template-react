@@ -31,7 +31,7 @@ export default tseslint.config(
       "app/root.tsx",
       "app/routes/**/*.tsx",
       "app/theme/index.tsx",
-      "app/integrations/cardano-web-js/CardanoProvider.tsx",
+      "app/integrations/xray-js/CardanoProvider.tsx",
     ],
     rules: {
       "react-refresh/only-export-components": "off",
