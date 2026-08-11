@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 import { Table, Input, Radio, Space, Button, Skeleton, Alert } from "antd"
 import type { TableProps, InputRef } from "antd"
-import { useTip } from "@xray-network/xray-js/mini-app-bridge/react"
+import { useTip } from "@xray-network/xray-js/mini-app-bridge/cardano/react"
 import { MagnifyingGlassIcon, FunnelIcon, XMarkIcon, ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/24/outline"
 import Informers from "@/components/informers"
 import * as utils from "@/utils"

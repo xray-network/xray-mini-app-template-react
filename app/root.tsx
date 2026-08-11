@@ -3,6 +3,7 @@ import "nprogress/nprogress.css"
 import "@/styles/style.css"
 
 import "@ant-design/v5-patch-for-react-19"
+import * as cardanoCip30Client from "@xray-network/xray-js/mini-app-bridge/cardano/cip30/client"
 import type { Route } from "./+types/root"
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router"
 import { CardanoProvider } from "@/integrations/xray-js/CardanoProvider"
@@ -11,6 +12,10 @@ import NavigationProgress from "@/shared/routing/NavigationProgress"
 import Theme from "@/theme"
 import { themeCssVariables } from "@/theme/css"
 import { metaThemeColor, palette } from "@/theme/palette"
+
+// Expose the standard Cardano dApp API inside the mini-app frame. Calls are
+// handled by XRAY App through the bridge, never delegated to another wallet.
+cardanoCip30Client.installConnector()
 
 export const links: Route.LinksFunction = () => [
   { rel: "manifest", href: "/manifest.webmanifest", crossOrigin: "anonymous" },

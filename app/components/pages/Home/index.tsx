@@ -1,24 +1,35 @@
 import { useEffect, useState } from "react"
 import { SignalIcon, SignalSlashIcon, DocumentDuplicateIcon } from "@heroicons/react/24/outline"
-import { miniAppClient, miniAppCip30Client } from "@xray-network/xray-js/mini-app-bridge/client"
+import * as miniAppClient from "@xray-network/xray-js/mini-app-bridge/client"
+import * as cardanoClient from "@xray-network/xray-js/mini-app-bridge/cardano/client"
+import * as cardanoCip30Client from "@xray-network/xray-js/mini-app-bridge/cardano/cip30/client"
 import { useMiniApp, useNetwork, useTheme } from "@xray-network/xray-js/mini-app-bridge/react"
-import type { HostMessage } from "@xray-network/xray-js/mini-app-bridge"
+import type { PlatformHostMessage } from "@xray-network/xray-js/mini-app-bridge"
+import type { CardanoHostMessage } from "@xray-network/xray-js/mini-app-bridge/cardano"
 import Copy from "@/components/common/Copy"
 import { Button } from "antd"
 
 export default function HomePage() {
-  const { connected, connecting } = useMiniApp()
+  const { connected, connecting, protocols } = useMiniApp()
   const network = useNetwork()
   const theme = useTheme()
-  const [log, setLog] = useState<HostMessage[]>([])
+  const [log, setLog] = useState<(PlatformHostMessage | CardanoHostMessage)[]>([])
+  const supportsCardano = protocols.includes("cardano.native")
+  const supportsCip30 = protocols.includes("cardano.cip30")
 
   useEffect(() => {
     // Only log responses to requests made by this app (buttons below), not initiated by host
-    return miniAppClient.listenAll((message) => {
+    const receive = (message: PlatformHostMessage | CardanoHostMessage) => {
       if (message.requestId) {
         setLog((prevLog) => [message, ...prevLog])
       }
-    })
+    }
+    const stopPlatform = miniAppClient.listenAll(receive)
+    const stopCardano = cardanoClient.listenAll(receive)
+    return () => {
+      stopPlatform()
+      stopCardano()
+    }
   }, [])
 
   return (
@@ -65,14 +76,11 @@ export default function HomePage() {
       </div>
       <div className="shared-line my-20" />
       <div className="max-w-100 mx-auto flex flex-wrap gap-2 mb-10">
-        <Button disabled={!connected} onClick={() => miniAppClient.getTip()}>
+        <Button disabled={!connected || !supportsCardano} onClick={() => cardanoClient.getTip()}>
           Get Tip
         </Button>
-        <Button disabled={!connected} onClick={() => miniAppClient.getAccountState()}>
+        <Button disabled={!connected || !supportsCardano} onClick={() => cardanoClient.getAccountState()}>
           Get Account State
-        </Button>
-        <Button disabled={!connected} onClick={() => miniAppClient.getNetwork()}>
-          Get Network
         </Button>
         <Button disabled={!connected} onClick={() => miniAppClient.getTheme()}>
           Get Theme
@@ -83,13 +91,13 @@ export default function HomePage() {
         <Button disabled={!connected} onClick={() => miniAppClient.getHideBalances()}>
           Get Hide Balances
         </Button>
-        <Button disabled={!connected} onClick={() => miniAppClient.getExplorer()}>
+        <Button disabled={!connected || !supportsCardano} onClick={() => cardanoClient.getExplorer()}>
           Get Explorer
         </Button>
         <Button
-          disabled={!connected}
+          disabled={!connected || !supportsCip30}
           onClick={async () => {
-            const api = await miniAppCip30Client.enable()
+            const api = await cardanoCip30Client.enable()
             const balance = await api.getBalance()
             console.log(`CIP-30 Balance: ${balance}`)
           }}
