@@ -6,7 +6,7 @@ export default function LayoutMain() {
   return (
     <>
       <Header />
-      <div className="p-6 mx-auto max-w-5xl">
+      <div className="px-3 py-5 sm:p-6 mx-auto max-w-[1240px]">
         <Outlet />
       </div>
       <ModalSettings />
