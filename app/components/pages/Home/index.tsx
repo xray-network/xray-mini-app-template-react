@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { CheckIcon, DocumentDuplicateIcon } from "@heroicons/react/24/outline"
-import { CopyToClipboard } from "react-copy-to-clipboard"
+import Copy from "@/components/common/Copy"
 import CardanoHome from "./blockchains/Cardano"
 import styles from "./style.module.css"
 
@@ -46,16 +46,17 @@ export default function HomePage() {
           </p>
           <div className={styles.cloneBlock}>
             <code>{repositoryUrl}</code>
-            <CopyToClipboard text={repositoryUrl} onCopy={processCopy}>
+            <Copy copy={repositoryUrl} tooltipMessage="Copy repository URL" tooltipSuccess="Repository URL copied">
               <button
                 className={styles.copyButton}
                 type="button"
+                onClick={processCopy}
                 aria-label={copied ? "Repository URL copied" : "Copy repository URL"}
               >
                 {copied ? <CheckIcon aria-hidden="true" /> : <DocumentDuplicateIcon aria-hidden="true" />}
                 <span>{copied ? "Copied" : "Copy"}</span>
               </button>
-            </CopyToClipboard>
+            </Copy>
           </div>
         </div>
 

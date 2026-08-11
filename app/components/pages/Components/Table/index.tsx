@@ -324,7 +324,6 @@ export default function TablePage() {
           columns={columns}
           size="small"
           pagination={{
-            size: "default",
             position: ["bottomRight", "topRight"],
             defaultPageSize: 10,
             pageSizeOptions: ["5", "10", "20"],

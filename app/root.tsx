@@ -2,7 +2,6 @@ import "@/styles/tailwind.css"
 import "nprogress/nprogress.css"
 import "@/styles/style.css"
 
-import "@ant-design/v5-patch-for-react-19"
 import * as cardanoCip30Client from "@xray-network/xray-js/mini-app-bridge/cardano/cip30/client"
 import { useEffect } from "react"
 import type { Route } from "./+types/root"
