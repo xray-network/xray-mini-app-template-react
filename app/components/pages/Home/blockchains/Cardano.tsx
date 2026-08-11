@@ -13,7 +13,7 @@ const maxOperations = 20
 
 type BridgeMessage = PlatformHostMessage | CardanoHostMessage
 type OperationStatus = "pending" | "success" | "error" | "timeout"
-type RequestTab = "host" | "cardano.native" | "cardano.cip30"
+type RequestTab = "host" | "cardano.bridge" | "cardano.cip30"
 
 type ResponseRecord = {
   type: string
@@ -67,7 +67,7 @@ const createRequestId = () => {
 
 const requestTabs: { id: RequestTab; label: string }[] = [
   { id: "host", label: "Host" },
-  { id: "cardano.native", label: "cardano.native" },
+  { id: "cardano.bridge", label: "cardano.bridge" },
   { id: "cardano.cip30", label: "cardano.cip30" },
 ]
 
@@ -80,7 +80,7 @@ const cip30InputTitles: Record<Cip30InputMethod, string> = {
 
 const getRequestTab = (requestType: string): RequestTab => {
   if (requestType.startsWith("xray.cardano.cip30.")) return "cardano.cip30"
-  if (requestType.startsWith("xray.cardano.")) return "cardano.native"
+  if (requestType.startsWith("xray.cardano.")) return "cardano.bridge"
   return "host"
 }
 
@@ -126,11 +126,11 @@ export default function CardanoHome() {
   const theme = useTheme()
   const [announcement, setAnnouncement] = useState("")
   const [operations, setOperations] = useState<BridgeOperation[]>([])
-  const [activeRequestTab, setActiveRequestTab] = useState<RequestTab>("cardano.native")
+  const [activeRequestTab, setActiveRequestTab] = useState<RequestTab>("cardano.bridge")
   const [cip30Api, setCip30Api] = useState<typeof cardanoCip30Client.api | null>(null)
   const [cip30InputMethod, setCip30InputMethod] = useState<Cip30InputMethod | null>(null)
   const [cip30Inputs, setCip30Inputs] = useState<Cip30Inputs>(emptyCip30Inputs)
-  const supportsCardano = connected === true && blockchain === "cardano" && protocols.includes("cardano.native")
+  const supportsCardanoBridge = connected === true && blockchain === "cardano" && protocols.includes("cardano.bridge")
   const supportsCip30 = connected === true && blockchain === "cardano" && protocols.includes("cardano.cip30")
   const cip30Enabled = cip30Api !== null
   const connection = getConnectionState(connecting, connected)
@@ -250,7 +250,7 @@ export default function CardanoHome() {
     ? "This platform request is temporarily unavailable."
     : "Connect to XRAY/App first."
   const cardanoUnavailable = connected
-    ? "Available only when the host advertises the Cardano native protocol."
+    ? "Available only when the host advertises the Cardano bridge protocol."
     : "Connect to XRAY/App first."
   const cip30ProtocolUnavailable = connected
     ? "Available only when the host advertises Cardano CIP-30."
@@ -375,45 +375,45 @@ export default function CardanoHome() {
     },
     {
       label: "Chain tip",
-      tab: "cardano.native",
+      tab: "cardano.bridge",
       requestType: "xray.cardano.client.getTip",
-      available: supportsCardano,
+      available: supportsCardanoBridge,
       unavailableReason: cardanoUnavailable,
       run: () =>
         void runRequest(
           "Get tip",
           "xray.cardano.client.getTip",
-          supportsCardano,
+          supportsCardanoBridge,
           cardanoUnavailable,
           cardanoClient.getTip
         ),
     },
     {
       label: "Account state",
-      tab: "cardano.native",
+      tab: "cardano.bridge",
       requestType: "xray.cardano.client.getAccountState",
-      available: supportsCardano,
+      available: supportsCardanoBridge,
       unavailableReason: cardanoUnavailable,
       run: () =>
         void runRequest(
           "Get account state",
           "xray.cardano.client.getAccountState",
-          supportsCardano,
+          supportsCardanoBridge,
           cardanoUnavailable,
           cardanoClient.getAccountState
         ),
     },
     {
       label: "Explorer",
-      tab: "cardano.native",
+      tab: "cardano.bridge",
       requestType: "xray.cardano.client.getExplorer",
-      available: supportsCardano,
+      available: supportsCardanoBridge,
       unavailableReason: cardanoUnavailable,
       run: () =>
         void runRequest(
           "Get explorer",
           "xray.cardano.client.getExplorer",
-          supportsCardano,
+          supportsCardanoBridge,
           cardanoUnavailable,
           cardanoClient.getExplorer
         ),

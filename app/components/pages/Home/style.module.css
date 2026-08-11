@@ -74,30 +74,30 @@
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
-  min-height: 500px;
+  grid-template-columns: minmax(0, 1.2fr) minmax(420px, 0.8fr);
+  min-height: 460px;
   align-items: center;
-  gap: clamp(40px, 6vw, 88px);
-  padding: 68px 0;
+  padding: 60px 0;
 }
 
 .heroCopy {
   min-width: 0;
+  padding-right: clamp(32px, 4vw, 64px);
 }
 
 .hero h1 {
-  max-width: 900px;
-  margin-top: 20px;
+  max-width: 760px;
+  margin-top: 16px;
   color: var(--home-text);
-  font-size: clamp(48px, 6.4vw, 78px);
+  font-size: clamp(40px, 5vw, 62px);
   font-weight: 700;
-  letter-spacing: -0.055em;
-  line-height: 0.95;
+  letter-spacing: -0.05em;
+  line-height: 0.98;
 }
 
 .heroLead {
   max-width: 640px;
-  margin-top: 22px !important;
+  margin-top: 18px !important;
   color: var(--home-text-secondary);
   font-size: 16px;
   line-height: 1.5;
@@ -128,7 +128,10 @@
 }
 
 .supportedChains {
-  padding: 28px;
+  display: flex;
+  align-self: stretch;
+  flex-direction: column;
+  padding: 32px;
   border: 1px solid var(--home-border);
   border-radius: 20px;
   background: var(--home-panel);
@@ -137,43 +140,47 @@
 .supportedChains h2 {
   margin-top: 12px !important;
   color: var(--home-text);
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: -0.035em;
   line-height: 1.1;
 }
 
+.supportCopy {
+  max-width: 360px;
+  margin-top: 14px !important;
+  color: var(--home-muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
 .chainSupportList {
-  margin-top: 26px;
-  border-top: 1px solid var(--home-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 24px;
 }
 
 .chainSupportItem {
-  display: grid;
-  grid-template-columns: 8px minmax(0, 1fr) auto;
+  display: inline-flex;
+  min-height: 32px;
   align-items: center;
-  gap: 10px;
-  min-height: 50px;
-  border-bottom: 1px solid var(--home-border);
+  gap: 7px;
+  padding: 0 11px;
+  border: 1px solid var(--home-border);
+  border-radius: 100px;
+  background: var(--home-chip);
 }
 
 .chainSupportItem strong {
   color: var(--home-text);
-  font-size: 13px;
-}
-
-.chainSupportItem > span:last-child {
-  color: var(--home-muted);
-  font-family: var(--xr-font-mono);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-size: 12px;
 }
 
 .supportDot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border: 2px solid var(--home-muted);
   border-radius: 50%;
 }
@@ -181,10 +188,6 @@
 .chainSupportItem[data-supported="true"] .supportDot {
   border-color: var(--home-success);
   background: var(--home-success);
-}
-
-.chainSupportItem[data-supported="true"] > span:last-child {
-  color: var(--home-success);
 }
 
 .copyButton,
@@ -712,6 +715,10 @@
     width: 100%;
   }
 
+  .heroCopy {
+    padding-right: 0;
+  }
+
   .currentContext {
     grid-template-columns: 1fr;
   }
@@ -733,7 +740,7 @@
   }
 
   .hero h1 {
-    font-size: clamp(42px, 13vw, 56px);
+    font-size: clamp(34px, 10vw, 44px);
   }
 
   .heroLead {

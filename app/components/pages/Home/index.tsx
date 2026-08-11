@@ -40,9 +40,9 @@ export default function HomePage() {
       <section className={styles.hero} aria-labelledby="home-title">
         <div className={styles.heroCopy}>
           <span className={styles.eyebrow}>XRAY MINI APP TEMPLATE</span>
-          <h1 id="home-title">Build with the host context already handled.</h1>
+          <h1 id="home-title">Build XRAY mini apps with React.</h1>
           <p className={styles.heroLead}>
-            A focused React starter for reading the current blockchain context and testing XRAY bridge requests.
+            Host context, Cardano CIP-30, and request/response tooling are ready to use.
           </p>
           <div className={styles.cloneBlock}>
             <code>{repositoryUrl}</code>
@@ -62,14 +62,19 @@ export default function HomePage() {
 
         <aside className={styles.supportedChains} aria-labelledby="supported-chains-title">
           <span className={styles.eyebrow}>BLOCKCHAIN SUPPORT</span>
-          <h2 id="supported-chains-title">Supported blockchains</h2>
+          <h2 id="supported-chains-title">Cardano ready. More chains next.</h2>
+          <p className={styles.supportCopy}>
+            Clone and run the template, then open it inside XRAY App. Read the active host context, enable Cardano
+            CIP-30, and use the console below to test wallet requests. Bitcoin and Midnight can follow the same bridge
+            pattern.
+          </p>
           <div className={styles.chainSupportList}>
             {supportedBlockchains.map((chain) => (
-              <div className={styles.chainSupportItem} key={chain.id} data-supported={chain.status === "Supported"}>
+              <span className={styles.chainSupportItem} key={chain.id} data-supported={chain.status === "Supported"}>
                 <span className={styles.supportDot} aria-hidden="true" />
                 <strong>{chain.name}</strong>
-                <span>{chain.status}</span>
-              </div>
+                <span className={styles.srOnly}>: {chain.status}</span>
+              </span>
             ))}
           </div>
         </aside>
