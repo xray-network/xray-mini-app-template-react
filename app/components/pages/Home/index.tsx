@@ -3,7 +3,7 @@ import { SignalIcon, SignalSlashIcon, DocumentDuplicateIcon } from "@heroicons/r
 import * as miniAppClient from "@xray-network/xray-js/mini-app-bridge/client"
 import * as cardanoClient from "@xray-network/xray-js/mini-app-bridge/cardano/client"
 import * as cardanoCip30Client from "@xray-network/xray-js/mini-app-bridge/cardano/cip30/client"
-import { useMiniApp, useNetwork, useTheme } from "@xray-network/xray-js/mini-app-bridge/react"
+import { useBlockchain, useMiniApp, useNetwork, useTheme } from "@xray-network/xray-js/mini-app-bridge/react"
 import type { PlatformHostMessage } from "@xray-network/xray-js/mini-app-bridge"
 import type { CardanoHostMessage } from "@xray-network/xray-js/mini-app-bridge/cardano"
 import Copy from "@/components/common/Copy"
@@ -11,11 +11,12 @@ import { Button } from "antd"
 
 export default function HomePage() {
   const { connected, connecting, protocols } = useMiniApp()
+  const blockchain = useBlockchain()
   const network = useNetwork()
   const theme = useTheme()
   const [log, setLog] = useState<(PlatformHostMessage | CardanoHostMessage)[]>([])
-  const supportsCardano = protocols.includes("cardano.native")
-  const supportsCip30 = protocols.includes("cardano.cip30")
+  const supportsCardano = blockchain === "cardano" && protocols.includes("cardano.native")
+  const supportsCip30 = blockchain === "cardano" && protocols.includes("cardano.cip30")
 
   useEffect(() => {
     // Only log responses to requests made by this app (buttons below), not initiated by host
@@ -71,8 +72,10 @@ export default function HomePage() {
         </pre>
       </div>
       <div className="text-center mt-10 text-sm text-gray-500 mb-10">
+        <p>Host Blockchain: {(connected && blockchain) || "—"}</p>
         <p>Host Network: {(connected && network) || "—"}</p>
         <p>Host Theme: {(connected && theme) || "—"}</p>
+        {connected && protocols.length === 0 && <p>No blockchain adapter is available for this app context.</p>}
       </div>
       <div className="shared-line my-20" />
       <div className="max-w-100 mx-auto flex flex-wrap gap-2 mb-10">

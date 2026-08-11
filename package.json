@@ -44,7 +44,6 @@
     "@xray-network/xray-js": "file:../xray-js/packages/runtime",
     "antd": "^5.27.3",
     "classnames": "^2.5.1",
-    "date-fns": "^4.1.0",
     "isbot": "^5",
     "lodash": "^4.17.21",
     "nprogress": "^0.2.0",

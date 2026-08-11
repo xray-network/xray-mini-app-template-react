@@ -5,8 +5,11 @@ import { useUiStore } from "@/store/ui"
 import * as Types from "@/types"
 import NetworkStats from "@/components/common/NetworkStats"
 import { XMarkIcon, SunIcon, MoonIcon, Cog6ToothIcon } from "@heroicons/react/24/outline"
+import { useEffectiveHostContext } from "@/integrations/xray-js/useEffectiveSettings"
 
 const ModalSettings = () => {
+  const hostContext = useEffectiveHostContext()
+  const showCardanoSettings = !hostContext || hostContext.blockchain === "cardano"
   const {
     themePrefer,
     setThemePreference,
@@ -105,23 +108,25 @@ const ModalSettings = () => {
             </span>
           </span>
         </div>
-        <div className="mb-4">
-          <span className="flex items-center">
-            <span>Explorer</span>
-            <span className="ms-auto">
-              <Select<Types.App.Explorer>
-                value={explorer}
-                popupMatchSelectWidth={false}
-                onChange={setExplorer}
-                size="large"
-              >
-                <Select.Option value="cardanoscan">Cardanoscan</Select.Option>
-                <Select.Option value="cexplorer">Cexplorer</Select.Option>
-                <Select.Option value="adastat">AdaStat</Select.Option>
-              </Select>
+        {showCardanoSettings && (
+          <div className="mb-4">
+            <span className="flex items-center">
+              <span>Explorer</span>
+              <span className="ms-auto">
+                <Select<Types.App.Explorer>
+                  value={explorer}
+                  popupMatchSelectWidth={false}
+                  onChange={setExplorer}
+                  size="large"
+                >
+                  <Select.Option value="cardanoscan">Cardanoscan</Select.Option>
+                  <Select.Option value="cexplorer">Cexplorer</Select.Option>
+                  <Select.Option value="adastat">AdaStat</Select.Option>
+                </Select>
+              </span>
             </span>
-          </span>
-        </div>
+          </div>
+        )}
         <div className="mb-4">
           <span className="flex items-center">
             <span>Hide Balances</span>
@@ -130,19 +135,28 @@ const ModalSettings = () => {
             </span>
           </span>
         </div>
-        <div className="shared-line-dashed my-5" />
-        <div className="mb-4">
-          <span className="flex items-center">
-            <span>Cardano Network</span>
-            <span className="ms-auto">
-              <Select<Types.CardanoTypes.NetworkName> value={network} onChange={setNetwork} size="large">
-                <Select.Option value="mainnet">Mainnet</Select.Option>
-                <Select.Option value="preprod">Preprod</Select.Option>
-                <Select.Option value="preview">Preview</Select.Option>
-              </Select>
-            </span>
-          </span>
-        </div>
+        {showCardanoSettings && (
+          <>
+            <div className="shared-line-dashed my-5" />
+            <div className="mb-4">
+              <span className="flex items-center">
+                <span>Cardano Network</span>
+                <span className="ms-auto">
+                  <Select<Types.CardanoTypes.NetworkName>
+                    value={hostContext?.blockchain === "cardano" ? hostContext.network : network}
+                    onChange={setNetwork}
+                    disabled={Boolean(hostContext)}
+                    size="large"
+                  >
+                    <Select.Option value="mainnet">Mainnet</Select.Option>
+                    <Select.Option value="preprod">Preprod</Select.Option>
+                    <Select.Option value="preview">Preview</Select.Option>
+                  </Select>
+                </span>
+              </span>
+            </div>
+          </>
+        )}
         <div className="shared-line-dashed my-5" />
         <div className="mb-1">
           <span className="flex items-center">

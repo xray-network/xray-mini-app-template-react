@@ -4,10 +4,13 @@ import { useTip } from "@xray-network/xray-js/mini-app-bridge/cardano/react"
 import * as utils from "@/utils"
 import classnames from "classnames"
 import { useEffectiveNetwork } from "@/integrations/xray-js/useEffectiveSettings"
+import { useMiniApp } from "@xray-network/xray-js/mini-app-bridge/react"
 
 const NetworkStats = () => {
   const { tip } = useTip()
-  const network = useEffectiveNetwork()
+  const { connected, context } = useMiniApp()
+  const fallbackNetwork = useEffectiveNetwork()
+  const network = context?.blockchain === "cardano" ? context.network : fallbackNetwork
   const [animate, setAnimate] = useState(false)
 
   useEffect(() => {
@@ -17,6 +20,16 @@ const NetworkStats = () => {
     }, 700)
     return () => clearTimeout(timeout)
   }, [tip?.blockNo])
+
+  if (connected && context && context.blockchain !== "cardano") {
+    return (
+      <div>
+        Blockchain: {utils.capitalizeFirstLetter(context.blockchain)}
+        <br />
+        Network: {utils.capitalizeFirstLetter(context.network)}
+      </div>
+    )
+  }
 
   return (
     <div className="flex flex-col justify-center text-xs text-gray-500">

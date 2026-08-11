@@ -1,177 +1,213 @@
-import { useState, useEffect, useRef } from "react"
-import { Table, Input, Radio, Space, Button, Skeleton, Alert } from "antd"
-import type { TableProps, InputRef } from "antd"
-import { useTip } from "@xray-network/xray-js/mini-app-bridge/cardano/react"
-import { MagnifyingGlassIcon, FunnelIcon, XMarkIcon, ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/24/outline"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { Button, Input, Radio, Space, Table } from "antd"
+import type { InputRef, TableProps } from "antd"
+import { ArrowDownIcon, ArrowUpIcon, FunnelIcon, MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import Informers from "@/components/informers"
-import * as utils from "@/utils"
-import { formatDistanceToNow } from "date-fns"
-import { useCardano } from "@/integrations/xray-js/CardanoProvider"
-import { useBlocks } from "./blocks/model/useBlocks"
-import type { Block } from "./blocks/types"
 
-const sortOptions = [
-  { key: "block_height", title: "Block" },
-  { key: "epoch_no", title: "Epoch, Slot" },
-  { key: "block_time", title: "Timestamp" },
-  { key: "tx_count", title: "TXs Count" },
-  { key: "pool", title: "Pool" },
-  { key: "total_fees", title: "Total Fees" },
-  { key: "total_output", title: "Total Output" },
+type CarStatus = "Available" | "Reserved" | "Sold"
+
+type Car = {
+  id: number
+  make: string
+  model: string
+  year: number
+  type: string
+  horsepower: number
+  price: number
+  status: CarStatus
+}
+
+type SortField = "make" | "year" | "horsepower" | "price"
+type SortOrder = "ascend" | "descend"
+
+const cars: readonly Car[] = [
+  {
+    id: 1,
+    make: "Alfa Romeo",
+    model: "Giulia",
+    year: 2023,
+    type: "Sedan",
+    horsepower: 280,
+    price: 43800,
+    status: "Available",
+  },
+  { id: 2, make: "Audi", model: "RS 3", year: 2024, type: "Sedan", horsepower: 401, price: 62900, status: "Reserved" },
+  { id: 3, make: "BMW", model: "M2", year: 2024, type: "Coupe", horsepower: 453, price: 64200, status: "Available" },
+  {
+    id: 4,
+    make: "Ford",
+    model: "Mustang GT",
+    year: 2022,
+    type: "Coupe",
+    horsepower: 450,
+    price: 39900,
+    status: "Sold",
+  },
+  {
+    id: 5,
+    make: "Honda",
+    model: "Civic Type R",
+    year: 2023,
+    type: "Hatchback",
+    horsepower: 315,
+    price: 44795,
+    status: "Available",
+  },
+  {
+    id: 6,
+    make: "Hyundai",
+    model: "Ioniq 5 N",
+    year: 2025,
+    type: "Electric SUV",
+    horsepower: 641,
+    price: 66100,
+    status: "Reserved",
+  },
+  {
+    id: 7,
+    make: "Land Rover",
+    model: "Defender 110",
+    year: 2021,
+    type: "SUV",
+    horsepower: 395,
+    price: 58400,
+    status: "Sold",
+  },
+  {
+    id: 8,
+    make: "Mazda",
+    model: "MX-5 Miata",
+    year: 2024,
+    type: "Roadster",
+    horsepower: 181,
+    price: 28985,
+    status: "Available",
+  },
+  {
+    id: 9,
+    make: "Mercedes-AMG",
+    model: "A 45 S",
+    year: 2023,
+    type: "Hatchback",
+    horsepower: 416,
+    price: 57800,
+    status: "Available",
+  },
+  {
+    id: 10,
+    make: "Porsche",
+    model: "718 Cayman",
+    year: 2022,
+    type: "Coupe",
+    horsepower: 300,
+    price: 68900,
+    status: "Reserved",
+  },
+  { id: 11, make: "Subaru", model: "BRZ", year: 2023, type: "Coupe", horsepower: 228, price: 30300, status: "Sold" },
+  {
+    id: 12,
+    make: "Volvo",
+    model: "V60 Polestar",
+    year: 2024,
+    type: "Wagon",
+    horsepower: 455,
+    price: 71450,
+    status: "Available",
+  },
+]
+
+const sortOptions: { key: SortField; title: string }[] = [
+  { key: "make", title: "Make" },
+  { key: "year", title: "Year" },
+  { key: "horsepower", title: "Horsepower" },
+  { key: "price", title: "Price" },
+]
+
+const formatPrice = (price: number) =>
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(price)
+
+const columns: TableProps<Car>["columns"] = [
+  {
+    title: "Car",
+    key: "car",
+    render: (_, car) => (
+      <div>
+        <div className="font-semibold">{car.make}</div>
+        <div className="text-xs text-gray-500">{car.model}</div>
+      </div>
+    ),
+  },
+  { title: "Year", dataIndex: "year", key: "year", width: 90 },
+  { title: "Type", dataIndex: "type", key: "type", width: 140 },
+  {
+    title: "Power",
+    dataIndex: "horsepower",
+    key: "horsepower",
+    align: "right",
+    width: 110,
+    render: (horsepower: number) => `${horsepower} hp`,
+  },
+  {
+    title: "Price",
+    dataIndex: "price",
+    key: "price",
+    align: "right",
+    width: 120,
+    render: formatPrice,
+  },
+  {
+    title: "Status",
+    dataIndex: "status",
+    key: "status",
+    width: 110,
+    render: (status: CarStatus) => (
+      <span
+        className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${
+          status === "Available"
+            ? "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300"
+            : status === "Reserved"
+              ? "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300"
+              : "bg-gray-100 text-gray-600 dark:bg-gray-900 dark:text-gray-400"
+        }`}
+      >
+        {status}
+      </span>
+    ),
+  },
 ]
 
 export default function TablePage() {
   const searchInput = useRef<InputRef>(null)
-
-  const cardano = useCardano()
-  const { tip } = useTip()
-
   const [searchTerm, setSearchTerm] = useState("")
-  const [pageSize, setPageSize] = useState(25)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [sorterField, setSorterField] = useState("block_height")
-  const [sorterOrder, setSorterOrder] = useState("descend" as "descend" | "ascend")
-  const [filterLastBlocks, setFilterLastBlocks] = useState<number | null>(null)
-  const [filterCurrentEpoch, setFilterCurrentEpoch] = useState(false)
-  const [currency, setCurrency] = useState("ada")
-
-  const { blocks, blockInfo, total, loading, error } = useBlocks(cardano.status === "ready" ? cardano.client : null, {
-    page: currentPage,
-    pageSize,
-    searchTerm,
-    latestLimit: filterLastBlocks,
-    currentEpoch: filterCurrentEpoch ? (tip?.epochNo ?? null) : null,
-    sortField: sorterField,
-    sortOrder: sorterOrder,
-  })
+  const [status, setStatus] = useState<CarStatus | "All">("All")
+  const [sortField, setSortField] = useState<SortField>("make")
+  const [sortOrder, setSortOrder] = useState<SortOrder>("ascend")
 
   useEffect(() => {
-    const handleSearchFocus = (event: KeyboardEvent) => {
-      if (event.code === "Slash") searchInput.current?.focus()
+    const focusSearch = (event: KeyboardEvent) => {
+      if (event.code === "Slash" && !(event.target instanceof HTMLInputElement)) {
+        event.preventDefault()
+        searchInput.current?.focus()
+      }
     }
-    window?.addEventListener("keyup", handleSearchFocus)
-    return () => {
-      window?.removeEventListener("keyup", handleSearchFocus)
-    }
+    window.addEventListener("keyup", focusSearch)
+    return () => window.removeEventListener("keyup", focusSearch)
   }, [])
 
-  const changeTableParams: NonNullable<TableProps<Block>["onChange"]> = (pagination, _filters, sorter) => {
-    const activeSorter = Array.isArray(sorter) ? sorter[0] : sorter
-    if (activeSorter?.columnKey) setSorterField(String(activeSorter.columnKey))
-    if (activeSorter?.order) setSorterOrder(activeSorter.order)
-    if (pagination.current) setCurrentPage(pagination.current)
-    if (pagination.pageSize) setPageSize(pagination.pageSize)
-  }
-
-  const blocksColumns: TableProps<Block>["columns"] = [
-    {
-      title: "Block",
-      dataIndex: "block_height",
-      key: "block_height",
-      width: "15%",
-      render: (record, records) => (
-        <span>
-          <a>{utils.quantityWithCommas(records.block_height)}</a>
-        </span>
-      ),
-    },
-    {
-      title: "Epoch, Slot",
-      dataIndex: "epoch_no",
-      key: "epoch_no",
-      width: "15%",
-      render: (record, records) => (
-        <span>
-          <a>{utils.quantityWithCommas(records.epoch_no)}</a>{" "}
-          <small className="text-gray-500 text-xs">{utils.quantityWithCommas(records.epoch_slot)}</small>
-        </span>
-      ),
-    },
-    {
-      title: "Timestamp",
-      dataIndex: "block_time",
-      key: "block_time",
-      width: "16%",
-      render: (record, records) => (
-        <div className="leading-3 -my-2">
-          <div>
-            <small>{utils.timestampToDateTime(records.block_time || 0)}</small>
-          </div>
-          <div className="text-gray-500 text-xs">
-            <small>
-              {formatDistanceToNow((records.block_time || 0) * 1000, { addSuffix: true, includeSeconds: true })}
-            </small>
-          </div>
-        </div>
-      ),
-    },
-    {
-      title: "TXs Count",
-      dataIndex: "tx_count",
-      key: "tx_count",
-      width: "10%",
-      render: (record, records) => <span>{utils.quantityWithCommas(records.tx_count)}</span>,
-    },
-    {
-      title: "Pool",
-      dataIndex: "pool",
-      key: "pool",
-      width: "15%",
-      render: (record, records) => (
-        <span>
-          <a>{utils.truncate(records.pool || "")}</a>
-        </span>
-      ),
-    },
-    {
-      title: "Total Fees",
-      dataIndex: "total_fees",
-      key: "total_fees",
-      align: "right",
-      width: "100px",
-      render: (record, records) => {
-        const info = blockInfo.find((block) => block.hash === records.hash)
-        const { a, b } = utils.quantityFormat(info?.total_fees || 0, 6, true)
-        return (
-          <span>
-            {!info && (
-              <Skeleton active paragraph={{ rows: 1, width: "100%" }} title={false} className="inline-flex! w-20!" />
-            )}
-            {info && (
-              <span>
-                {a}
-                <small className="text-gray-500">{b ? `.${b}` : ""} ADA</small>
-              </span>
-            )}
-          </span>
-        )
-      },
-    },
-    {
-      title: "Total Output",
-      dataIndex: "total_output",
-      key: "total_output",
-      align: "right",
-      width: "130px",
-      render: (record, records) => {
-        const info = blockInfo.find((block) => block.hash === records.hash)
-        const { a, b } = utils.quantityFormat(info?.total_output || 0, 6, true)
-        return (
-          <span>
-            {!info && (
-              <Skeleton active paragraph={{ rows: 1, width: "100%" }} title={false} className="inline-flex! w-20!" />
-            )}
-            {info && (
-              <span>
-                {a}
-                <small className="text-gray-500">{b ? `.${b}` : ""} ADA</small>
-              </span>
-            )}
-          </span>
-        )
-      },
-    },
-  ]
+  const data = useMemo(() => {
+    const query = searchTerm.trim().toLocaleLowerCase()
+    return cars
+      .filter((car) => status === "All" || car.status === status)
+      .filter(
+        (car) => !query || [car.make, car.model, car.type].some((value) => value.toLocaleLowerCase().includes(query))
+      )
+      .sort((left, right) => {
+        const a = left[sortField]
+        const b = right[sortField]
+        const comparison = typeof a === "string" ? a.localeCompare(String(b)) : a - Number(b)
+        return sortOrder === "ascend" ? comparison : -comparison
+      })
+  }, [searchTerm, sortField, sortOrder, status])
 
   return (
     <section className="mb-10">
@@ -187,83 +223,45 @@ export default function TablePage() {
               </span>
             }
             size="large"
-            placeholder="Search by Block Number"
-            onChange={(event) => {
-              setSearchTerm(event.target.value)
-              setCurrentPage(1)
-            }}
+            placeholder="Search cars"
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
             allowClear
           />
         </div>
         <div className="ms-auto">
           <Informers.Dropdown
-            active={filterLastBlocks !== null || filterCurrentEpoch}
+            active={status !== "All"}
             placement="bottomRight"
             selector={<FunnelIcon className="size-5" strokeWidth={2} />}
             items={[
-              {
-                type: "title",
-                children: "Fees",
-              },
+              { type: "title", children: "Availability" },
               {
                 type: "item",
                 children: (
-                  <Radio.Group onChange={(e) => setFilterLastBlocks(e.target.value)} value={filterLastBlocks}>
+                  <Radio.Group value={status} onChange={(event) => setStatus(event.target.value)}>
                     <Space direction="vertical">
-                      <Radio value={null}>
-                        <span className="font-size-14">All Blocks</span>
-                      </Radio>
-                      <Radio value={10}>
-                        <span className="font-size-14">Latest 10 Blocks</span>
-                      </Radio>
-                      <Radio value={30}>
-                        <span className="font-size-14">Latest 30 Blocks</span>
-                      </Radio>
-                    </Space>
-                  </Radio.Group>
-                ),
-              },
-              {
-                type: "divider",
-              },
-              {
-                type: "title",
-                children: "Saturation",
-              },
-              {
-                type: "item",
-                children: (
-                  <Radio.Group onChange={(e) => setFilterCurrentEpoch(e.target.value)} value={filterCurrentEpoch}>
-                    <Space direction="vertical">
-                      <Radio value={false}>
-                        <span className="font-size-14">All Epoch</span>
-                      </Radio>
-                      {tip?.epochNo && (
-                        <Radio value={true}>
-                          <span className="font-size-14">Current Epoch ({tip?.epochNo})</span>
+                      {(["All", "Available", "Reserved", "Sold"] as const).map((value) => (
+                        <Radio key={value} value={value}>
+                          <span className="font-size-14">{value}</span>
                         </Radio>
-                      )}
+                      ))}
                     </Space>
                   </Radio.Group>
                 ),
               },
-              {
-                type: "divider",
-              },
+              { type: "divider" },
               {
                 type: "item",
                 children: (
                   <Button
                     type="primary"
                     className="w-full"
-                    disabled={filterLastBlocks === null && !filterCurrentEpoch}
-                    onClick={() => {
-                      setFilterLastBlocks(null)
-                      setFilterCurrentEpoch(false)
-                    }}
+                    disabled={status === "All"}
+                    onClick={() => setStatus("All")}
                   >
                     <XMarkIcon className="size-5 -me-1" strokeWidth={2} />
-                    <span>Reset</span>
+                    Reset
                   </Button>
                 ),
               },
@@ -273,143 +271,68 @@ export default function TablePage() {
         <div className="ms-2">
           <Informers.Dropdown
             placement="bottomRight"
-            active={sorterOrder !== "descend" || sorterField !== "block_height"}
+            active={sortOrder !== "ascend" || sortField !== "make"}
             selector={
-              <div className="flex items-center">
-                {sorterOrder === "ascend" && <ArrowUpIcon className="size-5" strokeWidth={2} />}
-                {sorterOrder === "descend" && <ArrowDownIcon className="size-5" strokeWidth={2} />}
+              <div className="flex items-center gap-1">
+                {sortOrder === "ascend" ? (
+                  <ArrowUpIcon className="size-5" strokeWidth={2} />
+                ) : (
+                  <ArrowDownIcon className="size-5" strokeWidth={2} />
+                )}
                 <span className="font-size-14 lh-1 text-nowrap">
-                  {sortOptions.find((item) => item.key === sorterField)?.title}
+                  {sortOptions.find((item) => item.key === sortField)?.title}
                 </span>
               </div>
             }
             items={[
-              {
-                type: "title",
-                children: "Sort Order",
-              },
+              { type: "title", children: "Sort Order" },
               {
                 type: "item",
                 children: (
-                  <Radio.Group onChange={(e) => setSorterOrder(e.target.value)} value={sorterOrder}>
+                  <Radio.Group value={sortOrder} onChange={(event) => setSortOrder(event.target.value)}>
                     <Space direction="vertical">
-                      <Radio value="descend">
-                        <div className="flex">
-                          <ArrowDownIcon className="size-5" strokeWidth={2} />
-                          <span className="font-size-14">High to low</span>
-                        </div>
-                      </Radio>
-                      <Radio value="ascend">
-                        <div className="flex">
-                          <ArrowUpIcon className="size-5" strokeWidth={2} />
-                          <span className="font-size-14">Low to high</span>
-                        </div>
-                      </Radio>
+                      <Radio value="ascend">Low to high</Radio>
+                      <Radio value="descend">High to low</Radio>
                     </Space>
                   </Radio.Group>
                 ),
               },
-              {
-                type: "divider",
-              },
-              {
-                type: "title",
-                children: "Sort By",
-              },
+              { type: "divider" },
+              { type: "title", children: "Sort By" },
               {
                 type: "item",
                 children: (
-                  <Radio.Group onChange={(e) => setSorterField(e.target.value)} value={sorterField}>
+                  <Radio.Group value={sortField} onChange={(event) => setSortField(event.target.value)}>
                     <Space direction="vertical">
-                      {sortOptions.map((item) => {
-                        return (
-                          <Radio key={item.key} value={item.key}>
-                            <span className="font-size-14">{item.title}</span>
-                          </Radio>
-                        )
-                      })}
+                      {sortOptions.map((option) => (
+                        <Radio key={option.key} value={option.key}>
+                          {option.title}
+                        </Radio>
+                      ))}
                     </Space>
                   </Radio.Group>
                 ),
-              },
-              {
-                type: "divider",
-              },
-              {
-                type: "item",
-                children: (
-                  <Button
-                    type="primary"
-                    className="w-full"
-                    disabled={sorterOrder === "descend" && sorterField === "block_height"}
-                    onClick={() => {
-                      setSorterOrder("descend")
-                      setSorterField("block_height")
-                    }}
-                  >
-                    <XMarkIcon className="size-5 -me-1" strokeWidth={2} />
-                    <span>Reset</span>
-                  </Button>
-                ),
-              },
-            ]}
-          />
-        </div>
-        <div className="ms-2">
-          <Informers.Switcher
-            onChange={(key) => setCurrency(key)}
-            value={currency}
-            items={[
-              {
-                key: "ada",
-                icon: "₳",
-                tooltip: "In ADA",
-              },
-              {
-                key: "currency",
-                icon: "$",
-                tooltip: "In USD",
               },
             ]}
           />
         </div>
       </div>
-      {(error || cardano.status === "error") && (
-        <Alert
-          className="mb-4"
-          type="error"
-          showIcon
-          message="Unable to load block data"
-          description={(error ?? (cardano.status === "error" ? cardano.error : null))?.message}
-        />
-      )}
       <div className="shared-table">
-        <Table<Block>
-          onChange={changeTableParams}
-          rowKey={(i) => i.block_height!}
-          dataSource={blocks}
-          columns={blocksColumns}
-          sortDirections={["descend", "ascend", "descend"]}
+        <Table<Car>
+          rowKey="id"
+          dataSource={data}
+          columns={columns}
           size="small"
           pagination={{
-            // simple: true,
-            position: ["bottomRight", "topRight"],
             size: "default",
-            pageSize: pageSize,
+            position: ["bottomRight", "topRight"],
+            defaultPageSize: 10,
+            pageSizeOptions: ["5", "10", "20"],
             showSizeChanger: true,
-            showPrevNextJumpers: false,
-            total: total || 1,
-            current: currentPage,
-            pageSizeOptions: ["25", "50", "100"],
-            showTotal: () => <div>{utils.quantityWithCommas(total)} Blocks</div>,
+            total: data.length,
+            showTotal: (total) => `${total} cars`,
           }}
-          loading={{
-            spinning: loading || cardano.status === "loading",
-            indicator: <span className="shared-spinner" />,
-          }}
-          locale={{
-            emptyText: <div className="py-4 mb-1">No Blocks Found</div>,
-          }}
+          locale={{ emptyText: <div className="py-4 mb-1">No Cars Found</div> }}
         />
       </div>
     </section>
