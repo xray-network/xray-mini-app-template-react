@@ -14,7 +14,7 @@ export default function MenuMobile({ items }: { items: MenuItem[] }) {
       open={menuOpen}
       onClose={() => setMenuOpen(false)}
       closeIcon={null}
-      width="17rem"
+      width="238px"
       placement="left"
       className={style.container}
     >
@@ -24,7 +24,7 @@ export default function MenuMobile({ items }: { items: MenuItem[] }) {
             <NavLink
               to={menuItem.link}
               key={menuItem.key}
-              style={level ? { marginLeft: `${level}rem` } : {}}
+              style={level ? { marginLeft: `${level * 14}px` } : {}}
               className={style.link}
               onClick={() => {
                 setMenuOpen(false)
@@ -41,7 +41,7 @@ export default function MenuMobile({ items }: { items: MenuItem[] }) {
               key={menuItem.key}
               target="_blank"
               rel="noreferrer"
-              style={level ? { marginLeft: `${level}rem` } : {}}
+              style={level ? { marginLeft: `${level * 14}px` } : {}}
               className={style.link}
               onClick={() => {
                 setMenuOpen(false)
@@ -54,7 +54,7 @@ export default function MenuMobile({ items }: { items: MenuItem[] }) {
           )
 
           const renderParentItem = (menuItem: MenuItem, level = 0) => (
-            <div key={menuItem.key} style={level ? { marginLeft: `${level}rem` } : {}} className={style.link}>
+            <div key={menuItem.key} style={level ? { marginLeft: `${level * 14}px` } : {}} className={style.link}>
               {menuItem.icon}
               {menuItem.label}
             </div>
