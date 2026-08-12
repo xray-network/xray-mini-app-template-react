@@ -1,13 +1,15 @@
 import { useEffect } from "react"
 import { ConfigProvider, App } from "antd"
 import { HappyProvider } from "@ant-design/happy-work-theme"
-import { useEffectivePlatformSettings } from "@/integrations/xray-js/useEffectiveSettings"
+import { useEffectiveTheme } from "@/integrations/xray-js/useEffectiveSettings"
+import { useSyncHostPreferences } from "@/integrations/xray-js/useSyncHostPreferences"
 import EscapeAntd from "./EscapeAntd"
 import { lightTheme, darkTheme } from "./antd"
 import { metaThemeColor } from "./palette"
 
 const Theme = ({ children }: { children: React.ReactNode }) => {
-  const { theme, ready } = useEffectivePlatformSettings()
+  useSyncHostPreferences()
+  const theme = useEffectiveTheme()
 
   useEffect(() => {
     const html = document.documentElement
@@ -25,7 +27,7 @@ const Theme = ({ children }: { children: React.ReactNode }) => {
       <HappyProvider>
         <App>
           <EscapeAntd />
-          {ready && children}
+          {children}
         </App>
       </HappyProvider>
     </ConfigProvider>
