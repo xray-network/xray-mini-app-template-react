@@ -1,10 +1,10 @@
 import React from "react"
 import { Tooltip } from "antd"
-import { quantityFormat, quantityWithCommas } from "@/utils"
+import { quantityFormat } from "@/utils"
 import classNames from "classnames"
 import style from "./style.module.css"
 import { InformationCircleIcon } from "@heroicons/react/24/outline"
-import { useAppStore } from "@/store/app"
+import { useEffectiveHideBalances } from "@/integrations/xray-js/useEffectiveSettings"
 
 const InformerAda = ({
   value,
@@ -13,8 +13,6 @@ const InformerAda = ({
   hideDecimals,
   shortened,
   hideable = true,
-  tooltip,
-  hideTooltip,
   skipZero,
   sameSize,
   prefix,
@@ -31,7 +29,7 @@ const InformerAda = ({
   sameSize?: boolean
   prefix?: string
 }) => {
-  const hideBalances = useAppStore((state) => state.hideBalances)
+  const hideBalances = useEffectiveHideBalances()
   // const appCurrency = useAppSelector((state) => state.settings.currency)
   // const exchangeRates = useAppSelector((state) => state.network.exchangeRates)
 

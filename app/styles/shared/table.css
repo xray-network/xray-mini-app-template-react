@@ -6,18 +6,18 @@
 
   .ant-pagination-total-text {
     margin-right: auto !important;
-    padding-left: 0.5rem !important;
+    padding-left: 7px !important;
   }
 }
 
 .shared-table-custom {
   .ant-pagination-total-text {
     margin-right: auto !important;
-    padding-left: 0.5rem !important;
+    padding-left: 7px !important;
   }
 
   table {
-    border-spacing: 0rem 0.5rem;
+    border-spacing: 0 7px;
   }
 
   thead {
@@ -32,33 +32,33 @@
   tbody {
     tr {
       cursor: pointer;
-      border-radius: 2rem;
-      margin-bottom: 0.5rem;
+      border-radius: 28px;
+      margin-bottom: 7px;
       border: 0 !important;
 
       td {
         border: 0 !important;
-        background: var(--color-td) !important;
+        background: var(--xr-td) !important;
       }
 
       td.ant-table-column-sort {
-        background: var(--color-td-hover) !important;
+        background: var(--xr-td-hover) !important;
       }
 
       &:hover {
         td {
-          background: var(--color-td-hover) !important;
+          background: var(--xr-td-hover) !important;
         }
       }
 
       td:first-child {
-        border-top-left-radius: 2rem;
-        border-bottom-left-radius: 2rem;
+        border-top-left-radius: 28px;
+        border-bottom-left-radius: 28px;
       }
 
       td:last-child {
-        border-top-right-radius: 2rem;
-        border-bottom-right-radius: 2rem;
+        border-top-right-radius: 28px;
+        border-bottom-right-radius: 28px;
       }
     }
   }
@@ -68,16 +68,16 @@
   tbody {
     tr {
       td {
-        background: var(--color-td-dark) !important;
+        background: var(--xr-td-dark) !important;
       }
 
       td.ant-table-column-sort {
-        background: var(--color-td-dark-hover) !important;
+        background: var(--xr-td-dark-hover) !important;
       }
 
       &:hover {
         td {
-          background: var(--color-td-dark-hover) !important;
+          background: var(--xr-td-dark-hover) !important;
         }
       }
     }

@@ -2,11 +2,33 @@ import "@/styles/tailwind.css"
 import "nprogress/nprogress.css"
 import "@/styles/style.css"
 
-import "@ant-design/v5-patch-for-react-19"
+import * as cardanoCip30Client from "@xray-network/xray-js/mini-app-bridge/cardano/cip30/client"
+import { useEffect } from "react"
 import type { Route } from "./+types/root"
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router"
-import Effects from "@/effects"
+import { useMiniApp } from "@xray-network/xray-js/mini-app-bridge/react"
+import { CardanoProvider } from "@/integrations/xray-js/CardanoProvider"
+import HostRouteSync from "@/shared/routing/HostRouteSync"
+import NavigationProgress from "@/shared/routing/NavigationProgress"
 import Theme from "@/theme"
+import { themeCssVariables } from "@/theme/css"
+import { metaThemeColor, palette } from "@/theme/palette"
+
+function CardanoConnector() {
+  const { connected, context } = useMiniApp()
+  const enabled = connected === false || context?.blockchain === "cardano"
+
+  useEffect(() => {
+    if (!enabled) return
+    const connector = cardanoCip30Client.installConnector()
+    return () => {
+      const cardano = (window as unknown as { cardano?: Record<string, unknown> }).cardano
+      if (cardano?.xrayBridge === connector) delete cardano.xrayBridge
+    }
+  }, [enabled])
+
+  return null
+}
 
 export const links: Route.LinksFunction = () => [
   { rel: "manifest", href: "/manifest.webmanifest", crossOrigin: "anonymous" },
@@ -15,31 +37,6 @@ export const links: Route.LinksFunction = () => [
     href: "/favicon.png",
     type: "image/png",
     sizes: "512x512",
-  },
-  {
-    rel: "preload",
-    href: "https://cdn.xray.app/fonts/satoshi/Satoshi-Medium.ttf",
-    as: "font",
-    type: "font/ttf",
-    crossOrigin: "anonymous",
-  },
-  {
-    rel: "preload",
-    href: "https://cdn.xray.app/fonts/satoshi/Satoshi-Bold.ttf",
-    as: "font",
-    type: "font/ttf",
-    crossOrigin: "anonymous",
-  },
-  {
-    rel: "preload",
-    href: "https://cdn.xray.app/fonts/satoshi/Satoshi-Black.ttf",
-    as: "font",
-    type: "font/ttf",
-    crossOrigin: "anonymous",
-  },
-  {
-    rel: "stylesheet",
-    href: "https://cdn.xray.app/fonts/satoshi.css",
   },
 ]
 
@@ -52,8 +49,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
           name="viewport"
           content="width=device-width,viewport-fit=cover,initial-scale=1,shrink-to-fit=no,maximum-scale=1,user-scalable=0"
         />
-        <meta name="theme-color" content="#ffffff" />
+        <meta name="theme-color" content={metaThemeColor.light} />
         <title>Mini App Template</title>
+        <style dangerouslySetInnerHTML={{ __html: themeCssVariables }} />
         <Meta />
         <Links />
       </head>
@@ -70,12 +68,12 @@ export function HydrateFallback() {
   return (
     <div
       style={{
-        width: "100%vw",
+        width: "100vw",
         height: "100vh",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#000",
+        background: palette.black,
       }}
     >
       <svg
@@ -89,7 +87,7 @@ export function HydrateFallback() {
           marginBottom: "3%",
         }}
       >
-        <g stroke="none" strokeWidth="1" fill="#ffffff" fillRule="evenodd">
+        <g stroke="none" strokeWidth="1" fill={palette.white} fillRule="evenodd">
           <path
             d="M27.2644887,12.845956 L40.286334,0 L57.8748681,0 L34.5892767,22.6565806 L31.6051038,23.7948299 L18.2215405,36.966 L0.135644222,36.966 L23.5116652,14.6888358 L27.2644887,12.845956 Z M0,0 L18.31197,0 L31.0625269,12.7375513 L34.9509946,14.7430381 L57.9652976,36.966 L39.4724687,36.966 L25.9984759,23.4696158 L22.0647935,21.4099267 L0,0 Z"
             fillRule="nonzero"
@@ -102,12 +100,14 @@ export function HydrateFallback() {
 
 export default function App() {
   return (
-    <>
-      <Effects />
-      <Theme>
+    <Theme>
+      <CardanoProvider>
+        <CardanoConnector />
+        <HostRouteSync />
+        <NavigationProgress />
         <Outlet />
-      </Theme>
-    </>
+      </CardanoProvider>
+    </Theme>
   )
 }
 

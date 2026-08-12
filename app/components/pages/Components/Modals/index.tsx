@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Button, Modal } from "antd"
-import { message } from "@/utils/escapeAntd"
+import { message } from "@/theme/EscapeAntd"
 import { BookOpenIcon } from "@heroicons/react/24/outline"
 
 export default function ModalsPage() {

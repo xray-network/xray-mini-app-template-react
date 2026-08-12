@@ -1,5 +1,3 @@
-import { Divider } from "antd"
-
 export default function TypographyPage() {
   return (
     <section className="mb-10">

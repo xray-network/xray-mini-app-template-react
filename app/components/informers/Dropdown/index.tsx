@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react"
-import { Dropdown, Space, Radio, Checkbox } from "antd"
+import React from "react"
+import { Dropdown } from "antd"
 import style from "./style.module.css"
 
 const InformerDropdown = ({
