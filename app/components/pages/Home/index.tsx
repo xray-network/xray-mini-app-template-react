@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react"
-import { CheckIcon, DocumentDuplicateIcon } from "@heroicons/react/24/outline"
+import { DocumentDuplicateIcon, SignalIcon, SignalSlashIcon } from "@heroicons/react/24/outline"
+import { useMiniApp } from "@xray-network/xray-js/mini-app-bridge/react"
 import Copy from "@/components/common/Copy"
-import CardanoHome from "./blockchains/Cardano"
+import CardanoHome from "./Cardano"
 import styles from "./style.module.css"
 
 const repositoryUrl = "https://github.com/xray-network/xray-mini-app-template-react.git"
@@ -12,49 +12,40 @@ const supportedBlockchains = [
   { id: "midnight", name: "Midnight", status: "Coming soon" },
 ] as const
 
+const blockchainNames = {
+  cardano: "Cardano",
+  bitcoin: "Bitcoin",
+  midnight: "Midnight",
+} as const
+
 export default function HomePage() {
-  const [copied, setCopied] = useState(false)
-  const [announcement, setAnnouncement] = useState("")
-  const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const { connecting, context, protocols } = useMiniApp()
 
-  useEffect(
-    () => () => {
-      if (copyTimer.current) clearTimeout(copyTimer.current)
-    },
-    []
-  )
-
-  const processCopy = () => {
-    setCopied(true)
-    setAnnouncement("Repository URL copied.")
-    if (copyTimer.current) clearTimeout(copyTimer.current)
-    copyTimer.current = setTimeout(() => setCopied(false), 1600)
+  if (connecting) {
+    return (
+      <main className={styles.page}>
+        <div className={styles.handshakeLoader} role="status" aria-label="Connecting to XRAY App">
+          <span className="shared-spinner" aria-hidden="true" />
+        </div>
+      </main>
+    )
   }
+
+  const cardanoContext = context?.blockchain === "cardano" ? context : null
 
   return (
     <main className={styles.page}>
-      <p className={styles.srOnly} aria-live="polite">
-        {announcement}
-      </p>
-
       <section className={styles.hero} aria-labelledby="home-title">
         <div className={styles.heroCopy}>
           <span className={styles.eyebrow}>XRAY MINI APP TEMPLATE</span>
-          <h1 id="home-title">Build XRAY mini apps with React.</h1>
-          <p className={styles.heroLead}>
-            Host context, Cardano CIP-30, and request/response tooling are ready to use.
-          </p>
+          <h1 id="home-title">A React template for XRAY mini apps.</h1>
+          <p className={styles.heroLead}>Host context and multi-blockchain protocol tooling are ready to use.</p>
           <div className={styles.cloneBlock}>
             <code>{repositoryUrl}</code>
             <Copy copy={repositoryUrl} tooltipMessage="Copy repository URL" tooltipSuccess="Repository URL copied">
-              <button
-                className={styles.copyButton}
-                type="button"
-                onClick={processCopy}
-                aria-label={copied ? "Repository URL copied" : "Copy repository URL"}
-              >
-                {copied ? <CheckIcon aria-hidden="true" /> : <DocumentDuplicateIcon aria-hidden="true" />}
-                <span>{copied ? "Copied" : "Copy"}</span>
+              <button className={styles.copyButton} type="button" aria-label="Copy repository URL">
+                <DocumentDuplicateIcon aria-hidden="true" />
+                <span>Copy</span>
               </button>
             </Copy>
           </div>
@@ -80,7 +71,52 @@ export default function HomePage() {
         </aside>
       </section>
 
-      <CardanoHome />
+      <section className={styles.contextSection} aria-labelledby="context-title">
+        <div className={styles.sectionHeading}>
+          <div>
+            <span className={styles.eyebrow}>HOST CONTEXT</span>
+            <h2 id="context-title">Current blockchain</h2>
+          </div>
+          <span className={`${styles.stateTag} ${context ? styles.online : styles.offline}`}>
+            <span className={styles.statusDot} aria-hidden="true" />
+            {context ? "Host connected" : "Not connected"}
+          </span>
+        </div>
+
+        <div className={styles.currentContext}>
+          <div className={styles.contextIdentity}>
+            <span className={styles.chainAvatar} data-state={context ? "connected" : "disconnected"} aria-hidden="true">
+              {context ? <SignalIcon /> : <SignalSlashIcon />}
+            </span>
+            <div>
+              <strong>{context ? blockchainNames[context.blockchain] : "No blockchain context"}</strong>
+              <p>
+                {context
+                  ? "Host context is live and ready for protocol requests."
+                  : "Open this template inside XRAY App to connect a blockchain and activate its protocols."}
+              </p>
+            </div>
+          </div>
+
+          <dl className={styles.contextDetails}>
+            <div>
+              <dt>Network</dt>
+              <dd>{context?.network ?? "—"}</dd>
+            </div>
+            <div>
+              <dt>Mode</dt>
+              <dd>{context ? "Embedded" : "Standalone"}</dd>
+            </div>
+            <div>
+              <dt>Protocols</dt>
+              <dd className={styles.protocolList}>
+                {protocols.length > 0 ? protocols.map((protocol) => <span key={protocol}>{protocol}</span>) : "—"}
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+      {cardanoContext && <CardanoHome />}
     </main>
   )
 }

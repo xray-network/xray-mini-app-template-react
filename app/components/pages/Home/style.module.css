@@ -52,6 +52,14 @@
   outline-offset: 2px;
 }
 
+.handshakeLoader {
+  display: flex;
+  min-height: 160px;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 40px;
+}
+
 .srOnly {
   position: absolute;
   width: 1px;
@@ -424,22 +432,6 @@
   background: var(--home-chip);
 }
 
-.cip30Fields {
-  display: grid;
-  gap: 18px;
-  padding-top: 8px;
-}
-
-.cip30Field {
-  display: grid;
-  gap: 7px;
-}
-
-.cip30Field > span:first-child {
-  font-size: 12px;
-  font-weight: 600;
-}
-
 .logHeader {
   align-items: flex-end;
 }
@@ -503,10 +495,15 @@
   display: none;
 }
 
+.methodsPanel {
+  overflow: hidden;
+  border: 1px solid var(--home-border);
+  border-radius: 20px;
+  background: var(--home-panel);
+}
+
 .requestBar {
-  display: flex;
-  align-items: center;
-  gap: 20px;
+  display: block;
   padding: 14px 16px;
   border-bottom: 1px solid var(--home-border);
   background: var(--home-panel);
@@ -527,6 +524,7 @@
   min-width: 0;
   flex-wrap: wrap;
   gap: 7px;
+  margin-top: 10px;
 }
 
 .requestTag {
@@ -548,6 +546,94 @@
 .requestTag:active:not(:disabled) {
   border-color: var(--home-accent-press);
   background: var(--home-accent-press);
+}
+
+.simpleLog {
+  min-height: 120px;
+  max-height: 280px;
+  overflow: auto;
+  color: var(--home-text-secondary);
+  background: var(--home-bg);
+}
+
+.simpleLogTitle,
+.simpleLogEmpty {
+  padding: 12px 16px;
+  font-family: var(--xr-font-mono);
+  font-size: 11px;
+}
+
+.simpleLogTitle {
+  border-bottom: 1px solid var(--home-border);
+  color: var(--home-muted);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.simpleLogEmpty {
+  color: var(--home-muted);
+}
+
+.simpleLogEntry {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  padding: 12px 16px;
+}
+
+.simpleLogEntry + .simpleLogEntry {
+  border-top: 1px solid var(--home-border);
+}
+
+.simpleLogMeta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 12px;
+  padding-right: 16px;
+  color: var(--home-muted);
+  font-family: var(--xr-font-mono);
+  font-size: 10px;
+}
+
+.simpleLogMeta span {
+  color: var(--home-accent);
+  font-size: 14px;
+  line-height: 1;
+}
+
+.simpleLogEntry[data-tone="success"] .simpleLogMeta span {
+  color: var(--home-success);
+}
+
+.simpleLogEntry[data-tone="error"] .simpleLogMeta span {
+  color: var(--home-danger);
+}
+
+.simpleLogData {
+  min-width: 0;
+  padding-left: 16px;
+  border-left: 1px solid var(--home-border);
+}
+
+.simpleLogData strong,
+.simpleLogData code {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.simpleLogData strong {
+  color: var(--home-text);
+  font-family: var(--xr-font-mono);
+  font-size: 11px;
+}
+
+.simpleLogData code {
+  margin-top: 5px;
+  color: var(--home-text-secondary);
+  font-family: var(--xr-font-mono);
+  font-size: 11px;
+  white-space: pre-wrap;
 }
 
 .logBody {

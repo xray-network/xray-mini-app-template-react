@@ -67,12 +67,14 @@ Do not introduce another `AppProviders` wrapper unless provider composition beco
 
 ## XRAY Mini App Bridge
 
-Import chain-neutral host, theme, currency, and routing hooks from `@xray-network/xray-js/mini-app-bridge/react`.
-Import Cardano data hooks from `@xray-network/xray-js/mini-app-bridge/cardano/react`. Hooks share their bridge stores
-and initiate the host handshake; an additional provider is not required. Use the matching `client`, `cardano`, and
-`cardano/cip30` subpaths for lower-level APIs or types; do not depend on the runtime's internal bridge package directly.
-The template installs `window.cardano.xrayBridge` in `app/root.tsx`; that connector calls XRAY App through the iframe bridge and
-must never delegate to another browser wallet.
+Import chain-neutral hooks and the `cardano.bridge` React namespace from
+`@xray-network/xray-js/mini-app-bridge/react`. Hooks share their bridge stores and initiate the host handshake; an
+additional provider is not required. Import `client` from `@xray-network/xray-js/mini-app-bridge` for lower-level
+`client.platform`, `client.cardano.bridge`, and `client.cardano.cip30` APIs. Protocol types and constants remain on the
+matching `mini-app-bridge`, `cardano`, and `cardano/cip30` entry points; do not depend on the runtime's internal bridge
+package directly.
+The template installs `window.cardano.xrayBridge` in `app/components/pages/Home/Cardano/index.tsx`; that connector calls
+XRAY App through the iframe bridge and must never delegate to another browser wallet.
 
 Host values may be `null` while connecting or when the app runs outside the XRAY host. Use the effective-setting hooks
 in `app/integrations/xray-js/useEffectiveSettings.ts` so the app falls back to standalone preferences.

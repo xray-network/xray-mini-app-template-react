@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react"
 import { Statistic } from "antd"
-import { useTip } from "@xray-network/xray-js/mini-app-bridge/cardano/react"
+import { cardano, useMiniApp } from "@xray-network/xray-js/mini-app-bridge/react"
 import * as utils from "@/utils"
 import classnames from "classnames"
 import { useEffectiveNetwork } from "@/integrations/xray-js/useEffectiveSettings"
-import { useMiniApp } from "@xray-network/xray-js/mini-app-bridge/react"
 
 const NetworkStats = () => {
-  const { tip } = useTip()
+  const { tip } = cardano.bridge.useTip()
   const { connected, context } = useMiniApp()
   const fallbackNetwork = useEffectiveNetwork()
   const network = context?.blockchain === "cardano" ? context.network : fallbackNetwork

@@ -2,33 +2,14 @@ import "@/styles/tailwind.css"
 import "nprogress/nprogress.css"
 import "@/styles/style.css"
 
-import * as cardanoCip30Client from "@xray-network/xray-js/mini-app-bridge/cardano/cip30/client"
-import { useEffect } from "react"
 import type { Route } from "./+types/root"
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router"
-import { useMiniApp } from "@xray-network/xray-js/mini-app-bridge/react"
-import { CardanoProvider } from "@/integrations/xray-js/CardanoProvider"
+import { MiniAppProvider } from "@xray-network/xray-js/mini-app-bridge/react"
 import HostRouteSync from "@/shared/routing/HostRouteSync"
 import NavigationProgress from "@/shared/routing/NavigationProgress"
 import Theme from "@/theme"
 import { themeCssVariables } from "@/theme/css"
 import { metaThemeColor, palette } from "@/theme/palette"
-
-function CardanoConnector() {
-  const { connected, context } = useMiniApp()
-  const enabled = connected === false || context?.blockchain === "cardano"
-
-  useEffect(() => {
-    if (!enabled) return
-    const connector = cardanoCip30Client.installConnector()
-    return () => {
-      const cardano = (window as unknown as { cardano?: Record<string, unknown> }).cardano
-      if (cardano?.xrayBridge === connector) delete cardano.xrayBridge
-    }
-  }, [enabled])
-
-  return null
-}
 
 export const links: Route.LinksFunction = () => [
   { rel: "manifest", href: "/manifest.webmanifest", crossOrigin: "anonymous" },
@@ -100,14 +81,13 @@ export function HydrateFallback() {
 
 export default function App() {
   return (
-    <Theme>
-      <CardanoProvider>
-        <CardanoConnector />
+    <MiniAppProvider>
+      <Theme>
         <HostRouteSync />
         <NavigationProgress />
         <Outlet />
-      </CardanoProvider>
-    </Theme>
+      </Theme>
+    </MiniAppProvider>
   )
 }
 
