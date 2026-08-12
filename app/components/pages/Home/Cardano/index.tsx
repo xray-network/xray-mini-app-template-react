@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { client } from "@xray-network/xray-js/mini-app-bridge"
 import styles from "../style.module.css"
 
@@ -28,15 +28,7 @@ export default function CardanoHome() {
   const [cip30Enabled, setCip30Enabled] = useState(false)
   const [logs, setLogs] = useState<LogEntry[]>([])
 
-  useEffect(() => {
-    const connector = cardanoCip30Client.installConnector()
-    return () => {
-      const cardano = (window as unknown as { cardano?: Record<string, unknown> }).cardano
-      if (cardano?.xrayBridge === connector) delete cardano.xrayBridge
-    }
-  }, [])
-
-  const log = (entry: Omit<LogEntry, "id" | "time">) => {
+  const log = useCallback((entry: Omit<LogEntry, "id" | "time">) => {
     setLogs((current) =>
       [
         {
@@ -47,16 +39,32 @@ export default function CardanoHome() {
         ...current,
       ].slice(0, 40)
     )
-  }
+  }, [])
+
+  useEffect(() => {
+    const connector = cardanoCip30Client.installConnector()
+    return () => {
+      const cardano = (window as unknown as { cardano?: Record<string, unknown> }).cardano
+      if (cardano?.xrayBridge === connector) delete cardano.xrayBridge
+    }
+  }, [])
+
+  useEffect(() => {
+    return client.cardano.listenAll((message) => {
+      log({
+        direction: "→",
+        method: message.type,
+        data: format(message.payload),
+        tone: message.type.endsWith(".error") ? "error" : "success",
+      })
+    })
+  }, [log])
 
   const fire = async <Result,>(method: string, request: () => Promise<Result>) => {
     log({ direction: "←", method, data: "Request sent", tone: "request" })
     try {
-      const result = await request()
-      log({ direction: "→", method, data: format(result), tone: "success" })
-      return result
-    } catch (error) {
-      log({ direction: "×", method, data: format(error), tone: "error" })
+      return await request()
+    } catch {
       return undefined
     }
   }

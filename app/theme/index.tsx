@@ -1,13 +1,13 @@
 import { useEffect } from "react"
 import { ConfigProvider, App } from "antd"
 import { HappyProvider } from "@ant-design/happy-work-theme"
-import { useEffectiveTheme } from "@/integrations/xray-js/useEffectiveSettings"
+import { useEffectivePlatformSettings } from "@/integrations/xray-js/useEffectiveSettings"
 import EscapeAntd from "./EscapeAntd"
 import { lightTheme, darkTheme } from "./antd"
 import { metaThemeColor } from "./palette"
 
 const Theme = ({ children }: { children: React.ReactNode }) => {
-  const theme = useEffectiveTheme()
+  const { theme, ready } = useEffectivePlatformSettings()
 
   useEffect(() => {
     const html = document.documentElement
@@ -25,7 +25,7 @@ const Theme = ({ children }: { children: React.ReactNode }) => {
       <HappyProvider>
         <App>
           <EscapeAntd />
-          {children}
+          {ready && children}
         </App>
       </HappyProvider>
     </ConfigProvider>

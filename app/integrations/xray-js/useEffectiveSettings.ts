@@ -32,14 +32,27 @@ const useSystemTheme = (enabled: boolean): App.Theme => {
   return theme
 }
 
-export const useEffectiveTheme = (): App.Theme => {
+export const useEffectivePlatformSettings = () => {
   const { connected } = useMiniApp()
   const hostTheme = useHostTheme()
-  const preference = usePreferencesStore((state) => state.themePrefer)
-  const systemTheme = useSystemTheme(preference === "system")
-  if (connected && hostTheme) return hostTheme
-  return preference === "system" ? systemTheme : preference
+  const hostCurrency = useHostCurrency()
+  const hostHideBalances = useHostHideBalances()
+  const localThemePreference = usePreferencesStore((state) => state.themePrefer)
+  const localCurrency = usePreferencesStore((state) => state.currency)
+  const localHideBalances = usePreferencesStore((state) => state.hideBalances)
+  const systemTheme = useSystemTheme(localThemePreference === "system")
+
+  return {
+    theme: connected && hostTheme ? hostTheme : localThemePreference === "system" ? systemTheme : localThemePreference,
+    currency: connected && hostCurrency ? hostCurrency : localCurrency,
+    hideBalances: connected && hostHideBalances !== null ? hostHideBalances : localHideBalances,
+    ready:
+      connected === false ||
+      (connected === true && hostTheme !== null && hostCurrency !== null && hostHideBalances !== null),
+  }
 }
+
+export const useEffectiveTheme = (): App.Theme => useEffectivePlatformSettings().theme
 
 export const useEffectiveHostContext = () => {
   const { connected } = useMiniApp()
@@ -54,17 +67,11 @@ export const useEffectiveNetwork = () => {
 }
 
 export const useEffectiveCurrency = () => {
-  const { connected } = useMiniApp()
-  const hostCurrency = useHostCurrency()
-  const localCurrency = usePreferencesStore((state) => state.currency)
-  return connected && hostCurrency ? hostCurrency : localCurrency
+  return useEffectivePlatformSettings().currency
 }
 
 export const useEffectiveHideBalances = () => {
-  const { connected } = useMiniApp()
-  const hostHideBalances = useHostHideBalances()
-  const localHideBalances = usePreferencesStore((state) => state.hideBalances)
-  return connected && hostHideBalances !== null ? hostHideBalances : localHideBalances
+  return useEffectivePlatformSettings().hideBalances
 }
 
 export const useEffectiveExplorer = () => {
