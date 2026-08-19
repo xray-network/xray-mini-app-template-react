@@ -12,12 +12,12 @@ export default function EmptyHome() {
     <section className={styles.contextSection} aria-labelledby="context-title">
       <div className={styles.sectionHeading}>
         <div>
-          <span className={styles.eyebrow}>HOST CONTEXT</span>
-          <h2 id="context-title">Current blockchain</h2>
+          <span className={styles.eyebrow}>ACCOUNT CONTEXT</span>
+          <h2 id="context-title">Current account</h2>
         </div>
         <span className={`${styles.stateTag} ${connected ? styles.online : styles.offline}`}>
           <span className={styles.statusDot} aria-hidden="true" />
-          {connected ? "XRAY App detected" : unavailable ? "Host unavailable" : "Standalone"}
+          {connected ? "No account selected" : unavailable ? "Host unavailable" : "Standalone"}
         </span>
       </div>
 
@@ -28,11 +28,11 @@ export default function EmptyHome() {
           </span>
           <div>
             <strong>
-              {connected ? "No selected Cardano account" : unavailable ? "XRAY App did not respond" : "Standalone mode"}
+              {connected ? "No account selected" : unavailable ? "XRAY App did not respond" : "Standalone mode"}
             </strong>
             <p>
               {connected
-                ? "XRAY App responded, but no Cardano account is currently selected."
+                ? "XRAY App responded, but no account is currently selected."
                 : unavailable
                   ? "The template is embedded, but no supported XRAY App host responded."
                   : "Open this template inside XRAY App to use its versioned bridge adapters."}
@@ -50,8 +50,8 @@ export default function EmptyHome() {
             <dd>{status.data?.account?.network ?? "—"}</dd>
           </div>
           <div>
-            <dt>Account available</dt>
-            <dd>No</dd>
+            <dt>Tip</dt>
+            <dd className={styles.tipValue}>—</dd>
           </div>
         </dl>
       </div>

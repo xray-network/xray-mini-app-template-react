@@ -49,10 +49,10 @@ export default function HomePage() {
 
         <aside className={styles.supportedChains} aria-labelledby="supported-chains-title">
           <span className={styles.eyebrow}>BLOCKCHAIN SUPPORT</span>
-          <h2 id="supported-chains-title">Cardano ready. More chains next.</h2>
+          <h2 id="supported-chains-title">One template. Multiple blockchains.</h2>
           <p className={styles.supportCopy}>
-            Clone and run the template, then open it inside XRAY App. Read the active host context, enable Cardano
-            CIP-30, and use the console below to test wallet requests.
+            Clone and run the template, then open it inside XRAY App. Read the active host context and use the
+            console below to test available bridge requests.
           </p>
           <div className={styles.chainSupportList}>
             {supportedBlockchains.map((chain) => (

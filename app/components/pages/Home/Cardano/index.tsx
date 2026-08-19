@@ -54,9 +54,11 @@ export default function CardanoHome() {
         tone: "success",
       })
     }
+    const stopPlatform = clientPlatformV1.listenAll(receive("platform"))
     const stopCardano = clientCardanoV1.listenAll(receive("cardano"))
     const stopCip30 = clientCardanoCip30V1.listenAll(receive("cardano-cip30"))
     return () => {
+      stopPlatform()
       stopCardano()
       stopCip30()
     }
@@ -80,7 +82,6 @@ export default function CardanoHome() {
         <div>
           <span className={styles.eyebrow}>CARDANO</span>
           <h2 id="cardano-methods-title">Methods</h2>
-          <p>Fire platform v1, Cardano v1, and Cardano CIP-30 v1 requests directly.</p>
         </div>
       </div>
 
@@ -88,6 +89,13 @@ export default function CardanoHome() {
         <div className={styles.requestBar}>
           <span>platform/v1</span>
           <div className={styles.requestTags}>
+            <button
+              className={styles.requestTag}
+              type="button"
+              onClick={() => void fire("platform.getStatus", () => clientPlatformV1.getStatus())}
+            >
+              Get status
+            </button>
             <button
               className={styles.requestTag}
               type="button"

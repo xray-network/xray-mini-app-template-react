@@ -245,7 +245,7 @@
 
 .contextSection,
 .logSection {
-  padding: 48px 0;
+  padding: 48px 0 0;
   border-top: 1px solid var(--home-border);
 }
 
@@ -376,11 +376,17 @@
   line-height: 1.4;
 }
 
-.contextIdentity .tipSummary {
+.contextIdentity .accountSummary {
   color: var(--home-text-secondary);
   font-family: var(--xr-font-mono);
   font-size: 11px;
   font-weight: 600;
+}
+
+.contextIdentity .accountAddress {
+  overflow-wrap: anywhere;
+  font-family: var(--xr-font-mono);
+  font-size: 11px;
 }
 
 .contextDetails {
@@ -394,13 +400,16 @@
   padding: 22px;
 }
 
-.contextDetails > div:nth-child(2) {
+.contextDetails > div:nth-child(even) {
   border-left: 1px solid var(--home-border);
+}
+
+.contextDetails > div:nth-child(n + 3) {
+  border-top: 1px solid var(--home-border);
 }
 
 .contextDetails > div:last-child {
   grid-column: 1 / -1;
-  border-top: 1px solid var(--home-border);
 }
 
 .contextDetails dt {
@@ -418,6 +427,10 @@
   text-overflow: ellipsis;
   text-transform: uppercase;
   white-space: nowrap;
+}
+
+.contextDetails .tipValue {
+  text-transform: none;
 }
 
 .contextDetails .protocolList {
