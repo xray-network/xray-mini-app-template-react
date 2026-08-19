@@ -75,7 +75,8 @@ version; do not add capability discovery, a handshake, or an iframe-wide version
 The template installs `window.cardano.xrayBridge` in `app/components/pages/Home/Cardano/index.tsx`; that connector calls
 XRAY App through the iframe bridge and must never delegate to another browser wallet.
 
-`platformV1.useStatus()` returns `host: "xray.app"` with a nullable account when XRAY App answers. An error indicates
+Low-level `clientPlatformV1.getStatus()` returns `{ payload: { host: "xray.app" }, context, requestId }`.
+`platformV1.useStatus()` projects that to `host: "xray.app"` with a nullable account when XRAY App answers. An error indicates
 that the host is unavailable; the marker is identification data, not authorization. Use the effective-setting hooks in
 `app/integrations/xray-js/useEffectiveSettings.ts` so the app falls back to standalone preferences.
 

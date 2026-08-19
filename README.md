@@ -3,8 +3,8 @@
 A React Router template for XRAY mini apps with Cardano integration, Ant Design, Tailwind CSS, and Zustand.
 
 The template uses the direct `platformV1`, `cardanoV1`, and `cardanoCip30V1` bridge adapters. There is no bridge
-Provider or handshake: platform status identifies `xray.app` and its nullable selected Cardano account, while every
-request and event carries its own scope and version.
+Provider or handshake: low-level platform status returns `{ payload: { host: "xray.app" }, context, requestId }`, while
+every request and event carries its own scope and version. The React status hook projects `context` to `data.account`.
 
 ## Development
 
