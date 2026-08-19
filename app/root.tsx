@@ -4,7 +4,6 @@ import "@/styles/style.css"
 
 import type { Route } from "./+types/root"
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router"
-import { MiniAppProvider } from "@xray-network/xray-js/mini-app-bridge/react"
 import HostRouteSync from "@/shared/routing/HostRouteSync"
 import NavigationProgress from "@/shared/routing/NavigationProgress"
 import Theme from "@/theme"
@@ -81,13 +80,11 @@ export function HydrateFallback() {
 
 export default function App() {
   return (
-    <MiniAppProvider>
-      <Theme>
-        <HostRouteSync />
-        <NavigationProgress />
-        <Outlet />
-      </Theme>
-    </MiniAppProvider>
+    <Theme>
+      <HostRouteSync />
+      <NavigationProgress />
+      <Outlet />
+    </Theme>
   )
 }
 

@@ -1,23 +1,17 @@
 import { useEffect } from "react"
-import {
-  useCurrency as useHostCurrency,
-  useHideBalances as useHostHideBalances,
-  useTheme as useHostTheme,
-} from "@xray-network/xray-js/mini-app-bridge/react"
+import { platformV1 } from "@xray-network/xray-js/mini-app-bridge/react"
 import { usePreferencesStore } from "@/store/preferences"
 
 export const useSyncHostPreferences = () => {
-  const hostTheme = useHostTheme()
-  const hostCurrency = useHostCurrency()
-  const hostHideBalances = useHostHideBalances()
+  const hostTheme = platformV1.useTheme()
+  const hostCurrency = platformV1.useCurrency()
+  const hostHideBalances = platformV1.useHideBalances()
 
   useEffect(() => {
-    if (hostTheme === null && hostCurrency === null && hostHideBalances === null) return
-
     usePreferencesStore.setState({
-      ...(hostTheme !== null && { themePrefer: hostTheme }),
-      ...(hostCurrency !== null && { currency: hostCurrency }),
-      ...(hostHideBalances !== null && { hideBalances: hostHideBalances }),
+      ...(hostTheme.data !== undefined && { themePrefer: hostTheme.data }),
+      ...(hostCurrency.data !== undefined && { currency: hostCurrency.data }),
+      ...(hostHideBalances.data !== undefined && { hideBalances: hostHideBalances.data }),
     })
-  }, [hostCurrency, hostHideBalances, hostTheme])
+  }, [hostCurrency.data, hostHideBalances.data, hostTheme.data])
 }

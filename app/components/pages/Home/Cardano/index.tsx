@@ -1,10 +1,6 @@
 import { useCallback, useEffect, useState } from "react"
-import { client } from "@xray-network/xray-js/mini-app-bridge"
+import { clientCardanoCip30V1, clientCardanoV1, clientPlatformV1 } from "@xray-network/xray-js/mini-app-bridge"
 import styles from "../style.module.css"
-
-const miniAppClient = client.platform
-const cardanoClient = client.cardano.bridge
-const cardanoCip30Client = client.cardano.cip30
 
 const format = (value: unknown) => {
   if (value instanceof Error) return value.message
@@ -42,7 +38,7 @@ export default function CardanoHome() {
   }, [])
 
   useEffect(() => {
-    const connector = cardanoCip30Client.installConnector()
+    const connector = clientCardanoCip30V1.installConnector()
     return () => {
       const cardano = (window as unknown as { cardano?: Record<string, unknown> }).cardano
       if (cardano?.xrayBridge === connector) delete cardano.xrayBridge
@@ -50,21 +46,30 @@ export default function CardanoHome() {
   }, [])
 
   useEffect(() => {
-    return client.cardano.listenAll((message) => {
+    const receive = (scope: string) => (message: { event: string; payload: unknown; context: unknown }) => {
       log({
         direction: "→",
-        method: message.type,
-        data: format(message.payload),
-        tone: message.type.endsWith(".error") ? "error" : "success",
+        method: `${scope}.${message.event}`,
+        data: format(message),
+        tone: "success",
       })
-    })
+    }
+    const stopCardano = clientCardanoV1.listenAll(receive("cardano"))
+    const stopCip30 = clientCardanoCip30V1.listenAll(receive("cardano-cip30"))
+    return () => {
+      stopCardano()
+      stopCip30()
+    }
   }, [log])
 
   const fire = async <Result,>(method: string, request: () => Promise<Result>) => {
     log({ direction: "←", method, data: "Request sent", tone: "request" })
     try {
-      return await request()
-    } catch {
+      const result = await request()
+      log({ direction: "→", method, data: format(result), tone: "success" })
+      return result
+    } catch (error) {
+      log({ direction: "×", method, data: format(error), tone: "error" })
       return undefined
     }
   }
@@ -75,32 +80,32 @@ export default function CardanoHome() {
         <div>
           <span className={styles.eyebrow}>CARDANO</span>
           <h2 id="cardano-methods-title">Methods</h2>
-          <p>Fire Host, Cardano bridge, and CIP-30 requests directly.</p>
+          <p>Fire platform v1, Cardano v1, and Cardano CIP-30 v1 requests directly.</p>
         </div>
       </div>
 
       <div className={styles.methodsPanel}>
         <div className={styles.requestBar}>
-          <span>host</span>
+          <span>platform/v1</span>
           <div className={styles.requestTags}>
             <button
               className={styles.requestTag}
               type="button"
-              onClick={() => void fire("host.getTheme", () => miniAppClient.getTheme())}
+              onClick={() => void fire("platform.getTheme", () => clientPlatformV1.getTheme())}
             >
               Get theme
             </button>
             <button
               className={styles.requestTag}
               type="button"
-              onClick={() => void fire("host.getCurrency", () => miniAppClient.getCurrency())}
+              onClick={() => void fire("platform.getCurrency", () => clientPlatformV1.getCurrency())}
             >
               Get currency
             </button>
             <button
               className={styles.requestTag}
               type="button"
-              onClick={() => void fire("host.getHideBalances", () => miniAppClient.getHideBalances())}
+              onClick={() => void fire("platform.getHideBalances", () => clientPlatformV1.getHideBalances())}
             >
               Get balance privacy
             </button>
@@ -108,54 +113,54 @@ export default function CardanoHome() {
         </div>
 
         <div className={styles.requestBar}>
-          <span>cardano.bridge</span>
+          <span>cardano/v1</span>
           <div className={styles.requestTags}>
             <button
               className={styles.requestTag}
               type="button"
-              onClick={() => void fire("cardano.bridge.getTip", () => cardanoClient.getTip())}
+              onClick={() => void fire("cardano.getTip", () => clientCardanoV1.getTip())}
             >
               Get tip
             </button>
             <button
               className={styles.requestTag}
               type="button"
-              onClick={() => void fire("cardano.bridge.getAccountState", () => cardanoClient.getAccountState())}
+              onClick={() => void fire("cardano.getAccountState", () => clientCardanoV1.getAccountState())}
             >
               Get account state
             </button>
             <button
               className={styles.requestTag}
               type="button"
-              onClick={() => void fire("cardano.bridge.getExplorer", () => cardanoClient.getExplorer())}
+              onClick={() => void fire("cardano.getExplorer", () => clientCardanoV1.getExplorer())}
             >
               Get explorer
             </button>
             <button
               className={styles.requestTag}
               type="button"
-              onClick={() => void fire("cardano.bridge.signTx", () => cardanoClient.signTx("dummy"))}
+              onClick={() => void fire("cardano.signTx", () => clientCardanoV1.signTx("dummy"))}
             >
               Sign transaction
             </button>
             <button
               className={styles.requestTag}
               type="button"
-              onClick={() => void fire("cardano.bridge.submitTx", () => cardanoClient.submitTx("dummy"))}
+              onClick={() => void fire("cardano.submitTx", () => clientCardanoV1.submitTx("dummy"))}
             >
               Submit transaction
             </button>
             <button
               className={styles.requestTag}
               type="button"
-              onClick={() => void fire("cardano.bridge.signAndSubmitTx", () => cardanoClient.signAndSubmitTx("dummy"))}
+              onClick={() => void fire("cardano.signAndSubmitTx", () => clientCardanoV1.signAndSubmitTx("dummy"))}
             >
               Sign and submit
             </button>
             <button
               className={styles.requestTag}
               type="button"
-              onClick={() => void fire("cardano.bridge.signData", () => cardanoClient.signData("dummy", "dummy"))}
+              onClick={() => void fire("cardano.signData", () => clientCardanoV1.signData("dummy", "dummy"))}
             >
               Sign data
             </button>
@@ -163,13 +168,13 @@ export default function CardanoHome() {
         </div>
 
         <div className={styles.requestBar}>
-          <span>cardano.cip30</span>
+          <span>cardano-cip30/v1</span>
           <div className={styles.requestTags}>
             <button
               className={styles.requestTag}
               type="button"
               onClick={() =>
-                void fire("cardano.cip30.enable", () => cardanoCip30Client.enable()).then((api) => {
+                void fire("cardano-cip30.enable", () => clientCardanoCip30V1.enable()).then((api) => {
                   if (api) setCip30Enabled(true)
                 })
               }
@@ -179,7 +184,7 @@ export default function CardanoHome() {
             <button
               className={styles.requestTag}
               type="button"
-              onClick={() => void fire("cardano.cip30.isEnabled", () => cardanoCip30Client.isEnabled())}
+              onClick={() => void fire("cardano-cip30.isEnabled", () => clientCardanoCip30V1.isEnabled())}
             >
               Is enabled
             </button>
@@ -187,7 +192,7 @@ export default function CardanoHome() {
               className={styles.requestTag}
               type="button"
               disabled={!cip30Enabled}
-              onClick={() => void fire("cardano.cip30.getExtensions", () => cardanoCip30Client.api.getExtensions())}
+              onClick={() => void fire("cardano-cip30.getExtensions", () => clientCardanoCip30V1.api.getExtensions())}
             >
               Get extensions
             </button>
@@ -195,7 +200,7 @@ export default function CardanoHome() {
               className={styles.requestTag}
               type="button"
               disabled={!cip30Enabled}
-              onClick={() => void fire("cardano.cip30.getNetworkId", () => cardanoCip30Client.api.getNetworkId())}
+              onClick={() => void fire("cardano-cip30.getNetworkId", () => clientCardanoCip30V1.api.getNetworkId())}
             >
               Get network ID
             </button>
@@ -203,7 +208,7 @@ export default function CardanoHome() {
               className={styles.requestTag}
               type="button"
               disabled={!cip30Enabled}
-              onClick={() => void fire("cardano.cip30.getUtxos", () => cardanoCip30Client.api.getUtxos())}
+              onClick={() => void fire("cardano-cip30.getUtxos", () => clientCardanoCip30V1.api.getUtxos())}
             >
               Get UTxOs
             </button>
@@ -212,8 +217,8 @@ export default function CardanoHome() {
               type="button"
               disabled={!cip30Enabled}
               onClick={() =>
-                void fire("cardano.cip30.getCollateral", () =>
-                  cardanoCip30Client.api.getCollateral({ amount: "dummy" })
+                void fire("cardano-cip30.getCollateral", () =>
+                  clientCardanoCip30V1.api.getCollateral({ amount: "dummy" })
                 )
               }
             >
@@ -223,7 +228,7 @@ export default function CardanoHome() {
               className={styles.requestTag}
               type="button"
               disabled={!cip30Enabled}
-              onClick={() => void fire("cardano.cip30.getBalance", () => cardanoCip30Client.api.getBalance())}
+              onClick={() => void fire("cardano-cip30.getBalance", () => clientCardanoCip30V1.api.getBalance())}
             >
               Get balance
             </button>
@@ -232,7 +237,7 @@ export default function CardanoHome() {
               type="button"
               disabled={!cip30Enabled}
               onClick={() =>
-                void fire("cardano.cip30.getUsedAddresses", () => cardanoCip30Client.api.getUsedAddresses())
+                void fire("cardano-cip30.getUsedAddresses", () => clientCardanoCip30V1.api.getUsedAddresses())
               }
             >
               Get used addresses
@@ -242,7 +247,7 @@ export default function CardanoHome() {
               type="button"
               disabled={!cip30Enabled}
               onClick={() =>
-                void fire("cardano.cip30.getUnusedAddresses", () => cardanoCip30Client.api.getUnusedAddresses())
+                void fire("cardano-cip30.getUnusedAddresses", () => clientCardanoCip30V1.api.getUnusedAddresses())
               }
             >
               Get unused addresses
@@ -252,7 +257,7 @@ export default function CardanoHome() {
               type="button"
               disabled={!cip30Enabled}
               onClick={() =>
-                void fire("cardano.cip30.getChangeAddress", () => cardanoCip30Client.api.getChangeAddress())
+                void fire("cardano-cip30.getChangeAddress", () => clientCardanoCip30V1.api.getChangeAddress())
               }
             >
               Get change address
@@ -262,7 +267,7 @@ export default function CardanoHome() {
               type="button"
               disabled={!cip30Enabled}
               onClick={() =>
-                void fire("cardano.cip30.getRewardAddresses", () => cardanoCip30Client.api.getRewardAddresses())
+                void fire("cardano-cip30.getRewardAddresses", () => clientCardanoCip30V1.api.getRewardAddresses())
               }
             >
               Get reward addresses
@@ -271,7 +276,7 @@ export default function CardanoHome() {
               className={styles.requestTag}
               type="button"
               disabled={!cip30Enabled}
-              onClick={() => void fire("cardano.cip30.signTx", () => cardanoCip30Client.api.signTx("dummy"))}
+              onClick={() => void fire("cardano-cip30.signTx", () => clientCardanoCip30V1.api.signTx("dummy"))}
             >
               Sign transaction
             </button>
@@ -280,7 +285,7 @@ export default function CardanoHome() {
               type="button"
               disabled={!cip30Enabled}
               onClick={() =>
-                void fire("cardano.cip30.signData", () => cardanoCip30Client.api.signData("dummy", "dummy"))
+                void fire("cardano-cip30.signData", () => clientCardanoCip30V1.api.signData("dummy", "dummy"))
               }
             >
               Sign data
@@ -289,7 +294,7 @@ export default function CardanoHome() {
               className={styles.requestTag}
               type="button"
               disabled={!cip30Enabled}
-              onClick={() => void fire("cardano.cip30.submitTx", () => cardanoCip30Client.api.submitTx("dummy"))}
+              onClick={() => void fire("cardano-cip30.submitTx", () => clientCardanoCip30V1.api.submitTx("dummy"))}
             >
               Submit transaction
             </button>

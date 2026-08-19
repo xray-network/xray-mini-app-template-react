@@ -1,11 +1,12 @@
 import { SignalIcon } from "@heroicons/react/24/outline"
-import { cardano, useMiniApp } from "@xray-network/xray-js/mini-app-bridge/react"
+import { cardanoV1, platformV1 } from "@xray-network/xray-js/mini-app-bridge/react"
 import * as utils from "@/utils"
 import styles from "../style.module.css"
 
 export default function CardanoContext() {
-  const { context, protocols } = useMiniApp()
-  const { tip } = cardano.bridge.useTip()
+  const status = platformV1.useStatus()
+  const tip = cardanoV1.useTip()
+  const context = status.data?.account
 
   if (context?.blockchain !== "cardano") return null
 
@@ -31,27 +32,25 @@ export default function CardanoContext() {
             <strong>Cardano</strong>
             <p>Host context is live and ready for protocol requests.</p>
             <p className={styles.tipSummary} aria-live="polite">
-              Block {tip ? utils.quantityWithCommas(tip.blockNo) : "—"} · Epoch{" "}
-              {tip ? utils.quantityWithCommas(tip.epochNo) : "—"} · Slot{" "}
-              {tip ? utils.quantityWithCommas(tip.absSlot) : "—"}
+              Block {tip.data ? utils.quantityWithCommas(tip.data.blockNo) : "—"} · Epoch{" "}
+              {tip.data ? utils.quantityWithCommas(tip.data.epochNo) : "—"} · Slot{" "}
+              {tip.data ? utils.quantityWithCommas(tip.data.absSlot) : "—"}
             </p>
           </div>
         </div>
 
         <dl className={styles.contextDetails}>
           <div>
+            <dt>Blockchain</dt>
+            <dd>Cardano</dd>
+          </div>
+          <div>
             <dt>Network</dt>
             <dd>{context.network}</dd>
           </div>
           <div>
-            <dt>Mode</dt>
-            <dd>Embedded</dd>
-          </div>
-          <div>
-            <dt>Protocols</dt>
-            <dd className={styles.protocolList}>
-              {protocols.length > 0 ? protocols.map((protocol) => <span key={protocol}>{protocol}</span>) : "—"}
-            </dd>
+            <dt>Account available</dt>
+            <dd>Yes</dd>
           </div>
         </dl>
       </div>

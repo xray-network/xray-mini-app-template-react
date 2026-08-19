@@ -8,16 +8,16 @@ export default function InformersPage() {
       <div className="mb-20">
         <div className="mb-8">Informers Set</div>
         <div className="flex flex-wrap items-center gap-10 text-xl">
-          <Informers.Ada
+          <Informers.Text
             value={"12451251251"}
             title="Balance"
             help="Total funds currently available in this address."
           />
-          <Informers.Explorer
-            type="paymentAddress"
+          <Informers.Text
             value={
               "addr1q8af8kfmj6avkhewp8zq8m3ls6f0tumz489zqn04d9lpynrx4npdh4qrzesqpsypyxd7j9sqt4yjr28z9n7379hnu5zs83czmw"
             }
+            copy="addr1q8af8kfmj6avkhewp8zq8m3ls6f0tumz489zqn04d9lpynrx4npdh4qrzesqpsypyxd7j9sqt4yjr28z9n7379hnu5zs83czmw"
             title="Receiving Address"
             help="Your main address for sending and receiving funds"
           />
@@ -68,11 +68,11 @@ export default function InformersPage() {
               },
               {
                 title: "Total Output",
-                children: <Informers.Ada value={"24125.252622"} />,
+                children: <Informers.Text value="24125.252622 ADA" />,
               },
               {
                 title: "Fee",
-                children: <Informers.Ada value={"12452.511123"} />,
+                children: <Informers.Text value="12452.511123 ADA" />,
               },
             ]}
           />
@@ -105,11 +105,11 @@ export default function InformersPage() {
               },
               {
                 title: "Total Output",
-                children: <Informers.Ada value={"24125.252622"} />,
+                children: <Informers.Text value="24125.252622 ADA" />,
               },
               {
                 title: "Fee",
-                children: <Informers.Ada value={"12452.511123"} />,
+                children: <Informers.Text value="12452.511123 ADA" />,
               },
             ]}
           />
@@ -143,11 +143,11 @@ export default function InformersPage() {
                   },
                   {
                     title: "Total Output",
-                    children: <Informers.Ada value={"24125.252622"} />,
+                    children: <Informers.Text value="24125.252622 ADA" />,
                   },
                   {
                     title: "Fee",
-                    children: <Informers.Ada value={"12452.511123"} />,
+                    children: <Informers.Text value="12452.511123 ADA" />,
                   },
                 ]}
               />
@@ -183,11 +183,11 @@ export default function InformersPage() {
                   },
                   {
                     title: "Total Output",
-                    children: <Informers.Ada value={"24125.252622"} />,
+                    children: <Informers.Text value="24125.252622 ADA" />,
                   },
                   {
                     title: "Fee",
-                    children: <Informers.Ada value={"12452.511123"} />,
+                    children: <Informers.Text value="12452.511123 ADA" />,
                   },
                 ]}
               />

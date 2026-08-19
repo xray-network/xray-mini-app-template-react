@@ -1,5 +1,5 @@
 import { DocumentDuplicateIcon } from "@heroicons/react/24/outline"
-import { useMiniApp } from "@xray-network/xray-js/mini-app-bridge/react"
+import { platformV1 } from "@xray-network/xray-js/mini-app-bridge/react"
 import Copy from "@/components/common/Copy"
 import CardanoHome from "./Cardano"
 import CardanoContext from "./Cardano/Context"
@@ -15,19 +15,19 @@ const supportedBlockchains = [
 ] as const
 
 export default function HomePage() {
-  const { connecting, context } = useMiniApp()
+  const status = platformV1.useStatus()
 
-  if (connecting) {
+  if (status.loading) {
     return (
       <main className={styles.page}>
-        <div className={styles.handshakeLoader} role="status" aria-label="Connecting to XRAY App">
+        <div className={styles.statusLoader} role="status" aria-label="Checking for XRAY App">
           <span className="shared-spinner" aria-hidden="true" />
         </div>
       </main>
     )
   }
 
-  const cardanoContext = context?.blockchain === "cardano" ? context : null
+  const cardanoContext = status.data?.account?.blockchain === "cardano" ? status.data.account : null
 
   return (
     <main className={styles.page}>
@@ -35,7 +35,7 @@ export default function HomePage() {
         <div className={styles.heroCopy}>
           <span className={styles.eyebrow}>XRAY MINI APP TEMPLATE</span>
           <h1 id="home-title">A React template for XRAY mini apps.</h1>
-          <p className={styles.heroLead}>Host context and multi-blockchain protocol tooling are ready to use.</p>
+          <p className={styles.heroLead}>XRAY host status and versioned Cardano tooling are ready to use.</p>
           <div className={styles.cloneBlock}>
             <code>{repositoryUrl}</code>
             <Copy copy={repositoryUrl} tooltipMessage="Copy repository URL" tooltipSuccess="Repository URL copied">
@@ -52,8 +52,7 @@ export default function HomePage() {
           <h2 id="supported-chains-title">Cardano ready. More chains next.</h2>
           <p className={styles.supportCopy}>
             Clone and run the template, then open it inside XRAY App. Read the active host context, enable Cardano
-            CIP-30, and use the console below to test wallet requests. Bitcoin and Midnight can follow the same bridge
-            pattern.
+            CIP-30, and use the console below to test wallet requests.
           </p>
           <div className={styles.chainSupportList}>
             {supportedBlockchains.map((chain) => (
