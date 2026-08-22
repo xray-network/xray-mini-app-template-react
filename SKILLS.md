@@ -80,6 +80,10 @@ Low-level `clientPlatformV1.getStatus()` returns `{ payload: { host: "xray.app" 
 that the host is unavailable; the marker is identification data, not authorization. Use the effective-setting hooks in
 `app/integrations/xray-js/useEffectiveSettings.ts` so the app falls back to standalone preferences.
 
+`clientPlatformV1.getLocale()` is request-only and returns the host locale in the standard correlated envelope. The
+Home method launcher logs that response for inspection; do not copy it into preferences, add a locale hook/event, or
+claim the template is localized.
+
 - Host-provided settings take precedence while connected.
 - Host settings are runtime values and must not be persisted locally.
 - Standalone defaults belong in `app/store/preferences`.

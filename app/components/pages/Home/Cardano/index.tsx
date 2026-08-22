@@ -113,6 +113,13 @@ export default function CardanoHome() {
             <button
               className={styles.requestTag}
               type="button"
+              onClick={() => void fire("platform.getLocale", () => clientPlatformV1.getLocale())}
+            >
+              Get locale
+            </button>
+            <button
+              className={styles.requestTag}
+              type="button"
               onClick={() => void fire("platform.getHideBalances", () => clientPlatformV1.getHideBalances())}
             >
               Get balance privacy

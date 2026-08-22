@@ -5,6 +5,8 @@ A React Router template for XRAY mini apps with Cardano integration, Ant Design,
 The template uses the direct `platformV1`, `cardanoV1`, and `cardanoCip30V1` bridge adapters. There is no bridge
 Provider or handshake: low-level platform status returns `{ payload: { host: "xray.app" }, context, requestId }`, while
 every request and event carries its own scope and version. The React status hook projects `context` to `data.account`.
+The Home method launcher exposes direct Platform v1 requests, including request-only `getLocale`, and logs the host's
+correlated response without localizing or persisting locale in the template.
 
 ## Development
 
