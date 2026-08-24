@@ -570,9 +570,11 @@
 }
 
 .simpleLog {
+  height: clamp(160px, 32vh, 280px);
   min-height: 120px;
-  max-height: 280px;
+  max-height: 70vh;
   overflow: auto;
+  resize: vertical;
   color: var(--home-text-secondary);
   background: var(--home-bg);
 }

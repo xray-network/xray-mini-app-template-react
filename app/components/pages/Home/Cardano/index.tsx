@@ -1,3 +1,4 @@
+import { TrashIcon } from "@heroicons/react/24/outline"
 import { useCallback, useEffect, useState } from "react"
 import { clientCardanoCip30V1, clientCardanoV1, clientPlatformV1 } from "@xray-network/xray-js/mini-app-bridge"
 import styles from "../style.module.css"
@@ -83,6 +84,16 @@ export default function CardanoHome() {
           <span className={styles.eyebrow}>CARDANO</span>
           <h2 id="cardano-methods-title">Methods</h2>
         </div>
+        <button
+          className={styles.clearButton}
+          type="button"
+          aria-label="Clear log"
+          disabled={logs.length === 0}
+          onClick={() => setLogs([])}
+        >
+          <TrashIcon aria-hidden="true" />
+          <span>Clear log</span>
+        </button>
       </div>
 
       <div className={styles.methodsPanel}>
