@@ -1,17 +1,19 @@
 # XRAY Mini App Template — Project Skills
 
-Use this document as the implementation guide for contributors and coding agents working in this repository.
+Use this guide when changing the template. Keep it consistent with the repository's actual module boundaries and the
+public contracts documented by `xray-js`.
 
-## Project stack
+## Stack and constraints
 
-- React 19 with React Router 7 in SPA mode
-- TypeScript and Vite
-- Ant Design 5 and Tailwind CSS 4
-- Zustand for application state
-- the locally linked `@xray-network/xray-js` runtime for XRAY host communication and Cardano access
-- Cloudflare Pages for preview and deployment
+- React 19 and React Router 8 in SPA mode
+- TypeScript 5 and Vite 7
+- Ant Design 6 and Tailwind CSS 4
+- Zustand 5 for persisted preferences and ephemeral UI state
+- `@xray-network/xray-js` explicit subpaths for Cardano and XRAY Mini App Bridge APIs
+- Cloudflare Pages and Wrangler for preview and deployment
 
-Use npm for all package and project commands. Do not add lockfiles from other package managers.
+Use npm and preserve `package-lock.json`. Do not add another package-manager lockfile. The runtime requirement is
+Node.js 22.22 or newer with npm 10.8.x.
 
 ## Commands
 
@@ -24,130 +26,119 @@ npm run verify
 npm run preview
 ```
 
-Run `npm run verify` after implementation work. It runs linting, TypeScript generation and checking, and the production
-build. This project intentionally has no test suite or test dependencies.
+Run `npm run verify` after implementation work. It runs linting, React Router type generation, TypeScript, and the
+production build. The repository currently has no automated test script.
 
 ## Architecture
 
-Keep route modules thin and colocate private feature code with its page or component.
+Keep route modules thin and colocate private code with the feature that owns it.
 
-| Path                       | Responsibility                                              |
-| -------------------------- | ----------------------------------------------------------- |
-| `app/root.tsx`             | Document shell and global provider composition              |
-| `app/routes`               | Route definitions, composition, and lazy-loading boundaries |
-| `app/components/pages`     | Page features and page-private API/model modules            |
-| `app/components/layouts`   | Shared page layouts                                         |
-| `app/components/common`    | Reusable application components                             |
-| `app/components/informers` | Reusable display and control components                     |
-| `app/integrations`         | Adapters for external SDKs and services                     |
-| `app/store/preferences`    | Persisted standalone defaults                               |
-| `app/store/ui`             | Transient interface state                                   |
-| `app/shared`               | Application-agnostic shared behavior                        |
-| `app/theme`                | Ant Design configuration, palette, and theme bridge         |
-| `app/utils`                | Small, pure, broadly reused helpers                         |
+| Path                       | Responsibility                                                      |
+| -------------------------- | ------------------------------------------------------------------- |
+| `app/root.tsx`             | HTML shell and application-wide composition                         |
+| `app/routes.ts`            | Route tree, nested layouts, and route boundaries                    |
+| `app/routes`               | Thin route modules that render page components                      |
+| `app/components/pages`     | Page features and feature-private modules                           |
+| `app/components/layouts`   | Shared nested route layouts                                         |
+| `app/components/common`    | Reusable application components                                     |
+| `app/components/informers` | Reusable display and control components                             |
+| `app/components/modals`    | Application-level dialogs                                           |
+| `app/integrations/xray-js` | XRAY-specific preference and settings adapters                      |
+| `app/shared/routing`       | Host route synchronization and navigation progress                  |
+| `app/store/preferences`    | Persisted theme, currency, and balance-privacy preferences          |
+| `app/store/ui`             | Ephemeral menu and dialog state                                     |
+| `app/theme`                | Ant Design themes, palette, CSS variables, and document theme state |
+| `app/styles`               | Global, shared, Ant Design, and Tailwind styles                     |
+| `app/types`, `app/utils`   | Shared types and small broadly reused helpers                       |
 
-Do not create a new top-level folder for a single file. A module used by only one feature belongs inside that feature.
-Move code to `shared`, `utils`, or a global store only when it has multiple real consumers.
+Do not create a top-level directory for one file. Keep a module inside its page or component while it has one consumer;
+move it to an existing shared boundary only when multiple features use it. Use the `@/` alias across architecture
+boundaries and relative imports within a colocated feature.
 
-## Global providers
+## Application shell
 
-Compose application-wide providers directly in `app/root.tsx`. The current order is:
+`app/root.tsx` composes the current application shell directly:
 
 ```tsx
 <Theme>
-  <CardanoProvider>
-    <HostRouteSync />
-    <NavigationProgress />
-    <Outlet />
-  </CardanoProvider>
+  <HostRouteSync />
+  <NavigationProgress />
+  <Outlet />
 </Theme>
 ```
 
-Do not introduce another `AppProviders` wrapper unless provider composition becomes independently reusable.
+`Theme` owns Ant Design and document theme composition and calls `useSyncHostPreferences()`. Do not add a Cardano
+Provider or a generic `AppProviders` wrapper: the Mini App Bridge React adapters already own shared lazy stores and
+need no Provider.
 
-## XRAY Mini App Bridge
+Declare routes in `app/routes.ts`. Route modules in `app/routes` should remain small composition points; page behavior
+belongs under `app/components/pages`, and shared nested shells belong under `app/components/layouts`.
 
-Import `platformV1`, `cardanoV1`, and `cardanoCip30V1` from
-`@xray-network/xray-js/mini-app-bridge/react`. Hooks share lazy stores and require no Provider or connection step.
-Import `clientPlatformV1`, `clientCardanoV1`, and `clientCardanoCip30V1` from
-`@xray-network/xray-js/mini-app-bridge` for direct calls. Each request and event carries its own adapter scope and
-version; do not add capability discovery, a handshake, or an iframe-wide version lock.
-The template installs `window.cardano.xrayBridge` in `app/components/pages/Home/Cardano/index.tsx`; that connector calls
-XRAY App through the iframe bridge and must never delegate to another browser wallet.
+## XRAY JavaScript SDK boundaries
 
-Low-level `clientPlatformV1.getStatus()` returns `{ payload: { host: "xray.app" }, context, requestId }`.
-`platformV1.useStatus()` projects that to `host: "xray.app"` with a nullable account when XRAY App answers. An error indicates
-that the host is unavailable; the marker is identification data, not authorization. Use the effective-setting hooks in
-`app/integrations/xray-js/useEffectiveSettings.ts` so the app falls back to standalone preferences.
+The `@xray-network/xray-js` package root intentionally exports nothing. Import only the subpath that owns the API:
 
-`clientPlatformV1.getLocale()` is request-only and returns the host locale in the standard correlated envelope. The
-Home method launcher logs that response for inspection; do not copy it into preferences, add a locale hook/event, or
-claim the template is localized.
+- `@xray-network/xray-js/mini-app-bridge/react` for `platformV1`, `cardanoV1`, and optional
+  `cardanoCip30V1` React bindings.
+- `@xray-network/xray-js/mini-app-bridge` for `clientPlatformV1`, `clientCardanoV1`,
+  `clientCardanoCip30V1`, events, and direct requests.
+- `@xray-network/xray-js/cardano` for public Cardano configuration, helpers, and types.
 
-- Host-provided settings take precedence while connected.
-- Host settings are runtime values and must not be persisted locally.
-- Standalone defaults belong in `app/store/preferences`.
-- Route synchronization belongs in `app/shared/routing/HostRouteSync.tsx`.
-- Treat SDK account quantities as `bigint`; do not pass them directly to `JSON.stringify`.
+Do not add a handshake, connection state machine, capability discovery, adapter factory, or iframe-wide version lock.
+Each request, response, and event carries its own adapter scope and version. Host identity, scope, and version are
+routing metadata; XRAY App remains responsible for iframe trust, origin validation, account access, and authorization.
 
-## XRAY JavaScript SDK
+### Platform v1
 
-Access Cardano through `useCardano()` from `app/integrations/xray-js/CardanoProvider.tsx`. Do not initialize a second
-XRAY Cardano client inside a page.
+- `clientPlatformV1.getStatus()` returns a correlated `{ payload, context, requestId }` envelope or `null` on timeout.
+- `platformV1.useStatus()` projects the envelope to `{ host, account: context }` and exposes
+  `{ data, loading, error, refresh }`.
+- `data.account: null` means the host answered without a selected account; `data: undefined` means it has not loaded.
+- `getLocale()` is request-only. Do not add a locale event or React hook without a protocol change in `xray-js`.
+- Keep bidirectional route propagation in `app/shared/routing/HostRouteSync.tsx` and avoid echoing an unchanged route.
 
-Consumers must handle every provider state:
+### Cardano v1
 
-- `loading`: show a loading state.
-- `ready`: use `client` and the exported `addresses` helpers.
-- `error`: show a useful error without crashing the application.
+- Use `cardanoV1.useTip()`, `useAccountState()`, and `useExplorer()` for shared remote state.
+- Handle hook loading and error states. Account snapshots must also branch on `balanceStatus`: `initializing`, `ready`,
+  or `error`. Only `ready` has non-null `state`; the SDK owns the bounded initialization retry sequence.
+- Use the Cardano v1 interactive hooks or `clientCardanoV1` for signing and submission. Do not build a second Cardano
+  client or add polling around `useAccountState()`.
+- Native `signTx` returns complete signed transaction CBOR plus its hash. Submit the returned CBOR, not the hash.
+- SDK account quantities are `bigint`; convert them before JSON serialization or display formatting.
 
-The provider is recreated when the effective network changes. Async consumers must ignore stale responses after their
-dependencies change or their component unmounts.
+### Cardano CIP-30 v1
 
-## Feature data access
+- `clientCardanoCip30V1.enable()` is the authorization request and returns the enabled wallet API.
+- `installConnector()` provides the optional `window.cardano.xrayBridge` compatibility connector. Clean it up only if
+  the installed global still refers to this instance.
+- The XRAY connector must call XRAY App through the iframe bridge and must not delegate to another browser wallet.
+- CIP-30 `signTx` returns a witness set, unlike native Cardano v1 `signTx`; callers must merge it into the original
+  transaction before submission.
 
-For non-trivial feature data, use this local structure:
+## State and settings
 
-```text
-Feature/
-├── index.tsx
-└── domain/
-    ├── api/
-    ├── model/
-    └── types.ts
-```
-
-Keep request construction in `api`, asynchronous UI state in `model`, and rendering in the component. Avoid placing
-feature-specific request functions in global `utils` or `services` folders.
-
-The blocks table in `app/components/pages/Components/Table/blocks` is the reference implementation. Its default
-`block_height` descending request relies on the Koios endpoint default and deliberately omits the `order` parameter;
-only non-default sorting should send `order`.
-
-## State rules
-
-- Persist only user-controlled standalone preferences.
-- Keep menus, dialogs, and other temporary UI state in `app/store/ui` or local component state.
-- Prefer local component state when no other component consumes the value.
-- Select only the required Zustand fields to avoid unnecessary renders.
-- Derive values when possible instead of synchronizing duplicate state with effects.
+- `app/store/preferences` owns the persisted `themePrefer`, `currency`, and `hideBalances` values.
+- `useSyncHostPreferences()` updates those values when Platform v1 supplies host settings.
+- Read settings through the effective-setting hooks in `app/integrations/xray-js` rather than duplicating host reads in
+  components.
+- Keep menus, dialogs, and other temporary UI state in local component state or `app/store/ui`.
+- Prefer local state when no other component consumes a value, select only required Zustand fields, and derive values
+  instead of synchronizing duplicates with effects.
 
 ## UI and styling
 
-- Reuse Ant Design and existing components before adding new primitives.
-- Use the tokens in `app/theme` instead of duplicating theme colors.
-- Keep global CSS under `app/styles`; keep component-specific styles beside the component.
-- Support both light and dark themes.
-- Preserve loading, empty, and error states for asynchronous views.
-- Use the `@/` alias for imports across architecture boundaries and relative imports within a colocated feature.
+- Reuse Ant Design and existing components before adding a new primitive.
+- Use tokens from `app/theme` instead of duplicating palette values.
+- Keep global CSS in `app/styles` and component-specific CSS beside its component.
+- Preserve light and dark themes and the loading, empty, and error states of asynchronous views.
+- Guard browser-only globals when code can run during React Router generation or server-side tooling.
 
-## Change checklist
+## Completion checklist
 
-Before handing off a change:
-
-1. Remove unused imports, dead helpers, and obsolete files introduced by the change.
-2. Confirm browser-only APIs are guarded where necessary.
-3. Confirm async effects clean up and cannot commit stale results.
+1. Remove dead imports, helpers, and files introduced by the change.
+2. Confirm effects clean up listeners, timers, and installed globals.
+3. Confirm asynchronous work cannot commit stale results after dependency changes or unmount.
 4. Run `npm run verify`.
 5. Run `git diff --check`.
-6. Mention any remaining build warnings or behavior that could not be verified.
+6. Report warnings or behavior that could not be verified.
