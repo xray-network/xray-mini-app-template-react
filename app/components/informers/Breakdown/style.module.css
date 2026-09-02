@@ -6,10 +6,11 @@
 
 .item {
   @apply mb-2 last:mb-0 flex items-center flex-nowrap;
+  white-space: nowrap;
 }
 
 .title {
-  @apply text-sm text-gray-500;
+  @apply text-sm text-gray-500 font-bold;
 }
 
 .dots {
@@ -17,5 +18,5 @@
 }
 
 .quantity {
-  @apply flex flex-nowrap ml-auto;
+  @apply flex flex-nowrap ml-auto font-mono text-sm;
 }

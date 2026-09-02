@@ -164,12 +164,18 @@
   line-height: 1.55;
 }
 
+.availableTitle {
+  margin: auto 0 0;
+  color: var(--home-text);
+  font-size: 13px;
+  font-weight: 700;
+}
+
 .chainSupportList {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: auto;
-  padding-top: 24px;
+  padding-top: 10px;
 }
 
 .chainSupportItem {

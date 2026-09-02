@@ -10,8 +10,6 @@ const repositoryUrl = "https://github.com/xray-network/xray-mini-app-template-re
 
 const supportedBlockchains = [
   { id: "cardano", name: "Cardano", status: "Supported" },
-  { id: "bitcoin", name: "Bitcoin", status: "Coming soon" },
-  { id: "midnight", name: "Midnight", status: "Coming soon" },
 ] as const
 
 export default function HomePage() {
@@ -54,6 +52,7 @@ export default function HomePage() {
             Clone and run the template, then open it inside XRAY App. Read the active host context and use the
             console below to test available bridge requests.
           </p>
+          <h3 className={styles.availableTitle}>Curently available</h3>
           <div className={styles.chainSupportList}>
             {supportedBlockchains.map((chain) => (
               <span className={styles.chainSupportItem} key={chain.id} data-supported={chain.status === "Supported"}>
