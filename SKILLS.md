@@ -15,6 +15,27 @@ public contracts documented by `xray-js`.
 Use npm and preserve `package-lock.json`. Do not add another package-manager lockfile. The runtime requirement is
 Node.js 22.22 or newer with npm 10.8.x.
 
+## Documentation sources
+
+Use the official XRAY documentation as the primary product reference:
+
+- [XRAY JavaScript SDK](https://wiki.xraynetwork.io/xray-js) for public APIs, supported import paths, bridge
+  contracts, version-specific behavior, and integration guidance.
+- [XRAY Design](https://wiki.xraynetwork.io/xray-design) for design tokens, typography, spacing, component patterns,
+  interaction states, accessibility guidance, and responsive behavior.
+
+For XRAY SDK work, consult the JavaScript SDK documentation before adding or changing an integration. Confirm examples
+against the version installed in `package.json` and its public TypeScript declarations. Use documented public exports;
+do not depend on package internals merely because they are visible in `node_modules`.
+
+For user-interface work, consult the design documentation before introducing new visual patterns. Reuse documented
+tokens and components where they fit, while preserving the repository's established light and dark theme behavior.
+
+If either documentation site is unavailable or incomplete, continue using the installed package declarations, the
+repository's existing implementation, and its theme primitives as the fallback sources of truth. Do not invent XRAY
+APIs, capabilities, tokens, or requirements. Make the narrowest reasonable assumption, keep it easy to revise, and
+report any material behavior or design decision that could not be verified against the documentation.
+
 ## Commands
 
 ```sh
@@ -90,7 +111,8 @@ routing metadata; XRAY App remains responsible for iframe trust, origin validati
 
 ### Platform v1
 
-- `clientPlatformV1.getStatus()` returns a correlated `{ payload, context, requestId }` envelope or `null` on timeout.
+- `clientPlatformV1.getStatus()` returns a correlated response with `scope`, `version`, `method`, `requestId`, and `ok`.
+  Success carries `payload` and `context`; failure carries `error: { code, message, data? }`, including timeouts.
 - `platformV1.useStatus()` projects the envelope to `{ host, account: context }` and exposes
   `{ data, loading, error, refresh }`.
 - `data.account: null` means the host answered without a selected account; `data: undefined` means it has not loaded.
@@ -104,7 +126,9 @@ routing metadata; XRAY App remains responsible for iframe trust, origin validati
   or `error`. Only `ready` has non-null `state`; the SDK owns the bounded initialization retry sequence.
 - Use the Cardano v1 interactive hooks or `clientCardanoV1` for signing and submission. Do not build a second Cardano
   client or add polling around `useAccountState()`.
-- Native `signTx` returns complete signed transaction CBOR plus its hash. Submit the returned CBOR, not the hash.
+- Native operations use the outer `ok` outcome without nested success flags. Native `signTx` success has
+  `payload: { hash, cbor }`; submit the returned CBOR. Interactive hook methods resolve to the same complete response.
+- Import message/domain types by name, such as `CardanoResponse<"signTx">` and `AccountState`, from the bridge entry.
 - SDK account quantities are `bigint`; convert them before JSON serialization or display formatting.
 
 ### Cardano CIP-30 v1
@@ -129,6 +153,8 @@ routing metadata; XRAY App remains responsible for iframe trust, origin validati
 ## UI and styling
 
 - Reuse Ant Design and existing components before adding a new primitive.
+- Use `@heroicons/react` for interface icons. Prefer the existing 24px outline set and do not add another icon library
+  or hand-written SVG when a suitable Heroicon exists.
 - Use tokens from `app/theme` instead of duplicating palette values.
 - Keep global CSS in `app/styles` and component-specific CSS beside its component.
 - Preserve light and dark themes and the loading, empty, and error states of asynchronous views.

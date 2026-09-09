@@ -1,4 +1,3 @@
-import { SignalIcon } from "@heroicons/react/24/outline"
 import { cardanoV1, platformV1 } from "@xray-network/xray-js/mini-app-bridge/react"
 import * as utils from "@/utils"
 import styles from "../style.module.css"
@@ -21,53 +20,37 @@ export default function CardanoContext() {
       : "Account details are unavailable"
 
   return (
-    <section className={styles.contextSection} aria-labelledby="context-title">
-      <div className={styles.sectionHeading}>
+    <div className={styles.currentContext} aria-label="Current account state">
+      <div className={styles.contextIdentity}>
         <div>
-          <span className={styles.eyebrow}>ACCOUNT CONTEXT</span>
-          <h2 id="context-title">Current account</h2>
+          <strong>{utils.capitalizeFirstLetter(context.blockchain)} account</strong>
+          <p className={styles.accountAddress} title={accountState?.paymentAddress}>
+            Payment address · {accountState?.paymentAddress ?? "—"}
+          </p>
+          <p className={styles.accountSummary} aria-live="polite">
+            {accountSummary}
+          </p>
         </div>
-        <span className={`${styles.stateTag} ${styles.online}`}>
-          <span className={styles.statusDot} aria-hidden="true" />
-          Account selected
-        </span>
       </div>
 
-      <div className={styles.currentContext}>
-        <div className={styles.contextIdentity}>
-          <span className={styles.chainAvatar} data-state="connected" aria-hidden="true">
-            <SignalIcon />
-          </span>
-          <div>
-            <strong>{utils.capitalizeFirstLetter(context.blockchain)} account</strong>
-            <p className={styles.accountAddress} title={accountState?.paymentAddress}>
-              Payment address · {accountState?.paymentAddress ?? "—"}
-            </p>
-            <p className={styles.accountSummary} aria-live="polite">
-              {accountSummary}
-            </p>
-          </div>
+      <dl className={styles.contextDetails}>
+        <div>
+          <dt>Blockchain</dt>
+          <dd>{context.blockchain}</dd>
         </div>
-
-        <dl className={styles.contextDetails}>
-          <div>
-            <dt>Blockchain</dt>
-            <dd>{context.blockchain}</dd>
-          </div>
-          <div>
-            <dt>Network</dt>
-            <dd>{context.network}</dd>
-          </div>
-          <div>
-            <dt>Tip</dt>
-            <dd className={styles.tipValue}>
-              Block {tip.data ? utils.quantityWithCommas(tip.data.blockNo) : "—"} · Epoch{" "}
-              {tip.data ? utils.quantityWithCommas(tip.data.epochNo) : "—"} · Slot{" "}
-              {tip.data ? utils.quantityWithCommas(tip.data.absSlot) : "—"}
-            </dd>
-          </div>
-        </dl>
-      </div>
-    </section>
+        <div>
+          <dt>Network</dt>
+          <dd>{context.network}</dd>
+        </div>
+        <div>
+          <dt>Tip</dt>
+          <dd className={styles.tipValue}>
+            Block {tip.data ? utils.quantityWithCommas(tip.data.blockNo) : "—"} · Epoch{" "}
+            {tip.data ? utils.quantityWithCommas(tip.data.epochNo) : "—"} · Slot{" "}
+            {tip.data ? utils.quantityWithCommas(tip.data.absSlot) : "—"}
+          </dd>
+        </div>
+      </dl>
+    </div>
   )
 }
