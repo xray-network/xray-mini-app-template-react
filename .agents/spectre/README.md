@@ -1,4 +1,4 @@
-# XRAY Mini App React Template SPECTRE
+# xray-mini-app-template-react SPECTRE
 
 This directory is the canonical home for the installed SPECTRE protocol, implementation
 instructions and results, and shared provider evidence. SPECTRE runs on explicit human `/spectre`
