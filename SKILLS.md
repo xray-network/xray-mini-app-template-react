@@ -10,7 +10,7 @@ public contracts documented by `xray-js`.
 - Ant Design 6 and Tailwind CSS 4
 - Zustand 5 for persisted preferences and ephemeral UI state
 - `@xray-network/xray-js` explicit subpaths for Cardano and XRAY Mini App Bridge APIs
-- Cloudflare Pages and Wrangler for preview and deployment
+- Cloudflare Workers static assets and Wrangler for preview and deployment
 
 Use npm and preserve `package-lock.json`. Do not add another package-manager lockfile. The runtime requirement is
 Node.js 22.22 or newer with npm 10.8.x.

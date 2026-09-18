@@ -1,7 +1,7 @@
 # XRAY Mini App Template React
 
 A React Router SPA template for building XRAY mini apps. It includes React 19, TypeScript, Ant Design, Tailwind CSS,
-Zustand, Cloudflare Pages configuration, and the public `@xray-network/xray-js` runtime.
+Zustand, Cloudflare Workers static-assets configuration, and the public `@xray-network/xray-js` runtime.
 
 The template demonstrates the scope-versioned XRAY Mini App Bridge for Platform v1, Cardano v1, and Cardano CIP-30
 v1. Bridge adapters communicate directly with XRAY App: there is no Provider, handshake, session, capability list, or
@@ -27,7 +27,7 @@ npm run preview
 ```
 
 `verify` runs ESLint, React Router type generation, TypeScript, and the production build. `preview` builds the app and
-serves the Cloudflare Pages output from `build/client` locally.
+serves the Cloudflare Worker static assets from `build/client` locally.
 
 ## XRAY JavaScript SDK
 
@@ -83,5 +83,5 @@ shared directory only after they have multiple real consumers.
 npm run deploy
 ```
 
-The production build is a static React Router SPA in `build/client`; the deploy command publishes it to Cloudflare
-Pages with Wrangler.
+The production build is a static React Router SPA in `build/client`; the deploy command publishes it as a Cloudflare
+Worker with static assets through Wrangler.
