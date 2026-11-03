@@ -3,6 +3,11 @@ import { clientCardanoCip30V1, clientCardanoV1 } from "@xray-network/xray-js/min
 import type { FireRequest } from "../bridge"
 import styles from "../style.module.css"
 
+// Well-formed placeholders: the bridge rejects non-hex payloads before they reach the host.
+const DEMO_TX_CBOR = "84a300d901028001800200a0f5f6" // Empty Conway transaction.
+const DEMO_MESSAGE_HEX = "48656c6c6f2058524159" // "Hello XRAY"
+const DEMO_COLLATERAL_AMOUNT = "1a004c4b40" // 5 ADA as CBOR coin.
+
 export default function CardanoMethods({ fire }: { fire: FireRequest }) {
   const [cip30Enabled, setCip30Enabled] = useState(false)
 
@@ -35,21 +40,21 @@ export default function CardanoMethods({ fire }: { fire: FireRequest }) {
           <button
             className={styles.requestTag}
             type="button"
-            onClick={() => void fire("cardano.signTx", () => clientCardanoV1.signTx("dummy"))}
+            onClick={() => void fire("cardano.signTx", () => clientCardanoV1.signTx(DEMO_TX_CBOR))}
           >
             Sign transaction
           </button>
           <button
             className={styles.requestTag}
             type="button"
-            onClick={() => void fire("cardano.submitTx", () => clientCardanoV1.submitTx("dummy"))}
+            onClick={() => void fire("cardano.submitTx", () => clientCardanoV1.submitTx(DEMO_TX_CBOR))}
           >
             Submit transaction
           </button>
           <button
             className={styles.requestTag}
             type="button"
-            onClick={() => void fire("cardano.signData", () => clientCardanoV1.signData("dummy", "dummy"))}
+            onClick={() => void fire("cardano.signData", () => clientCardanoV1.signData("dummy", DEMO_MESSAGE_HEX))}
           >
             Sign data
           </button>
@@ -107,7 +112,7 @@ export default function CardanoMethods({ fire }: { fire: FireRequest }) {
             disabled={!cip30Enabled}
             onClick={() =>
               void fire("cardano-cip30.getCollateral", () =>
-                clientCardanoCip30V1.api.getCollateral({ amount: "dummy" })
+                clientCardanoCip30V1.api.getCollateral({ amount: DEMO_COLLATERAL_AMOUNT })
               )
             }
           >
@@ -165,7 +170,7 @@ export default function CardanoMethods({ fire }: { fire: FireRequest }) {
             className={styles.requestTag}
             type="button"
             disabled={!cip30Enabled}
-            onClick={() => void fire("cardano-cip30.signTx", () => clientCardanoCip30V1.api.signTx("dummy"))}
+            onClick={() => void fire("cardano-cip30.signTx", () => clientCardanoCip30V1.api.signTx(DEMO_TX_CBOR))}
           >
             Sign transaction
           </button>
@@ -174,7 +179,7 @@ export default function CardanoMethods({ fire }: { fire: FireRequest }) {
             type="button"
             disabled={!cip30Enabled}
             onClick={() =>
-              void fire("cardano-cip30.signData", () => clientCardanoCip30V1.api.signData("dummy", "dummy"))
+              void fire("cardano-cip30.signData", () => clientCardanoCip30V1.api.signData("dummy", DEMO_MESSAGE_HEX))
             }
           >
             Sign data
@@ -183,7 +188,7 @@ export default function CardanoMethods({ fire }: { fire: FireRequest }) {
             className={styles.requestTag}
             type="button"
             disabled={!cip30Enabled}
-            onClick={() => void fire("cardano-cip30.submitTx", () => clientCardanoCip30V1.api.submitTx("dummy"))}
+            onClick={() => void fire("cardano-cip30.submitTx", () => clientCardanoCip30V1.api.submitTx(DEMO_TX_CBOR))}
           >
             Submit transaction
           </button>
