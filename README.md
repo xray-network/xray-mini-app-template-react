@@ -49,10 +49,10 @@ CIP-30 events, exercises direct requests, and installs `window.cardano.xrayBridg
 CIP-30 access.
 
 See the XRAY JavaScript SDK documentation for the complete
-[Mini App Bridge](https://github.com/xray-network/xray-js/tree/dev/packages/mini-app-bridge),
-[Platform v1](https://github.com/xray-network/xray-js/blob/dev/packages/mini-app-bridge/README-PLATFORM.md),
-[Cardano v1](https://github.com/xray-network/xray-js/blob/dev/packages/mini-app-bridge/README-CARDANO.md), and
-[Cardano CIP-30 v1](https://github.com/xray-network/xray-js/blob/dev/packages/mini-app-bridge/README-CARDANO-CIP30.md)
+[Mini App Bridge](https://github.com/xray-network/xray/tree/main/js/packages/mini-app-bridge),
+[Platform v1](https://github.com/xray-network/xray/blob/main/js/packages/mini-app-bridge/README-PLATFORM.md),
+[Cardano v1](https://github.com/xray-network/xray/blob/main/js/packages/mini-app-bridge/README-CARDANO.md), and
+[Cardano CIP-30 v1](https://github.com/xray-network/xray/blob/main/js/packages/mini-app-bridge/README-CARDANO-CIP30.md)
 contracts.
 
 ## Architecture
@@ -85,3 +85,7 @@ npm run deploy
 
 The production build is a static React Router SPA in `build/client`; the deploy command publishes it as a Cloudflare
 Worker with static assets through Wrangler.
+
+## License
+
+[MIT](LICENSE).
